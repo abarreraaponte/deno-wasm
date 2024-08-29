@@ -11,7 +11,7 @@ config();
 
 const app = new Hono();
 
-const appRouter = router({
+const trpcRouter = router({
 	hello: publicProcedure
 		.input(z.object({ name: z.string() }))
 		.query(({ input }) => {
@@ -19,13 +19,13 @@ const appRouter = router({
 		}),
   });
   
-export type AppRouter = typeof appRouter;
+export type TRPCRouter = typeof trpcRouter;
 
 app.get('/', (c) => {
   	return c.text(`Hello ${process.env.NAME || 'world'}!`);
 });
 
-app.use('/trpc/*', trpcServer({ router: appRouter }));
+app.use('/trpc/*', trpcServer({ router: trpcRouter }));
 
 const port = 3000;
 console.log(`Server is running on port ${port}`);
