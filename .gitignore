@@ -1,0 +1,12 @@
+# Dependencies
+node_modules
+
+# IDEs
+*.code-workspace
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Build files
+dist
