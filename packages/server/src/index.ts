@@ -1,5 +1,6 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { cors } from 'hono/cors';
 // TRPC
 import { router, publicProcedure } from '../../shared/trpc';
 import { trpcServer } from '@hono/trpc-server';
@@ -25,12 +26,17 @@ app.get('/', (c) => {
   	return c.text(`Hello ${process.env.NAME || 'world'}!`);
 });
 
+app.use('/trpc/*', cors({
+	origin: '*',
+	allowMethods: ['POST'],
+	credentials: true,
+}));
 app.use('/trpc/*', trpcServer({ router: trpcRouter }));
 
-const port = 3000;
+const port = Number(process.env.PORT || 3000);
 console.log(`Server is running on port ${port}`);
 
 serve({
 	fetch: app.fetch,
-	port
+	port: port,
 });
