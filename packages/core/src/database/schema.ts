@@ -31,3 +31,15 @@ export const locations = pgTable('locations', {
 		nameIdx: index('name_idx').on(table.name),
 	}
 });
+
+export const features = pgTable('features', {
+	id: varchar('id', { length: 26 }).primaryKey(),
+	module: varchar('module', { length: 255 }).notNull(),
+	key: varchar('name', { length: 255 }).notNull(),
+	value: text('value').notNull(),
+	description: text('description').notNull(),
+}, (table) => {
+	return {
+		keyIdx: index('key_idx').on(table.key),
+	}
+});
