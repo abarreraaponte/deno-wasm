@@ -2,7 +2,7 @@ import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
 // TRPC
-import { router, publicProcedure } from '../../shared/trpc';
+import { router, publicProcedure } from './trpc';
 import { trpcServer } from '@hono/trpc-server';
 import { z } from 'zod';
 

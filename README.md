@@ -1,6 +1,6 @@
 # EntropyERP Monorepo Project
 
-This repository contains a full-stack application with a React frontend, a Hono backend, and a shared directory for common code, all managed in a monorepo structure.
+This repository contains a full-stack application with a React frontend, a Hono backend, all managed in a monorepo structure.
 
 ## Project Structure
 
@@ -13,8 +13,6 @@ root/
 │   ├── server/         # Hono backend
 │   │   ├── src/
 │   │   └── package.json
-│   └── shared/         # Shared code
-│       └── trpc.ts     # tRPC setup
 ├── package.json        # Root package.json
 └── README.md           # This file
 ```
@@ -32,9 +30,8 @@ root/
 - Hono
 - Node.js
 - TypeScript
-
-### Shared
 - tRPC (for type-safe API calls between frontend and backend)
+
 
 ## Getting Started
 
@@ -82,7 +79,7 @@ root/
 
 ## tRPC Integration
 
-The `shared` directory contains the tRPC setup in `trpc.ts`. This enables type-safe API calls between the frontend and backend. The `trpc.ts` file is directly imported by both the client and server packages, ensuring type consistency across the full stack.
+The `server` directory contains the tRPC setup in `trpc.ts`. This enables type-safe API calls between the frontend and backend. The `trpc.ts` file is directly imported by both the client and server packages, ensuring type consistency across the full stack.
 
 ## Environment Variables
 

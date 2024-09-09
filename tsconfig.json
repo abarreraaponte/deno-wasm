@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES2020",
+		"module": "ESNext",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"paths": {
+			"@server/*": ["./packages/server/*"],
+			"@client/*": ["./packages/client/*"]
+		}
+	}
+}
