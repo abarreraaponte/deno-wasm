@@ -8,7 +8,10 @@
   "dependencies": {
     "@hono/node-server": "^1.12.2",
 	"dotenv": "^16.4.5",
-    "hono": "^4.5.9"
+	"drizzle-orm": "^0.33.0",
+    "hono": "^4.5.9",
+	"postgres": "^3.4.4",
+	"ulidx": "^2.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
