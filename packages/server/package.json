@@ -2,16 +2,17 @@
   "name": "server",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-	"start": "node ../../dist/server/index.js",
-	"build": "tsc"
+    "start": "node ../../dist/server/index.js",
+    "build": "esbuild src/index.ts --bundle --minify --platform=node --outdir=../../dist/server"
   },
   "dependencies": {
     "@hono/node-server": "^1.12.2",
-	"dotenv": "^16.4.5",
-	"drizzle-orm": "^0.33.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.33.0",
+    "esbuild": "^0.23.1",
     "hono": "^4.5.9",
-	"postgres": "^3.4.4",
-	"ulidx": "^2.4.1"
+    "postgres": "^3.4.4",
+    "ulidx": "^2.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

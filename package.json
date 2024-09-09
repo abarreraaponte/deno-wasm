@@ -9,6 +9,8 @@
     "build:server": "cd packages/server && npm run build",
     "build:client": "cd packages/client && npm run build",
     "build": "npm run build:server && npm run build:client",
+	"db:generate": "drizzle-kit generate",
+	"db:migrate": "drizzle-kit migrate",
     "start": "cd packages/server && npm start"
   },
   "workspaces": [

@@ -8,7 +8,9 @@ import { z } from 'zod';
 
 import { config } from 'dotenv';
 
-config();
+config({
+	path: '../../.env',
+});
 
 const app = new Hono();
 
@@ -27,8 +29,8 @@ app.get('/', (c) => {
 });
 
 app.use('/trpc/*', cors({
-	origin: '*',
-	allowMethods: ['POST'],
+	origin: process.env.CLIENT_URL || '',
+	allowMethods: ['*'],
 	credentials: true,
 }));
 app.use('/trpc/*', trpcServer({ router: trpcRouter }));
