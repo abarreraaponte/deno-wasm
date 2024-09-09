@@ -25,7 +25,11 @@ const trpcRouter = router({
 export type TRPCRouter = typeof trpcRouter;
 
 app.get('/', (c) => {
-  	return c.text(`Hello ${process.env.NAME || 'world'}!`);
+  	return c.text(`Hello`);
+});
+
+app.get('/health', (c) => {
+	return c.text('UP');
 });
 
 app.use('/trpc/*', cors({
