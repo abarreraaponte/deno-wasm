@@ -1,4 +1,4 @@
-# EntropyDB Monorepo Project
+# EntropyERP Monorepo Project
 
 This repository contains a full-stack application with a React frontend, a Hono backend, and a shared directory for common code, all managed in a monorepo structure.
 
