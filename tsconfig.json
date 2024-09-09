@@ -9,7 +9,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
 			"@server/*": ["./packages/server/*"],
-			"@client/*": ["./packages/client/*"]
+			"@client/*": ["./packages/client/*"],
+			"@core/*": ["./packages/core/*"],
+			"@localization/*": ["./packages/localization/*"]
 		}
 	}
 }
