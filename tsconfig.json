@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
+		"lib": ["ES2023"],
+		"target": "ES2022",
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"strict": true,
@@ -8,10 +9,14 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
-			"@server/*": ["./packages/server/*"],
-			"@client/*": ["./packages/client/*"],
-			"@core/*": ["./packages/core/*"],
-			"@localization/*": ["./packages/localization/*"]
-		}
+			"@core/*": ["./src/core/*"],
+			"@localization/*": ["./src/localization/*"]
+		},
+		"outDir": "./dist",
+		"types": [
+			"node"
+		],
+		"jsx": "react-jsx",
+		"jsxImportSource": "hono/jsx",
 	}
 }
