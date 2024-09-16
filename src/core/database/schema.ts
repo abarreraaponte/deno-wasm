@@ -3,7 +3,8 @@ import { relations } from 'drizzle-orm';
 
 export const ledgers = pgTable('ledgers', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	name: varchar('name', { length: 255 }),
+	//hrid: varchar('hrid', { length: 255 }),
+	name: varchar('name', { length: 255 }).unique(),
 	description: text('description'),
 	currency_id: varchar('currency_id', { length: 26 }).references(() => currencies.id),
 	dimension_1_id: varchar('dimension_1_id', { length: 26 }).references(() => entity_models.id),
@@ -16,7 +17,7 @@ export const ledgers = pgTable('ledgers', {
 	dimension_8_id: varchar('dimension_8_id', { length: 26 }).references(() => entity_models.id),
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
+		name_idx: index().on(table.name),
 	}
 });
 
@@ -36,10 +37,10 @@ export const ledger_relations = relations(ledgers, ({one, many}) => {
 
 export const account_types = pgTable('account_types', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	name: varchar('name', { length: 255 }),
+	name: varchar('name', { length: 255 }).unique(),
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
+		name_idx: index().on(table.name),
 	}
 });
 
@@ -52,11 +53,11 @@ export const account_type_relations = relations(account_types, ({one, many}) => 
 export const accounts = pgTable('accounts', {
 	id: varchar('id', { length: 26 }).primaryKey(),
 	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => accounts.id),
-	name: varchar('name', { length: 255 }),
+	name: varchar('name', { length: 255 }).unique(),
 	meta: jsonb('meta'),
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
+		name_idx: index().on(table.name),
 	}
 });
 
@@ -70,10 +71,10 @@ export const account_relations = relations(accounts, ({one, many}) => {
 
 export const uom_types = pgTable('uom_types', {
 	id: varchar('id', { length: 26}).primaryKey(),
-	name: varchar('name', { length: 255 })
+	name: varchar('name', { length: 255 }).unique()
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
+		name_idx: index().on(table.name),
 	}
 });
 
@@ -87,15 +88,15 @@ export const uom = pgTable('uom', {
 	id: varchar('id', { length: 26 }).primaryKey(),
 	uom_type_id: varchar('uom_type_id', { length: 26 }).references(() => uom_types.id),
 	name: varchar('name', { length: 255 }).unique(),
-	plural_name: varchar('name', { length: 255 }).unique(),
+	plural_name: varchar('plural_name', { length: 255 }).unique(),
 	symbol: varchar('symbol', { length: 20 }).unique(),
 	plural_symbol: varchar('plural_symbol', { length: 20 }).unique(),
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
-		plural_name_idx: index('plural_name_idx').on(table.plural_name),
-		symbol_idx: index('symbol_idx').on(table.symbol),
-		plural_symbol_idx: index('plural_symbol_idx').on(table.plural_symbol),
+		name_idx: index().on(table.name),
+		plural_name_idx: index().on(table.plural_name),
+		symbol_idx: index().on(table.symbol),
+		plural_symbol_idx: index().on(table.plural_symbol),
 	}
 });
 
@@ -107,10 +108,10 @@ export const uom_relations = relations(uom, ({one, many}) => {
 
 export const entity_models = pgTable('entity_models', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	name: varchar('name', { length: 255 }),
+	name: varchar('name', { length: 255 }).unique(),
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
+		name_idx: index().on(table.name),
 	}
 });
 
@@ -130,7 +131,7 @@ export const entities = pgTable('entities', {
 	meta: jsonb('meta'),
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
+		name_idx: index().on(table.name),
 	}
 });
 
@@ -153,8 +154,8 @@ export const currencies = pgTable('currencies', {
 	thousands_separator: char('thousands_separator', { length: 1 }).notNull(),
 }, (table) => {
 	return {
-		iso_code_idx: index('iso_code_idx').on(table.iso_code),
-		name_idx: index('name_idx').on(table.name),
+		iso_code_idx: index().on(table.iso_code),
+		name_idx: index().on(table.name),
 	}
 });
 
@@ -168,13 +169,13 @@ export const exchange_rates = pgTable('exchange_rates', {
 	id: varchar('id', { length: 26 }).primaryKey(),
 	from_currency_id: varchar('from_currency_id', { length: 26 }).references(() => currencies.id).notNull(),
 	to_currency_id: varchar('to_currency_id', { length: 26 }).references(() => currencies.id).notNull(),
-	rate: bigint('rate', { mode: 'bigint' }).default(BigInt(1)),
-	valid_from: bigint('valid_from', { mode: 'bigint' }).notNull(),
-	valid_to: bigint('valid_to', { mode: 'bigint' }).notNull(),
+	rate: bigint('rate', { mode: 'number' }).default(1),
+	valid_from: bigint('valid_from', { mode: 'number' }).notNull(),
+	valid_to: bigint('valid_to', { mode: 'number' }).notNull(),
 }, (table) => {
 	return {
-		valid_from_idx: index('from_currency_idx').on(table.valid_from),
-		valid_to_idx: index('to_currency_idx').on(table.valid_to),
+		valid_from_idx: index().on(table.valid_from),
+		valid_to_idx: index().on(table.valid_to),
 	}
 });
 
@@ -190,7 +191,7 @@ export const transaction_models = pgTable('transaction_models', {
 	name: varchar('name', { length: 255 }).notNull().unique(),
 }, (table) => {
 	return {
-		name_idx: index('name_idx').on(table.name),
+		name_idx: index().on(table.name),
 	}
 });
 
