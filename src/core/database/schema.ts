@@ -5,6 +5,15 @@ export const ledgers = pgTable('ledgers', {
 	id: varchar('id', { length: 26 }).primaryKey(),
 	name: varchar('name', { length: 255 }),
 	description: text('description'),
+	currency_id: varchar('currency_id', { length: 26 }).references(() => currencies.id),
+	dimension_1_id: varchar('dimension_1_id', { length: 26 }).references(() => entity_models.id),
+	dimension_2_id: varchar('dimension_2_id', { length: 26 }).references(() => entity_models.id),
+	dimension_3_id: varchar('dimension_3_id', { length: 26 }).references(() => entity_models.id),
+	dimension_4_id: varchar('dimension_4_id', { length: 26 }).references(() => entity_models.id),
+	dimension_5_id: varchar('dimension_5_id', { length: 26 }).references(() => entity_models.id),
+	dimension_6_id: varchar('dimension_6_id', { length: 26 }).references(() => entity_models.id),
+	dimension_7_id: varchar('dimension_7_id', { length: 26 }).references(() => entity_models.id),
+	dimension_8_id: varchar('dimension_8_id', { length: 26 }).references(() => entity_models.id),
 }, (table) => {
 	return {
 		name_idx: index('name_idx').on(table.name),
@@ -13,7 +22,15 @@ export const ledgers = pgTable('ledgers', {
 
 export const ledger_relations = relations(ledgers, ({one, many}) => {
 	return {
-		
+		dimension_1: one(entity_models, {fields: [ledgers.dimension_1_id], references: [entity_models.id],}),
+		dimension_2: one(entity_models, {fields: [ledgers.dimension_2_id], references: [entity_models.id],}),
+		dimension_3: one(entity_models, {fields: [ledgers.dimension_3_id], references: [entity_models.id],}),
+		dimension_4: one(entity_models, {fields: [ledgers.dimension_4_id], references: [entity_models.id],}),
+		dimension_5: one(entity_models, {fields: [ledgers.dimension_5_id], references: [entity_models.id],}),
+		dimension_6: one(entity_models, {fields: [ledgers.dimension_6_id], references: [entity_models.id],}),
+		dimension_7: one(entity_models, {fields: [ledgers.dimension_7_id], references: [entity_models.id],}),
+		dimension_8: one(entity_models, {fields: [ledgers.dimension_8_id], references: [entity_models.id],}),
+		currency: one(currencies, {fields: [ledgers.currency_id], references: [currencies.id],}),
 	}
 })
 
@@ -30,12 +47,11 @@ export const account_type_relations = relations(account_types, ({one, many}) => 
 	return {
 		accounts: many(accounts),
 	}
-})
-
+});
 
 export const accounts = pgTable('accounts', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => spaces.id),
+	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => accounts.id),
 	name: varchar('name', { length: 255 }),
 	meta: jsonb('meta'),
 }, (table) => {
@@ -50,25 +66,7 @@ export const account_relations = relations(accounts, ({one, many}) => {
 		parent: one(accounts, {fields: [accounts.id], references: [accounts.id],}),
 		children: many(accounts),
 	}
-})
-
-
-export const resources = pgTable('resources', {
-	id: varchar('id', { length: 26 }).primaryKey(),
-	name: varchar('name', { length: 255 }),
-	meta: jsonb('meta'),
-}, (table) => {
-	return {
-		name_idx: index('name_idx').on(table.name),
-	}
 });
-
-export const resource_relations = relations(resources, ({one, many}) => {
-	return {
-		
-	}
-})
-
 
 export const uom_types = pgTable('uom_types', {
 	id: varchar('id', { length: 26}).primaryKey(),
@@ -83,8 +81,7 @@ export const uom_type_relations = relations(uom_types, ({one, many}) => {
 	return {
 		uoms: many(uom),
 	}
-})
-
+});
 
 export const uom = pgTable('uom', {
 	id: varchar('id', { length: 26 }).primaryKey(),
@@ -106,13 +103,29 @@ export const uom_relations = relations(uom, ({one, many}) => {
 	return {
 		uom_type: one(uom_types, {fields: [uom.id], references: [uom_types.id],}),
 	}
-})
+});
 
-
-
-export const spaces = pgTable('uom', {
+export const entity_models = pgTable('entity_models', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => spaces.id),
+	name: varchar('name', { length: 255 }),
+}, (table) => {
+	return {
+		name_idx: index('name_idx').on(table.name),
+	}
+});
+
+export const entity_model_relations = relations(entity_models, ({one, many}) => {
+	return {
+		ledgers: many(ledgers),
+		entities: many(entities),
+	}
+});
+
+
+export const entities = pgTable('entities', {
+	id: varchar('id', { length: 26 }).primaryKey(),
+	entity_model_id: varchar('entity_model_id', { length: 26 }).references(() => entity_models.id),
+	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => entities.id),
 	name: varchar('name', { length: 255 }),
 	meta: jsonb('meta'),
 }, (table) => {
@@ -121,59 +134,23 @@ export const spaces = pgTable('uom', {
 	}
 });
 
-export const space_relations = relations(spaces, ({one, many}) => {
+export const entity_relations = relations(entities, ({one, many}) => {
 	return {
-		parent: one(spaces, {fields: [spaces.id], references: [spaces.id],}),
-		children: many(spaces),
-	}
-});
-
-export const divisions = pgTable('divisions', {
-	id: varchar('id', { length: 26 }).primaryKey(),
-	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => divisions.id),
-	name: varchar('name', { length: 255 }),
-	meta: jsonb('meta'),
-}, (table) => {
-	return {
-		name_idx: index('name_idx').on(table.name),
-	}
-});
-
-export const division_relations = relations(divisions, ({one, many}) => {
-	return {
-		parent: one(divisions, {fields: [divisions.id], references: [divisions.id],}),
-		children: many(divisions),
-	}
-});
-
-
-export const dimensions = pgTable('dimensions', {
-	id: varchar('id', { length: 26 }).primaryKey(),
-	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => dimensions.id ),
-	name: varchar('name', { length: 255 }),
-	meta: jsonb('meta'),
-}, (table) => {
-	return {
-		name_idx: index('name_idx').on(table.name),
-	}
-});
-
-export const dimension_relations = relations(dimensions, ({one, many}) => {
-	return {
-		parent: one(dimensions, {fields: [dimensions.id], references: [dimensions.id],}),
-		children: many(dimensions),
+		entity_model: one(entity_models, {fields: [entities.id], references: [entity_models.id],}),
+		parent: one(entities, {fields: [entities.id], references: [entities.id],}),
+		children: many(entities),
 	}
 });
 
 export const currencies = pgTable('currencies', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	name: varchar('name', { length: 255 }),
-	symbol: varchar('symbol', { length: 20 }),
-	iso_code: varchar('code', { length: 8 }),
-	precision: integer('precision'),
+	name: varchar('name', { length: 255 }).notNull().unique(),
+	symbol: varchar('symbol', { length: 20 }).notNull(),
+	iso_code: varchar('code', { length: 8 }).notNull(),
+	precision: integer('precision').default(0),
 	active: boolean('active').default(true),
-	decimal_separator: char('decimal_separator', { length: 1 }),
-	thousands_separator: char('thousands_separator', { length: 1 }),
+	decimal_separator: char('decimal_separator', { length: 1 }).notNull(),
+	thousands_separator: char('thousands_separator', { length: 1 }).notNull(),
 }, (table) => {
 	return {
 		iso_code_idx: index('iso_code_idx').on(table.iso_code),
@@ -183,17 +160,17 @@ export const currencies = pgTable('currencies', {
 
 export const currency_relations = relations(currencies, ({one, many}) => {
 	return {
-		
+		ledgers: many(ledgers),
 	}
 });
 
 export const exchange_rates = pgTable('exchange_rates', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	from_currency_id: varchar('from_currency_id', { length: 26 }).references(() => currencies.id),
-	to_currency_id: varchar('to_currency_id', { length: 26 }).references(() => currencies.id),
-	rate: bigint('rate', { mode: 'bigint' }),
-	valid_from: bigint('valid_from', { mode: 'bigint' }),
-	valid_to: bigint('valid_to', { mode: 'bigint' }),
+	from_currency_id: varchar('from_currency_id', { length: 26 }).references(() => currencies.id).notNull(),
+	to_currency_id: varchar('to_currency_id', { length: 26 }).references(() => currencies.id).notNull(),
+	rate: bigint('rate', { mode: 'bigint' }).default(BigInt(1)),
+	valid_from: bigint('valid_from', { mode: 'bigint' }).notNull(),
+	valid_to: bigint('valid_to', { mode: 'bigint' }).notNull(),
 }, (table) => {
 	return {
 		valid_from_idx: index('from_currency_idx').on(table.valid_from),
@@ -208,37 +185,49 @@ export const exchange_rate_relations = relations(exchange_rates, ({one, many}) =
 	}
 });
 
-
-export const batches = pgTable('batches', {
+export const transaction_models = pgTable('transaction_models', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-
+	name: varchar('name', { length: 255 }).notNull().unique(),
 }, (table) => {
 	return {
-		
+		name_idx: index('name_idx').on(table.name),
 	}
 });
+
+export const transaction_model_relations = relations(transaction_models, ({one, many}) => {
+	return {
+		transactions: many(transactions),
+	}
+});
+
 
 export const transactions = pgTable('transactions', {
 	id: varchar('id', { length: 26 }).primaryKey(),
+	transaction_model_id: varchar('transaction_model_id', { length: 26 }).references(() => transaction_models.id).notNull(),
+	meta: jsonb('meta'),
 }, (table) => {
 	return {
 		
 	}
 });
 
-export const events = pgTable('events', {
-	id: varchar('id', { length: 26 }).primaryKey(),
-}, (table) => {
+export const transaction_relations = relations(transactions, ({one, many}) => {
 	return {
-		
-	 }
+		transaction_model: one(transaction_models, {fields: [transactions.id], references: [transaction_models.id],}),
+	}
 });
-
 
 export const entries = pgTable('entries', {
 	id: varchar('id', { length: 26 }).primaryKey(),
+	transaction_id: varchar('transaction_id', { length: 26 }).references(() => transactions.id).notNull(),
 }, (table) => {
 	return {
 		
+	}
+});
+
+export const entry_relations = relations(entries, ({one, many}) => {
+	return {
+		transaction: one(transactions, {fields: [entries.id], references: [transactions.id],}),
 	}
 });
