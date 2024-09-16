@@ -31,6 +31,6 @@ To address these challenges, I've developed **EntropyDB** – a flexible, scalab
 2. **Customization:** Companies build their specific business logic and processes on top of the foundation.
 3. **Integration:** Connect to other systems and data sources as needed.
 
-## Call to Action:**
+## Call to Action:
 
 Join us in revolutionizing the way businesses build and manage their transactional systems. Become a partner or investor in **EntropyDB** and help shape the future of software.

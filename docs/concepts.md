@@ -18,11 +18,18 @@
 * Currencies
 * Exchange Rates
 
+## Entity Model
+* Base archetype for an entity, basically a free database table equivalent that can performed different purposes.
+* Examples: Locations, Customers, Vendors, Employees, Statuses, Products, Services
+
+## Entity
+* Represents an actual entity, such as Customer ABC Industries, or product SKU 123
+
 ## Batches
 * Represents a group of transactions that can be submitted together.
 * The batch can be atomic, meaning either all transactions get committed or all fail.
 
-## TransactionModel
+## Transaction Model
 * Base archetype for a transaction. Defines fields, properties and configuration options. 
 * Invoices, Inventory Adjustments, for instance are examples of different transaction models as their purpose and details are different by definition.
 
