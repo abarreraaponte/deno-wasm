@@ -3,10 +3,9 @@ import { relations } from 'drizzle-orm';
 
 export const ledgers = pgTable('ledgers', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	//hrid: varchar('hrid', { length: 255 }),
-	name: varchar('name', { length: 255 }).unique(),
+	name: varchar('name', { length: 255 }).unique().notNull(),
 	description: text('description'),
-	currency_id: varchar('currency_id', { length: 26 }).references(() => currencies.id),
+	currency_id: varchar('currency_id', { length: 26 }).references(() => currencies.id).notNull(),
 	dimension_1_id: varchar('dimension_1_id', { length: 26 }).references(() => entity_models.id),
 	dimension_2_id: varchar('dimension_2_id', { length: 26 }).references(() => entity_models.id),
 	dimension_3_id: varchar('dimension_3_id', { length: 26 }).references(() => entity_models.id),
@@ -15,6 +14,7 @@ export const ledgers = pgTable('ledgers', {
 	dimension_6_id: varchar('dimension_6_id', { length: 26 }).references(() => entity_models.id),
 	dimension_7_id: varchar('dimension_7_id', { length: 26 }).references(() => entity_models.id),
 	dimension_8_id: varchar('dimension_8_id', { length: 26 }).references(() => entity_models.id),
+	active: boolean('active').default(true),
 }, (table) => {
 	return {
 		name_idx: index().on(table.name),
@@ -37,7 +37,7 @@ export const ledger_relations = relations(ledgers, ({one, many}) => {
 
 export const account_types = pgTable('account_types', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	name: varchar('name', { length: 255 }).unique(),
+	name: varchar('name', { length: 255 }).unique().notNull(),
 }, (table) => {
 	return {
 		name_idx: index().on(table.name),
@@ -53,7 +53,7 @@ export const account_type_relations = relations(account_types, ({one, many}) => 
 export const accounts = pgTable('accounts', {
 	id: varchar('id', { length: 26 }).primaryKey(),
 	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => accounts.id),
-	name: varchar('name', { length: 255 }).unique(),
+	name: varchar('name', { length: 255 }).unique().notNull(),
 	meta: jsonb('meta'),
 }, (table) => {
 	return {
@@ -71,7 +71,7 @@ export const account_relations = relations(accounts, ({one, many}) => {
 
 export const uom_types = pgTable('uom_types', {
 	id: varchar('id', { length: 26}).primaryKey(),
-	name: varchar('name', { length: 255 }).unique()
+	name: varchar('name', { length: 255 }).unique().notNull(),
 }, (table) => {
 	return {
 		name_idx: index().on(table.name),
@@ -86,11 +86,11 @@ export const uom_type_relations = relations(uom_types, ({one, many}) => {
 
 export const uom = pgTable('uom', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	uom_type_id: varchar('uom_type_id', { length: 26 }).references(() => uom_types.id),
-	name: varchar('name', { length: 255 }).unique(),
-	plural_name: varchar('plural_name', { length: 255 }).unique(),
-	symbol: varchar('symbol', { length: 20 }).unique(),
-	plural_symbol: varchar('plural_symbol', { length: 20 }).unique(),
+	uom_type_id: varchar('uom_type_id', { length: 26 }).references(() => uom_types.id).notNull(),
+	name: varchar('name', { length: 255 }).unique().notNull(),
+	plural_name: varchar('plural_name', { length: 255 }).unique().notNull(),
+	symbol: varchar('symbol', { length: 20 }).unique().notNull(),
+	plural_symbol: varchar('plural_symbol', { length: 20 }).unique().notNull(),
 }, (table) => {
 	return {
 		name_idx: index().on(table.name),
@@ -108,7 +108,7 @@ export const uom_relations = relations(uom, ({one, many}) => {
 
 export const entity_models = pgTable('entity_models', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	name: varchar('name', { length: 255 }).unique(),
+	name: varchar('name', { length: 255 }).unique().notNull(),
 }, (table) => {
 	return {
 		name_idx: index().on(table.name),
@@ -125,9 +125,9 @@ export const entity_model_relations = relations(entity_models, ({one, many}) => 
 
 export const entities = pgTable('entities', {
 	id: varchar('id', { length: 26 }).primaryKey(),
-	entity_model_id: varchar('entity_model_id', { length: 26 }).references(() => entity_models.id),
+	entity_model_id: varchar('entity_model_id', { length: 26 }).references(() => entity_models.id).notNull(),
 	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => entities.id),
-	name: varchar('name', { length: 255 }),
+	name: varchar('name', { length: 255 }).notNull(),
 	meta: jsonb('meta'),
 }, (table) => {
 	return {
