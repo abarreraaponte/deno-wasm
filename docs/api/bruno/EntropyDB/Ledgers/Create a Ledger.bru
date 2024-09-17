@@ -1,0 +1,18 @@
+meta {
+  name: Create a Ledger
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{server_url}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Main Ledger",
+    "description": "A test ledger"
+  }
+}

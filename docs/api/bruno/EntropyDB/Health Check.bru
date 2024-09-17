@@ -1,0 +1,16 @@
+meta {
+  name: Health Check
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{server_url}}/health
+  body: none
+  auth: none
+}
+
+docs {
+  Basic health check
+  An "UP" response with code 200 indicates that the core service is up and running.
+}
