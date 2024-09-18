@@ -1,0 +1,22 @@
+meta {
+  name: Create Currency
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{server_url}}/api/v1/currencies
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Chilean Peso",
+    "symbol": "$",
+    "iso_code": "CLP",
+    "precision": 0,
+    "decimal_separator": ",",
+    "thousands_separator": "."
+  }
+}

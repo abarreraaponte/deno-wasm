@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Dynamic database platform form Business Management",
   "scripts": {
+    "typecheck": "tsc",
     "dev": "tsx watch src/index.ts",
     "start": "node ./dist/index.js",
     "build": "esbuild src/index.ts --bundle --minify --platform=node --outdir=./dist",
-	"db:generate": "drizzle-kit generate",
-	"db:migrate": "drizzle-kit migrate"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "workspaces": [
     "packages/*"
@@ -24,9 +25,9 @@
   "author": "Alejandro Barrera Aponte",
   "license": "ISC",
   "dependencies": {
-	"@hono/node-server": "^1.12.2",
-	"dotenv": "^16.4.5",
-	"drizzle-kit": "^0.24.2",
+    "@hono/node-server": "^1.12.2",
+    "dotenv": "^16.4.5",
+    "drizzle-kit": "^0.24.2",
     "drizzle-orm": "^0.33.0",
     "esbuild": "^0.23.1",
     "hono": "^4.5.9",
@@ -34,12 +35,10 @@
     "ulidx": "^2.4.1",
     "zod": "^3.23.8"
   },
-  "peerDependencies": {
-    
-  },
   "main": "index.js",
   "devDependencies": {
     "@types/node": "^20.11.17",
-    "tsx": "^4.7.1"
+    "tsx": "^4.7.1",
+	"typescript": "^5.6.2"
   }
 }

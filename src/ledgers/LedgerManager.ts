@@ -1,12 +1,11 @@
-import { db } from "@core/database/db";
-import { ledgers } from "@core/database/schema";
+import { db } from "@/core/database/db";
+import { ledgers } from "@/core/database/schema";
 import z from "zod";
-
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+
 export type Ledger = InferSelectModel<typeof ledgers>;
 export type NewLedger = InferInsertModel<typeof ledgers>;
 export type UpdateLedger = Pick<NewLedger, 'name' | 'description' | 'dimension_1_id' | 'dimension_2_id' | 'dimension_3_id' | 'dimension_4_id' | 'dimension_5_id' | 'dimension_6_id' | 'dimension_7_id' | 'dimension_8_id' | 'active'>;
-
 
 export default class LedgerManager {
 	

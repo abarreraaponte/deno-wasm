@@ -9,8 +9,7 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
-			"@core/*": ["./src/core/*"],
-			"@localization/*": ["./src/localization/*"]
+			"@/*": ["./src/*"]
 		},
 		"outDir": "./dist",
 		"types": [
