@@ -15,13 +15,14 @@ CREATE TABLE IF NOT EXISTS "accounts" (
 CREATE TABLE IF NOT EXISTS "currencies" (
 	"id" varchar(26) PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
-	"symbol" varchar(20) NOT NULL,
+	"symbol" varchar(3) NOT NULL,
 	"code" varchar(8) NOT NULL,
 	"precision" integer DEFAULT 0,
 	"active" boolean DEFAULT true,
 	"decimal_separator" char(1) NOT NULL,
 	"thousands_separator" char(1) NOT NULL,
-	CONSTRAINT "currencies_name_unique" UNIQUE("name")
+	CONSTRAINT "currencies_name_unique" UNIQUE("name"),
+	CONSTRAINT "currencies_code_unique" UNIQUE("code")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entities" (

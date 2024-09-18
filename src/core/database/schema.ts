@@ -146,7 +146,7 @@ export const entity_relations = relations(entities, ({one, many}) => {
 export const currencies = pgTable('currencies', {
 	id: varchar('id', { length: 26 }).primaryKey(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
-	symbol: varchar('symbol', { length: 20 }).notNull(),
+	symbol: varchar('symbol', { length: 3 }).notNull(),
 	iso_code: varchar('code', { length: 8 }).notNull().unique(),
 	precision: integer('precision').default(0),
 	active: boolean('active').default(true),

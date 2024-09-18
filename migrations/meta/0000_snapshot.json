@@ -1,5 +1,5 @@
 {
-  "id": "1a3e0606-07f0-49b1-9512-942d58914517",
+  "id": "c5bc1140-15c3-4145-a3da-01f6c7350b14",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -140,7 +140,7 @@
         },
         "symbol": {
           "name": "symbol",
-          "type": "varchar(20)",
+          "type": "varchar(3)",
           "primaryKey": false,
           "notNull": true
         },
@@ -217,6 +217,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "name"
+          ]
+        },
+        "currencies_code_unique": {
+          "name": "currencies_code_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "code"
           ]
         }
       }
