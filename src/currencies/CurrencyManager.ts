@@ -7,7 +7,7 @@ export type Currency = InferSelectModel<typeof currencies>;
 export type NewCurrency = InferInsertModel<typeof currencies>;
 export type UpdateCurrency = Pick<NewCurrency, 'name' | 'symbol' | 'iso_code' | 'precision' | 'active' | 'decimal_separator' | 'thousands_separator'>;
 
-export default class CurrencyManager {
+class CurrencyManager {
 
 	public available_separators = [',', '.'] as const;
 	
@@ -81,3 +81,5 @@ export default class CurrencyManager {
 
 	}
 }
+
+export default CurrencyManager;
