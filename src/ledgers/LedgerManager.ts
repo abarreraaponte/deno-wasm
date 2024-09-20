@@ -2,35 +2,63 @@ import { db } from "@/core/database/db";
 import { ledgers, currencies } from "@/core/database/schema";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
+import { valueIsAvailable } from "@/core/database/validation";
+import { ulid } from "ulidx";
 
 export type Ledger = InferSelectModel<typeof ledgers>;
 export type NewLedger = InferInsertModel<typeof ledgers>;
-export type UpdateLedger = Pick<NewLedger, 'name' | 'description' | 'dimension_1_id' | 'dimension_2_id' | 'dimension_3_id' | 'dimension_4_id' | 'dimension_5_id' | 'dimension_6_id' | 'dimension_7_id' | 'dimension_8_id' | 'active'>;
+export type UpdateLedger = Pick<NewLedger, 'ref_id' | 'alt_id' | 'name' | 'description' | 'active'>;
 
-export default class LedgerManager {
+class LedgerManager {
 	
+	public prefix :string = 'LED_';
+
 	constructor()
 	{
 
 	}
 
-	async validateLedgerCreation(data: NewLedger)
+	// Check if name is unique.
+	async nameIsAvailable(name: string)
 	{
-		// Check if name is unique.
-		async function nameIsUnique(name: string)
-		{
-			const results = await db.query.ledgers.findMany({
-				where: eq(ledgers.name, name),
-			});
+		return await valueIsAvailable(ledgers, 'name', name);
+	}
 
-			return results.length === 0;
-		}
+	async refIdIsAvailable(ref_id: string)
+	{
+		return await valueIsAvailable(ledgers, 'ref_id', ref_id);
+	}
 
+	async altIdIsAvailable(alt_id: string)
+	{
+		return await valueIsAvailable(ledgers, 'alt_id', alt_id);
+	}
+
+	async validateCreation(data: NewLedger)
+	{
 		const validation_schema = z.object({
 			id: z.string().ulid(),
+			ref_id: z.string()
+			.max(64, {message: 'Ref ID must be less than 64 characters'})
+			.refine(this.refIdIsAvailable, {message: 'Ref ID already exists'})
+			.optional()
+			.nullable()
+			.transform(async (ref_id, ctx) => {
+				if(!ref_id)
+				{
+					return `${this.prefix}${ulid()}`;
+				}
+
+				return ref_id;
+			}),
+			alt_id: z.string()
+				.max(64, {message: 'Alt ID must be less than 64 characters'})
+				.refine(this.altIdIsAvailable, {message: 'Alt ID already exists'})
+				.optional()
+				.nullable(),
 			name: z.string()
 				.max(255, {message: 'Name must be less than 255 characters'})
-				.refine(nameIsUnique, {message: 'Name already exists'}),
+				.refine(this.nameIsAvailable, {message: 'Name already exists'}),
 			description: z.string().optional().nullable(),
 			currency_id: z.string()
 				.transform(async (currency_id, ctx) => {
@@ -53,43 +81,16 @@ export default class LedgerManager {
 
 					return existing_currency.id;
 				}),
-			dimension_1_id: z.string().optional().nullable(),
-			dimension_2_id: z.string().optional().nullable(),
-			dimension_3_id: z.string().optional().nullable(),
-			dimension_4_id: z.string().optional().nullable(),
-			dimension_5_id: z.string().optional().nullable(),
-			dimension_6_id: z.string().optional().nullable(),
-			dimension_7_id: z.string().optional().nullable(),
-			dimension_8_id: z.string().optional().nullable(),
 			active: z.boolean().optional().nullable(),
 		});
 
 		return validation_schema.safeParseAsync(data);
 	}
 
-	async createLedger(data: NewLedger)
+	async create(data: NewLedger)
 	{	
 		return db.insert(ledgers).values(data).returning({id: ledgers.id});
 	}
-
-	async updateLedger(data : UpdateLedger)
-	{
-
-	}
-
-	async getLedgers()
-	{
-
-	}
-
-	async getLedger(ledger_id: string)
-	{
-
-	}
-
-	async deleteLedger(ledger_id: string)
-	{
-
-	}
-
 }
+
+export default LedgerManager;

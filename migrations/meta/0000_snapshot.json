@@ -1,55 +1,9 @@
 {
-  "id": "c5bc1140-15c3-4145-a3da-01f6c7350b14",
+  "id": "ca77e12a-f811-48ef-b72a-b2e461630198",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.account_types": {
-      "name": "account_types",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(26)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "account_types_name_index": {
-          "name": "account_types_name_index",
-          "columns": [
-            {
-              "expression": "name",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "account_types_name_unique": {
-          "name": "account_types_name_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "name"
-          ]
-        }
-      }
-    },
     "public.accounts": {
       "name": "accounts",
       "schema": "",
@@ -58,6 +12,31 @@
           "name": "id",
           "type": "varchar(26)",
           "primaryKey": true,
+          "notNull": true
+        },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "balance_type": {
+          "name": "balance_type",
+          "type": "balance_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "varchar(26)",
+          "primaryKey": false,
           "notNull": true
         },
         "parent_id": {
@@ -77,9 +56,31 @@
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         }
       },
       "indexes": {
+        "accounts_balance_type_index": {
+          "name": "accounts_balance_type_index",
+          "columns": [
+            {
+              "expression": "balance_type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "accounts_name_index": {
           "name": "accounts_name_index",
           "columns": [
@@ -94,9 +95,52 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "accounts_ref_id_index": {
+          "name": "accounts_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "accounts_alt_id_index": {
+          "name": "accounts_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
+        "accounts_ledger_id_ledgers_id_fk": {
+          "name": "accounts_ledger_id_ledgers_id_fk",
+          "tableFrom": "accounts",
+          "tableTo": "ledgers",
+          "columnsFrom": [
+            "ledger_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "accounts_parent_id_accounts_id_fk": {
           "name": "accounts_parent_id_accounts_id_fk",
           "tableFrom": "accounts",
@@ -113,6 +157,20 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "accounts_ref_id_unique": {
+          "name": "accounts_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "accounts_alt_id_unique": {
+          "name": "accounts_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        },
         "accounts_name_unique": {
           "name": "accounts_name_unique",
           "nullsNotDistinct": false,
@@ -238,6 +296,18 @@
           "primaryKey": true,
           "notNull": true
         },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "entity_model_id": {
           "name": "entity_model_id",
           "type": "varchar(26)",
@@ -264,6 +334,36 @@
         }
       },
       "indexes": {
+        "entities_ref_id_index": {
+          "name": "entities_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "entities_alt_id_index": {
+          "name": "entities_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "entities_name_index": {
           "name": "entities_name_index",
           "columns": [
@@ -309,7 +409,22 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "entities_ref_id_unique": {
+          "name": "entities_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "entities_alt_id_unique": {
+          "name": "entities_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        }
+      }
     },
     "public.entity_models": {
       "name": "entity_models",
@@ -321,6 +436,18 @@
           "primaryKey": true,
           "notNull": true
         },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -329,6 +456,36 @@
         }
       },
       "indexes": {
+        "entity_models_ref_id_index": {
+          "name": "entity_models_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "entity_models_alt_id_index": {
+          "name": "entity_models_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "entity_models_name_index": {
           "name": "entity_models_name_index",
           "columns": [
@@ -348,6 +505,20 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "entity_models_ref_id_unique": {
+          "name": "entity_models_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "entity_models_alt_id_unique": {
+          "name": "entity_models_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        },
         "entity_models_name_unique": {
           "name": "entity_models_name_unique",
           "nullsNotDistinct": false,
@@ -367,6 +538,48 @@
           "primaryKey": true,
           "notNull": true
         },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "varchar(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "debit_account_id": {
+          "name": "debit_account_id",
+          "type": "varchar(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "credit_account_id": {
+          "name": "credit_account_id",
+          "type": "varchar(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "uom_id": {
+          "name": "uom_id",
+          "type": "varchar(26)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "numeric(64, 16)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "transaction_id": {
           "name": "transaction_id",
           "type": "varchar(26)",
@@ -374,8 +587,91 @@
           "notNull": true
         }
       },
-      "indexes": {},
+      "indexes": {
+        "entries_ref_id_index": {
+          "name": "entries_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "entries_alt_id_index": {
+          "name": "entries_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
+        "entries_ledger_id_ledgers_id_fk": {
+          "name": "entries_ledger_id_ledgers_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "ledgers",
+          "columnsFrom": [
+            "ledger_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "entries_debit_account_id_accounts_id_fk": {
+          "name": "entries_debit_account_id_accounts_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "debit_account_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "entries_credit_account_id_accounts_id_fk": {
+          "name": "entries_credit_account_id_accounts_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "accounts",
+          "columnsFrom": [
+            "credit_account_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "entries_uom_id_uom_id_fk": {
+          "name": "entries_uom_id_uom_id_fk",
+          "tableFrom": "entries",
+          "tableTo": "uom",
+          "columnsFrom": [
+            "uom_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "entries_transaction_id_transactions_id_fk": {
           "name": "entries_transaction_id_transactions_id_fk",
           "tableFrom": "entries",
@@ -391,7 +687,22 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "entries_ref_id_unique": {
+          "name": "entries_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "entries_alt_id_unique": {
+          "name": "entries_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        }
+      }
     },
     "public.exchange_rates": {
       "name": "exchange_rates",
@@ -417,10 +728,9 @@
         },
         "rate": {
           "name": "rate",
-          "type": "bigint",
+          "type": "numeric(24, 8)",
           "primaryKey": false,
-          "notNull": false,
-          "default": 1
+          "notNull": true
         },
         "valid_from": {
           "name": "valid_from",
@@ -508,6 +818,18 @@
           "primaryKey": true,
           "notNull": true
         },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -525,54 +847,6 @@
           "type": "varchar(26)",
           "primaryKey": false,
           "notNull": true
-        },
-        "dimension_1_id": {
-          "name": "dimension_1_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimension_2_id": {
-          "name": "dimension_2_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimension_3_id": {
-          "name": "dimension_3_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimension_4_id": {
-          "name": "dimension_4_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimension_5_id": {
-          "name": "dimension_5_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimension_6_id": {
-          "name": "dimension_6_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimension_7_id": {
-          "name": "dimension_7_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimension_8_id": {
-          "name": "dimension_8_id",
-          "type": "varchar(26)",
-          "primaryKey": false,
-          "notNull": false
         },
         "active": {
           "name": "active",
@@ -597,6 +871,36 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "ledgers_ref_id_index": {
+          "name": "ledgers_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ledgers_alt_id_index": {
+          "name": "ledgers_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
@@ -612,114 +916,24 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
-        },
-        "ledgers_dimension_1_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_1_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_1_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "ledgers_dimension_2_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_2_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_2_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "ledgers_dimension_3_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_3_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_3_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "ledgers_dimension_4_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_4_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_4_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "ledgers_dimension_5_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_5_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_5_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "ledgers_dimension_6_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_6_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_6_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "ledgers_dimension_7_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_7_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_7_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "ledgers_dimension_8_id_entity_models_id_fk": {
-          "name": "ledgers_dimension_8_id_entity_models_id_fk",
-          "tableFrom": "ledgers",
-          "tableTo": "entity_models",
-          "columnsFrom": [
-            "dimension_8_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "ledgers_ref_id_unique": {
+          "name": "ledgers_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "ledgers_alt_id_unique": {
+          "name": "ledgers_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        },
         "ledgers_name_unique": {
           "name": "ledgers_name_unique",
           "nullsNotDistinct": false,
@@ -739,6 +953,18 @@
           "primaryKey": true,
           "notNull": true
         },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -747,6 +973,36 @@
         }
       },
       "indexes": {
+        "transaction_models_ref_id_index": {
+          "name": "transaction_models_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "transaction_models_alt_id_index": {
+          "name": "transaction_models_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "transaction_models_name_index": {
           "name": "transaction_models_name_index",
           "columns": [
@@ -766,6 +1022,20 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "transaction_models_ref_id_unique": {
+          "name": "transaction_models_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "transaction_models_alt_id_unique": {
+          "name": "transaction_models_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        },
         "transaction_models_name_unique": {
           "name": "transaction_models_name_unique",
           "nullsNotDistinct": false,
@@ -785,6 +1055,18 @@
           "primaryKey": true,
           "notNull": true
         },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "transaction_model_id": {
           "name": "transaction_model_id",
           "type": "varchar(26)",
@@ -798,7 +1080,38 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "transactions_ref_id_index": {
+          "name": "transactions_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "transactions_alt_id_index": {
+          "name": "transactions_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {
         "transactions_transaction_model_id_transaction_models_id_fk": {
           "name": "transactions_transaction_model_id_transaction_models_id_fk",
@@ -815,7 +1128,22 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "transactions_ref_id_unique": {
+          "name": "transactions_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "transactions_alt_id_unique": {
+          "name": "transactions_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        }
+      }
     },
     "public.uom": {
       "name": "uom",
@@ -826,6 +1154,18 @@
           "type": "varchar(26)",
           "primaryKey": true,
           "notNull": true
+        },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
         },
         "uom_type_id": {
           "name": "uom_type_id",
@@ -856,9 +1196,52 @@
           "type": "varchar(20)",
           "primaryKey": false,
           "notNull": true
+        },
+        "rate": {
+          "name": "rate",
+          "type": "numeric(24, 8)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         }
       },
       "indexes": {
+        "uom_ref_id_index": {
+          "name": "uom_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uom_alt_id_index": {
+          "name": "uom_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "uom_name_index": {
           "name": "uom_name_index",
           "columns": [
@@ -937,6 +1320,20 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "uom_ref_id_unique": {
+          "name": "uom_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "uom_alt_id_unique": {
+          "name": "uom_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        },
         "uom_name_unique": {
           "name": "uom_name_unique",
           "nullsNotDistinct": false,
@@ -977,6 +1374,18 @@
           "primaryKey": true,
           "notNull": true
         },
+        "ref_id": {
+          "name": "ref_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "alt_id": {
+          "name": "alt_id",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -999,11 +1408,55 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "uom_types_ref_id_index": {
+          "name": "uom_types_ref_id_index",
+          "columns": [
+            {
+              "expression": "ref_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uom_types_alt_id_index": {
+          "name": "uom_types_alt_id_index",
+          "columns": [
+            {
+              "expression": "alt_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
+        "uom_types_ref_id_unique": {
+          "name": "uom_types_ref_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ref_id"
+          ]
+        },
+        "uom_types_alt_id_unique": {
+          "name": "uom_types_alt_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "alt_id"
+          ]
+        },
         "uom_types_name_unique": {
           "name": "uom_types_name_unique",
           "nullsNotDistinct": false,
@@ -1014,7 +1467,16 @@
       }
     }
   },
-  "enums": {},
+  "enums": {
+    "public.balance_type": {
+      "name": "balance_type",
+      "schema": "public",
+      "values": [
+        "debit",
+        "credit"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {

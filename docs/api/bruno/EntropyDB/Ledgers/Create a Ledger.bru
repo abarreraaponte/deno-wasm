@@ -5,14 +5,15 @@ meta {
 }
 
 post {
-  url: {{server_url}}/api/v1/ledgers
+  url: {{server_url}}/api/ledgers
   body: json
   auth: none
 }
 
 body:json {
   {
-    "name": "Another Ledger",
+    "name": "Main Ledger 2",
+    "ref_id": "MAIN_LEDGER_2",
     "description": "A test ledger",
     "currency_id": "USD"
   }

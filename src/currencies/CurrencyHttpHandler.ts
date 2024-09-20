@@ -5,12 +5,12 @@ import { ulid } from 'ulidx';
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
-router.post('/currencies', async (c) => {
+router.post('/', async (c) => {
 	const currencyManager = new CurrencyManager();
 	const body = await c.req.json();
 	body.id = ulid();
 
-	const validation_result = await currencyManager.validateCurrencyCreation(body);
+	const validation_result = await currencyManager.validateCreation(body);
 
 	// Return 422 if Zod Error
 	if(!validation_result.success)
@@ -19,7 +19,7 @@ router.post('/currencies', async (c) => {
 	}
 
 	try {
-		const result = await currencyManager.createCurrency(validation_result.data);
+		const result = await currencyManager.create(validation_result.data);
 		return c.json(result[0]);
 	}
 	

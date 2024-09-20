@@ -4,9 +4,9 @@
   "description": "Dynamic database platform form Business Management",
   "scripts": {
     "typecheck": "tsc",
-    "dev": "tsx watch src/index.ts",
-    "start": "node ./dist/index.js",
-    "build": "esbuild src/index.ts --bundle --minify --platform=node --outdir=./dist",
+    "dev": "tsx watch src/server.ts",
+    "start": "node ./dist/server.js",
+    "build": "esbuild src/server.ts --bundle --minify --platform=node --outdir=./dist",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
@@ -35,7 +35,7 @@
     "ulidx": "^2.4.1",
     "zod": "^3.23.8"
   },
-  "main": "index.js",
+  "main": "server.js",
   "devDependencies": {
     "@types/node": "^20.11.17",
     "tsx": "^4.7.1",
