@@ -1,6 +1,7 @@
 import { pgTable, pgEnum, varchar, char, bigint, text, boolean, index, integer, numeric, AnyPgColumn, jsonb } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { balance_types } from '@/accounts/balance';
+import { MetaType } from './validation';
 export const  balance_type_pg_enum = pgEnum('balance_type', balance_types);
 
 export const ledgers = pgTable('ledgers', {
@@ -33,7 +34,7 @@ export const accounts = pgTable('accounts', {
 	ledger_id: varchar('ledger_id', { length: 26 }).references(() => ledgers.id).notNull(),
 	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => accounts.id),
 	name: varchar('name', { length: 255 }).unique().notNull(),
-	meta: jsonb('meta'),
+	meta: jsonb('meta').$type<MetaType>(),
 	active: boolean('active').default(true),
 }, (table) => {
 	return {
@@ -127,7 +128,7 @@ export const entities = pgTable('entities', {
 	entity_model_id: varchar('entity_model_id', { length: 26 }).references(() => entity_models.id).notNull(),
 	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => entities.id),
 	name: varchar('name', { length: 255 }).notNull(),
-	meta: jsonb('meta'),
+	meta: jsonb('meta').$type<MetaType>(),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),
@@ -212,7 +213,7 @@ export const transactions = pgTable('transactions', {
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	transaction_model_id: varchar('transaction_model_id', { length: 26 }).references(() => transaction_models.id).notNull(),
-	meta: jsonb('meta'),
+	meta: jsonb('meta').$type<MetaType>(),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),

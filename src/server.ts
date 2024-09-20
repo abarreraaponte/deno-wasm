@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
 import CurrencyRouter from '@/currencies/CurrencyHttpHandler';
 import LedgerRouter from '@/ledgers/LedgerHttpHandler';
+import AccountRouter from '@/accounts/AccountHttpHandler';
 import { config } from 'dotenv';
 
 config();
@@ -16,6 +17,7 @@ app.get('/health', (c) => {
   return c.text('UP');
 });
 
+app.route('/api/accounts', AccountRouter);
 app.route('/api/currencies', CurrencyRouter);
 app.route('/api/ledgers', LedgerRouter);
 

@@ -65,7 +65,7 @@ class AccountManager {
 				.max(255, {message: 'Name must be less than 255 characters'})
 				.refine(this.nameIsAvailable, {message: 'Name already exists'}),
 			balance_type: z.enum(balance_types).optional().nullable(),
-			ledger_id: z.string().ulid().optional().nullable(),
+			ledger_id: z.string().optional().nullable(),
 			parent_id: z.string().ulid().optional().nullable(),
 			meta: z.any().optional().nullable(),
 			active: z.boolean().optional().nullable(),
@@ -129,6 +129,10 @@ class AccountManager {
 							message: 'Ledger ID does not exist',
 							code: z.ZodIssueCode.custom,
 						});
+					}
+
+					else {
+						data.ledger_id = ledger.id;
 					}
 				}
 			}

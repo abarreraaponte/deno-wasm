@@ -1,6 +1,7 @@
 import { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
+export type MetaType = Record<string, string | number | boolean | null>;
 
 /**
  * Generic function to validate unique values before they enter the database.
