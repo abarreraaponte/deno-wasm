@@ -2,13 +2,13 @@
 
 ## Pitch:
 
-Tired of rigid, expensive software solutions that don't fit your unique business needs? Introducing **EntropyDB**, a revolutionary platform that empowers companies to build their own, tailored transactional systems.
+Tired of rigid, expensive software solutions that don't fit your unique business needs? Introducing **KitLedger**, a revolutionary platform that empowers companies to build their own, tailored transactional systems.
 
 ## Explanation:
 
 As a seasoned ERP consultant, I've witnessed firsthand the limitations of traditional software solutions, often requiring significant investments, lengthy implementation processes, and compromising a company's ability to adapt to changing business needs.
 
-To address these challenges, I've developed **EntropyDB** – a flexible, scalable foundation for building custom transactional systems. Unlike traditional solutions, **EntropyDB** provides the core structure, including double-entry accounting and transactional consistency, without dictating specific business processes.
+To address these challenges, I've developed **KitLedger** – a flexible, scalable foundation for building custom transactional systems. Unlike traditional solutions, **KitLedger** provides the core structure, including double-entry accounting and transactional consistency, without dictating specific business processes.
 
 ## Key Benefits:
 
@@ -27,10 +27,10 @@ To address these challenges, I've developed **EntropyDB** – a flexible, scalab
 
 ## How it Works:
 
-1. **Foundation:** **EntropyDB** provides a robust, scalable database engine with essential transactional features.
+1. **Foundation:** **KitLedger** provides a robust, scalable database engine with essential transactional features.
 2. **Customization:** Companies build their specific business logic and processes on top of the foundation.
 3. **Integration:** Connect to other systems and data sources as needed.
 
 ## Call to Action:
 
-Join us in revolutionizing the way businesses build and manage their transactional systems. Become a partner or investor in **EntropyDB** and help shape the future of software.
+Join us in revolutionizing the way businesses build and manage their transactional systems. Become a partner or investor in **KitLedger** and help shape the future of software.

@@ -1,6 +1,6 @@
 {
-  "name": "entropydb",
-  "version": "1.0.0",
+  "name": "kitledger",
+  "version": "0.0.1",
   "description": "Dynamic database platform form Business Management",
   "scripts": {
     "typecheck": "tsc",

@@ -1,2 +1,2 @@
 
-# EntropyDB
+# KitLedger
