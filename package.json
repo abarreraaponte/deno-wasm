@@ -3,12 +3,14 @@
   "version": "0.0.1",
   "description": "Dynamic database platform form Business Management",
   "scripts": {
-    "typecheck": "tsc",
-    "dev": "tsx watch src/server.ts",
-    "start": "node ./dist/server.js",
     "build": "esbuild src/server.ts --bundle --minify --platform=node --outdir=./dist",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "dev": "tsx watch src/server.ts",
+    "start": "node ./dist/server.js",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc"
   },
   "workspaces": [
     "packages/*"
@@ -38,7 +40,10 @@
   "main": "server.js",
   "devDependencies": {
     "@types/node": "^20.11.17",
+    "@vitest/ui": "^2.1.1",
     "tsx": "^4.7.1",
-	"typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.1.1"
   }
 }

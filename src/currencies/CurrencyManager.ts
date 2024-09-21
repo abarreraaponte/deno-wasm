@@ -40,7 +40,7 @@ class CurrencyManager {
 			iso_code: z.string()
 				.max(8, {message: 'ISO code must be less than 8 characters'})
 				.refine(this.isoCodeIsAvailable, {message: 'ISO code already exists'}),
-			precision: z.number().optional().nullable(),
+			precision: z.number().max(8).optional().nullable(),
 			active: z.boolean().optional().nullable(),
 			decimal_separator: z.enum(this.available_separators),
 			thousands_separator: z.enum(this.available_separators),
