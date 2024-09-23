@@ -3,7 +3,7 @@ import { ledgers, currencies } from "@/core/database/schema";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
 import { valueIsAvailable } from "@/core/database/validation";
-import { ulid } from "ulidx";
+import { v6 as uuid } from 'uuid';
 
 export type Ledger = InferSelectModel<typeof ledgers>;
 export type NewLedger = InferInsertModel<typeof ledgers>;
@@ -37,7 +37,7 @@ class LedgerManager {
 	async validateCreation(data: NewLedger)
 	{
 		const validation_schema = z.object({
-			id: z.string().ulid(),
+			id: z.string().uuid(),
 			ref_id: z.string()
 			.max(64, {message: 'Ref ID must be less than 64 characters'})
 			.refine(this.refIdIsAvailable, {message: 'Ref ID already exists'})
@@ -46,7 +46,7 @@ class LedgerManager {
 			.transform(async (ref_id, ctx) => {
 				if(!ref_id)
 				{
-					return `${this.prefix}${ulid()}`;
+					return `${this.prefix}${uuid()}`;
 				}
 
 				return ref_id;

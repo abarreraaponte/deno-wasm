@@ -5,12 +5,12 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "accounts" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
 	"balance_type" "balance_type",
-	"ledger_id" varchar(26) NOT NULL,
-	"parent_id" varchar(26),
+	"ledger_id" uuid NOT NULL,
+	"parent_id" uuid,
 	"name" varchar(255) NOT NULL,
 	"meta" jsonb,
 	"active" boolean DEFAULT true,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS "accounts" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "currencies" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"symbol" varchar(3) NOT NULL,
 	"code" varchar(8) NOT NULL,
@@ -33,11 +33,11 @@ CREATE TABLE IF NOT EXISTS "currencies" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entities" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
-	"entity_model_id" varchar(26) NOT NULL,
-	"parent_id" varchar(26),
+	"entity_model_id" uuid NOT NULL,
+	"parent_id" uuid,
 	"name" varchar(255) NOT NULL,
 	"meta" jsonb,
 	CONSTRAINT "entities_ref_id_unique" UNIQUE("ref_id"),
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS "entities" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entity_models" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
 	"name" varchar(255) NOT NULL,
@@ -55,35 +55,35 @@ CREATE TABLE IF NOT EXISTS "entity_models" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entries" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
-	"ledger_id" varchar(26) NOT NULL,
-	"debit_account_id" varchar(26) NOT NULL,
-	"credit_account_id" varchar(26) NOT NULL,
-	"uom_id" varchar(26) NOT NULL,
+	"ledger_id" uuid NOT NULL,
+	"debit_account_id" uuid NOT NULL,
+	"credit_account_id" uuid NOT NULL,
+	"uom_id" uuid NOT NULL,
 	"quantity" numeric(64, 16),
-	"transaction_id" varchar(26) NOT NULL,
+	"transaction_id" uuid NOT NULL,
 	CONSTRAINT "entries_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "entries_alt_id_unique" UNIQUE("alt_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "exchange_rates" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
-	"from_currency_id" varchar(26) NOT NULL,
-	"to_currency_id" varchar(26) NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
+	"from_currency_id" uuid NOT NULL,
+	"to_currency_id" uuid NOT NULL,
 	"rate" numeric(24, 8) NOT NULL,
 	"valid_from" bigint NOT NULL,
 	"valid_to" bigint NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ledgers" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
 	"name" varchar(255) NOT NULL,
 	"description" text,
-	"currency_id" varchar(26) NOT NULL,
+	"currency_id" uuid NOT NULL,
 	"active" boolean DEFAULT true,
 	CONSTRAINT "ledgers_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "ledgers_alt_id_unique" UNIQUE("alt_id"),
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS "ledgers" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transaction_models" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
 	"name" varchar(255) NOT NULL,
@@ -101,20 +101,20 @@ CREATE TABLE IF NOT EXISTS "transaction_models" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transactions" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
-	"transaction_model_id" varchar(26) NOT NULL,
+	"transaction_model_id" uuid NOT NULL,
 	"meta" jsonb,
 	CONSTRAINT "transactions_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "transactions_alt_id_unique" UNIQUE("alt_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "uom" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
-	"uom_type_id" varchar(26) NOT NULL,
+	"uom_type_id" uuid NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"plural_name" varchar(255) NOT NULL,
 	"symbol" varchar(20) NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS "uom" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "uom_types" (
-	"id" varchar(26) PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
 	"name" varchar(255) NOT NULL,

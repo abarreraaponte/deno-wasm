@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import CurrencyManager from '@/currencies/CurrencyManager';
-import { ulid } from 'ulidx';
+import { v6 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
@@ -8,7 +8,7 @@ const GENERIC_ERROR_MESSAGE = 'Internal server error';
 router.post('/', async (c) => {
 	const currencyManager = new CurrencyManager();
 	const body = await c.req.json();
-	body.id = ulid();
+	body.id = uuid();
 
 	const validation_result = await currencyManager.validateCreation(body);
 

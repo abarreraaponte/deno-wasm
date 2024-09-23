@@ -1,16 +1,16 @@
-import { pgTable, pgEnum, varchar, char, bigint, text, boolean, index, integer, numeric, AnyPgColumn, jsonb } from 'drizzle-orm/pg-core';
+import { pgTable, pgEnum, varchar, char, bigint, text, boolean, index, integer, numeric, AnyPgColumn, jsonb, uuid } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { balance_types } from '@/accounts/balance';
 import { MetaType } from './validation';
 export const  balance_type_pg_enum = pgEnum('balance_type', balance_types);
 
 export const ledgers = pgTable('ledgers', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
 	description: text('description'),
-	currency_id: varchar('currency_id', { length: 26 }).references(() => currencies.id).notNull(),
+	currency_id: uuid('currency_id').references(() => currencies.id).notNull(),
 	active: boolean('active').default(true),
 }, (table) => {
 	return {
@@ -27,12 +27,12 @@ export const ledger_relations = relations(ledgers, ({one, many}) => {
 })
 
 export const accounts = pgTable('accounts', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	balance_type: balance_type_pg_enum('balance_type'),
-	ledger_id: varchar('ledger_id', { length: 26 }).references(() => ledgers.id).notNull(),
-	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => accounts.id),
+	ledger_id: uuid('ledger_id').references(() => ledgers.id).notNull(),
+	parent_id: uuid('parent_id').references(() :AnyPgColumn => accounts.id),
 	name: varchar('name', { length: 255 }).unique().notNull(),
 	meta: jsonb('meta').$type<MetaType>(),
 	active: boolean('active').default(true),
@@ -54,7 +54,7 @@ export const account_relations = relations(accounts, ({one, many}) => {
 });
 
 export const uom_types = pgTable('uom_types', {
-	id: varchar('id', { length: 26}).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
@@ -73,10 +73,10 @@ export const uom_type_relations = relations(uom_types, ({one, many}) => {
 });
 
 export const uom = pgTable('uom', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	uom_type_id: varchar('uom_type_id', { length: 26 }).references(() => uom_types.id).notNull(),
+	uom_type_id: uuid('uom_type_id').references(() => uom_types.id).notNull(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
 	plural_name: varchar('plural_name', { length: 255 }).unique().notNull(),
 	symbol: varchar('symbol', { length: 20 }).unique().notNull(),
@@ -101,7 +101,7 @@ export const uom_relations = relations(uom, ({one, many}) => {
 });
 
 export const entity_models = pgTable('entity_models', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
@@ -122,11 +122,11 @@ export const entity_model_relations = relations(entity_models, ({one, many}) => 
 
 
 export const entities = pgTable('entities', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	entity_model_id: varchar('entity_model_id', { length: 26 }).references(() => entity_models.id).notNull(),
-	parent_id: varchar('parent_id', { length: 26 }).references(() :AnyPgColumn => entities.id),
+	entity_model_id: uuid('entity_model_id').references(() => entity_models.id).notNull(),
+	parent_id: uuid('parent_id').references(() :AnyPgColumn => entities.id),
 	name: varchar('name', { length: 255 }).notNull(),
 	meta: jsonb('meta').$type<MetaType>(),
 }, (table) => {
@@ -146,7 +146,7 @@ export const entity_relations = relations(entities, ({one, many}) => {
 });
 
 export const currencies = pgTable('currencies', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
 	symbol: varchar('symbol', { length: 3 }).notNull(),
 	iso_code: varchar('code', { length: 8 }).notNull().unique(),
@@ -168,9 +168,9 @@ export const currency_relations = relations(currencies, ({one, many}) => {
 });
 
 export const exchange_rates = pgTable('exchange_rates', {
-	id: varchar('id', { length: 26 }).primaryKey(),
-	from_currency_id: varchar('from_currency_id', { length: 26 }).references(() => currencies.id).notNull(),
-	to_currency_id: varchar('to_currency_id', { length: 26 }).references(() => currencies.id).notNull(),
+	id: uuid('id').primaryKey(),
+	from_currency_id: uuid('from_currency_id').references(() => currencies.id).notNull(),
+	to_currency_id: uuid('to_currency_id').references(() => currencies.id).notNull(),
 	rate: numeric('rate', { precision: 24, scale: 8 }).notNull(),
 	valid_from: bigint('valid_from', { mode: 'number' }).notNull(),
 	valid_to: bigint('valid_to', { mode: 'number' }).notNull(),
@@ -189,7 +189,7 @@ export const exchange_rate_relations = relations(exchange_rates, ({one, many}) =
 });
 
 export const transaction_models = pgTable('transaction_models', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
@@ -209,10 +209,10 @@ export const transaction_model_relations = relations(transaction_models, ({one, 
 
 
 export const transactions = pgTable('transactions', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	transaction_model_id: varchar('transaction_model_id', { length: 26 }).references(() => transaction_models.id).notNull(),
+	transaction_model_id: uuid('transaction_model_id').references(() => transaction_models.id).notNull(),
 	meta: jsonb('meta').$type<MetaType>(),
 }, (table) => {
 	return {
@@ -228,16 +228,16 @@ export const transaction_relations = relations(transactions, ({one, many}) => {
 });
 
 export const entries = pgTable('entries', {
-	id: varchar('id', { length: 26 }).primaryKey(),
+	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	ledger_id: varchar('ledger_id', { length: 26 }).references(() => ledgers.id).notNull(),
-	debit_account_id: varchar('debit_account_id', { length: 26 }).references(() => accounts.id).notNull(),
-	credit_account_id: varchar('credit_account_id', { length: 26 }).references(() => accounts.id).notNull(),
-	uom_id: varchar('uom_id', { length: 26 }).references(() => uom.id).notNull(),
+	ledger_id: uuid('ledger_id').references(() => ledgers.id).notNull(),
+	debit_account_id: uuid('debit_account_id').references(() => accounts.id).notNull(),
+	credit_account_id: uuid('credit_account_id').references(() => accounts.id).notNull(),
+	uom_id: uuid('uom_id').references(() => uom.id).notNull(),
 	quantity: numeric('quantity', { precision: 64, scale: 16 }),
 	amount: numeric('quantity', { precision: 64, scale: 16 }),
-	transaction_id: varchar('transaction_id', { length: 26 }).references(() => transactions.id).notNull(),
+	transaction_id: uuid('transaction_id').references(() => transactions.id).notNull(),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),

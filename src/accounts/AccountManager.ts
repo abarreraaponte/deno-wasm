@@ -4,7 +4,7 @@ import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
 import { valueIsAvailable } from "@/core/database/validation";
 import { balance_types, BalanceType } from "./balance";
-import { ulid } from "ulidx";
+import { v6 as uuid } from 'uuid';
 
 export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;
@@ -42,7 +42,7 @@ class AccountManager {
 	async validateCreation(data: NewAccount)
 	{
 		const validation_schema = z.object({
-			id: z.string().ulid(),
+			id: z.string().uuid(),
 			ref_id: z.string()
 			.max(64, {message: 'Ref ID must be less than 64 characters'})
 			.refine(this.refIdIsAvailable, {message: 'Ref ID already exists'})
@@ -51,7 +51,7 @@ class AccountManager {
 			.transform(async (ref_id, ctx) => {
 				if(!ref_id)
 				{
-					return `${this.prefix}${ulid()}`;
+					return `${this.prefix}${uuid()}`;
 				}
 
 				return ref_id;
@@ -66,7 +66,7 @@ class AccountManager {
 				.refine(this.nameIsAvailable, {message: 'Name already exists'}),
 			balance_type: z.enum(balance_types).optional().nullable(),
 			ledger_id: z.string().optional().nullable(),
-			parent_id: z.string().ulid().optional().nullable(),
+			parent_id: z.string().uuid().optional().nullable(),
 			meta: z.any().optional().nullable(),
 			active: z.boolean().optional().nullable(),
 		})

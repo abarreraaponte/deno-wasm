@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import { config } from 'dotenv';
 import { server } from '@/server';
-import { ulid } from 'ulidx';
+import { v6 as uuid } from 'uuid';
 
 config();
 
@@ -24,7 +24,7 @@ describe('Currency endpoints and common actions', () => {
 
 	test('Create a valid currency', async () => {
 		const test_data = {
-			"name": `Test currency ${ulid()}`,
+			"name": `Test currency ${uuid()}`,
 			"symbol": "$",
 			"iso_code": SUCCESS_ISO_CODE,
 			"precision": Math.floor(Math.random() * 9),
@@ -37,12 +37,12 @@ describe('Currency endpoints and common actions', () => {
 		const json :any = await res.json();
 	
 		expect(res.status).toBe(200);
-		expect(json.id).toHaveLength(26);
+		expect(json.id).toHaveLength(36);
 	});
 
 	test('Invalid separators fail validation', async () => {
 		const test_data = {
-			"name": `Test currency ${ulid()}`,
+			"name": `Test currency ${uuid()}`,
 			"symbol": "$",
 			"iso_code": `T${Math.floor(Math.random() * 99999)}`,
 			"precision": Math.floor(Math.random() * 9),
@@ -58,7 +58,7 @@ describe('Currency endpoints and common actions', () => {
 
 	test('Repeated ISO Code fails validatio', async () => {
 		const test_data = {
-			"name": `Test currency ${ulid()}`,
+			"name": `Test currency ${uuid()}`,
 			"symbol": "$",
 			"iso_code": SUCCESS_ISO_CODE,
 			"precision": Math.floor(Math.random() * 9),

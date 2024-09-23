@@ -32,7 +32,7 @@ class CurrencyManager {
 	async validateCreation(data: NewCurrency)
 	{
 		const validation_schema = z.object({
-			id: z.string().ulid(),
+			id: z.string().uuid(),
 			name: z.string()
 				.max(255, {message: 'Name must be less than 255 characters'})
 				.refine(this.nameIsAvailable, {message: 'Name already exists'}),

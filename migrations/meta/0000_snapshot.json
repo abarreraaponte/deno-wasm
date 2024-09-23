@@ -1,5 +1,5 @@
 {
-  "id": "ca77e12a-f811-48ef-b72a-b2e461630198",
+  "id": "d54f7ebd-68e3-49b0-8e68-d21605238308",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -35,13 +35,13 @@
         },
         "ledger_id": {
           "name": "ledger_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "parent_id": {
           "name": "parent_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -186,7 +186,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -292,7 +292,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -310,13 +310,13 @@
         },
         "entity_model_id": {
           "name": "entity_model_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "parent_id": {
           "name": "parent_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -432,7 +432,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -534,7 +534,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -552,25 +552,25 @@
         },
         "ledger_id": {
           "name": "ledger_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "debit_account_id": {
           "name": "debit_account_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "credit_account_id": {
           "name": "credit_account_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "uom_id": {
           "name": "uom_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -582,7 +582,7 @@
         },
         "transaction_id": {
           "name": "transaction_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         }
@@ -710,19 +710,19 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
         "from_currency_id": {
           "name": "from_currency_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "to_currency_id": {
           "name": "to_currency_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -814,7 +814,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -844,7 +844,7 @@
         },
         "currency_id": {
           "name": "currency_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -949,7 +949,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -1051,7 +1051,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -1069,7 +1069,7 @@
         },
         "transaction_model_id": {
           "name": "transaction_model_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -1151,7 +1151,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },
@@ -1169,7 +1169,7 @@
         },
         "uom_type_id": {
           "name": "uom_type_id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -1370,7 +1370,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(26)",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true
         },

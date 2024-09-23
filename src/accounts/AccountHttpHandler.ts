@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import AccountManager, { NewAccount } from "@/accounts/AccountManager";
-import { ulid } from "ulidx";
+import { v6 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
@@ -8,7 +8,7 @@ const GENERIC_ERROR_MESSAGE = 'Internal server error';
 router.post('/', async (c) => {
 	const accountManager = new AccountManager();
 	const body = await c.req.json();
-	body.id = ulid();
+	body.guid = uuid();
 
 	const validation_result = await accountManager.validateCreation(body);
 
