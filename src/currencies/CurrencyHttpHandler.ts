@@ -6,6 +6,7 @@ const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
 router.post('/', async (c) => {
+
 	const currencyManager = new CurrencyManager();
 	const body = await c.req.json();
 	body.id = uuid();
