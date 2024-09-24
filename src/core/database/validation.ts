@@ -1,7 +1,16 @@
 import { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
-export type MetaType = Record<string, string | number | boolean | null>;
+import z from "zod";
+
+export const MetaSchema = z.record(z.string(), z.union([z.string(), z.number(), z.boolean(), z.null()]));
+export type MetaType = z.infer<typeof MetaSchema>;
+
+export const TransactionLineSchema = z.record(z.string(), MetaSchema);
+export type TransactionLineType = z.infer<typeof TransactionLineSchema>;
+
+export const DimensionSchema = z.record(z.string(), z.string());
+export type DimensionType = z.infer<typeof DimensionSchema>;
 
 /**
  * Generic function to validate unique values before they enter the database.

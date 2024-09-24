@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import LedgerManager from '@/ledgers/LedgerManager';
-import { v6 as uuid } from 'uuid';
+import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';

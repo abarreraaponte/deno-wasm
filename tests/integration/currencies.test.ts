@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 import { config } from 'dotenv';
 import { server } from '@/server';
-import { v6 as uuid } from 'uuid';
+import { v7 as uuid } from 'uuid';
 
 config();
 

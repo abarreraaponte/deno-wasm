@@ -1,7 +1,7 @@
 import { pgTable, pgEnum, varchar, char, bigint, text, boolean, index, integer, numeric, AnyPgColumn, jsonb, uuid } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { balance_types } from '@/accounts/balance';
-import { MetaType } from './validation';
+import { MetaType, TransactionLineType, DimensionType } from './validation';
 export const  balance_type_pg_enum = pgEnum('balance_type', balance_types);
 
 export const ledgers = pgTable('ledgers', {
@@ -193,6 +193,7 @@ export const transaction_models = pgTable('transaction_models', {
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
+	requires_lines: boolean('requires_lines').default(false),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),
@@ -214,6 +215,7 @@ export const transactions = pgTable('transactions', {
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	transaction_model_id: uuid('transaction_model_id').references(() => transaction_models.id).notNull(),
 	meta: jsonb('meta').$type<MetaType>(),
+	lines: jsonb('lines').$type<TransactionLineType>(),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),
@@ -238,6 +240,7 @@ export const entries = pgTable('entries', {
 	quantity: numeric('quantity', { precision: 64, scale: 16 }),
 	amount: numeric('quantity', { precision: 64, scale: 16 }),
 	transaction_id: uuid('transaction_id').references(() => transactions.id).notNull(),
+	dimensions: jsonb('dimensions').$type<DimensionType>(),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),

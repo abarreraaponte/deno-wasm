@@ -4,7 +4,7 @@ import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
 import { valueIsAvailable } from "@/core/database/validation";
 import { balance_types, BalanceType } from "./balance";
-import { v6 as uuid } from 'uuid';
+import { v7 as uuid } from 'uuid';
 
 export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;
