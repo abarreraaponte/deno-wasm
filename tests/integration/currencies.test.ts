@@ -20,7 +20,7 @@ describe('Currency endpoints and common actions', () => {
 		return await server.fetch(req);
 	}
 
-	const SUCCESS_ISO_CODE = `T${Math.floor(Math.random() * 99999)}`;
+	const SUCCESS_ISO_CODE = `T${Math.floor(Math.random() * 99)}`;
 
 	test('Create a valid currency', async () => {
 		const test_data = {
@@ -31,10 +31,13 @@ describe('Currency endpoints and common actions', () => {
 			"decimal_separator": ".",
 			"thousands_separator": ","
 		};
-	
+
+		console.table(test_data);
 		
 		const res = await makeRequest(test_data, 'POST', '/api/currencies');
 		const json :any = await res.json();
+
+		console.log('Response', res);
 	
 		expect(res.status).toBe(200);
 		expect(json.id).toHaveLength(36);
@@ -44,7 +47,7 @@ describe('Currency endpoints and common actions', () => {
 		const test_data = {
 			"name": `Test currency ${uuid()}`,
 			"symbol": "$",
-			"iso_code": `T${Math.floor(Math.random() * 99999)}`,
+			"iso_code": `T${Math.floor(Math.random() * 99)}`,
 			"precision": Math.floor(Math.random() * 9),
 			"decimal_separator": "-",
 			"thousands_separator": "#"

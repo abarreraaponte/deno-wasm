@@ -1,8 +1,8 @@
-import { db } from "@/core/database/db";
-import { ledgers, currencies } from "@/core/database/schema";
+import { db } from "@/server/database/db";
+import { ledgers, currencies } from "@/server/database/schema";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
-import { valueIsAvailable } from "@/core/database/validation";
+import { valueIsAvailable } from "@/server/database/validation";
 import { v7 as uuid } from 'uuid';
 
 export type Ledger = InferSelectModel<typeof ledgers>;

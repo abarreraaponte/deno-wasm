@@ -8,7 +8,8 @@
     "db:migrate": "drizzle-kit migrate",
     "dev": "tsx watch src/server.ts",
     "start": "node ./dist/server.js",
-    "test": "vitest",
+    "test": "vitest --run",
+	"test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "typecheck": "tsc"
   },

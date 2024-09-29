@@ -1,8 +1,8 @@
-import { db } from "@/core/database/db";
-import { accounts, currencies, ledgers } from "@/core/database/schema";
+import { db } from "@/server/database/db";
+import { accounts, currencies, ledgers } from "@/server/database/schema";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
-import { valueIsAvailable } from "@/core/database/validation";
+import { valueIsAvailable } from "@/server/database/validation";
 import { balance_types, BalanceType } from "./balance";
 import { v7 as uuid } from 'uuid';
 

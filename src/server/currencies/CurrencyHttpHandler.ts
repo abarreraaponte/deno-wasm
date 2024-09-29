@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import CurrencyManager from '@/currencies/CurrencyManager';
+import CurrencyManager from '@server/currencies/CurrencyManager';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();

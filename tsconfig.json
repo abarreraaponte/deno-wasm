@@ -9,7 +9,9 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@server/*": ["./src/server/*"],
+			"@client/*": ["./src/client/*"],
 		},
 		"outDir": "./dist",
 		"types": [
