@@ -149,7 +149,7 @@ export const currencies = pgTable('currencies', {
 	id: uuid('id').primaryKey(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
 	symbol: varchar('symbol', { length: 3 }).notNull(),
-	iso_code: varchar('code', { length: 8 }).notNull().unique(),
+	iso_code: varchar('iso_code', { length: 3 }).notNull().unique(),
 	precision: integer('precision').default(0),
 	active: boolean('active').default(true),
 	decimal_separator: char('decimal_separator', { length: 1 }).notNull(),

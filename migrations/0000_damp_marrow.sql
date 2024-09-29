@@ -23,13 +23,13 @@ CREATE TABLE IF NOT EXISTS "currencies" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"symbol" varchar(3) NOT NULL,
-	"code" varchar(8) NOT NULL,
+	"iso_code" varchar(3) NOT NULL,
 	"precision" integer DEFAULT 0,
 	"active" boolean DEFAULT true,
 	"decimal_separator" char(1) NOT NULL,
 	"thousands_separator" char(1) NOT NULL,
 	CONSTRAINT "currencies_name_unique" UNIQUE("name"),
-	CONSTRAINT "currencies_code_unique" UNIQUE("code")
+	CONSTRAINT "currencies_iso_code_unique" UNIQUE("iso_code")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "entities" (
@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS "entries" (
 	"uom_id" uuid NOT NULL,
 	"quantity" numeric(64, 16),
 	"transaction_id" uuid NOT NULL,
+	"dimensions" jsonb,
 	CONSTRAINT "entries_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "entries_alt_id_unique" UNIQUE("alt_id")
 );
@@ -95,6 +96,7 @@ CREATE TABLE IF NOT EXISTS "transaction_models" (
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
 	"name" varchar(255) NOT NULL,
+	"requires_lines" boolean DEFAULT false,
 	CONSTRAINT "transaction_models_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "transaction_models_alt_id_unique" UNIQUE("alt_id"),
 	CONSTRAINT "transaction_models_name_unique" UNIQUE("name")
@@ -106,6 +108,7 @@ CREATE TABLE IF NOT EXISTS "transactions" (
 	"alt_id" varchar(64),
 	"transaction_model_id" uuid NOT NULL,
 	"meta" jsonb,
+	"lines" jsonb,
 	CONSTRAINT "transactions_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "transactions_alt_id_unique" UNIQUE("alt_id")
 );
@@ -227,7 +230,7 @@ CREATE INDEX IF NOT EXISTS "accounts_balance_type_index" ON "accounts" USING btr
 CREATE INDEX IF NOT EXISTS "accounts_name_index" ON "accounts" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "accounts_ref_id_index" ON "accounts" USING btree ("ref_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "accounts_alt_id_index" ON "accounts" USING btree ("alt_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "currencies_code_index" ON "currencies" USING btree ("code");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "currencies_iso_code_index" ON "currencies" USING btree ("iso_code");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "currencies_name_index" ON "currencies" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "entities_ref_id_index" ON "entities" USING btree ("ref_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "entities_alt_id_index" ON "entities" USING btree ("alt_id");--> statement-breakpoint

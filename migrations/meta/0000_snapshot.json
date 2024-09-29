@@ -1,5 +1,5 @@
 {
-  "id": "d54f7ebd-68e3-49b0-8e68-d21605238308",
+  "id": "4204d3a6-8be2-4567-af45-230362d672ea",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -202,9 +202,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "code": {
-          "name": "code",
-          "type": "varchar(8)",
+        "iso_code": {
+          "name": "iso_code",
+          "type": "varchar(3)",
           "primaryKey": false,
           "notNull": true
         },
@@ -236,11 +236,11 @@
         }
       },
       "indexes": {
-        "currencies_code_index": {
-          "name": "currencies_code_index",
+        "currencies_iso_code_index": {
+          "name": "currencies_iso_code_index",
           "columns": [
             {
-              "expression": "code",
+              "expression": "iso_code",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -277,11 +277,11 @@
             "name"
           ]
         },
-        "currencies_code_unique": {
-          "name": "currencies_code_unique",
+        "currencies_iso_code_unique": {
+          "name": "currencies_iso_code_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "code"
+            "iso_code"
           ]
         }
       }
@@ -585,6 +585,12 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
+        },
+        "dimensions": {
+          "name": "dimensions",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -970,6 +976,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "requires_lines": {
+          "name": "requires_lines",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         }
       },
       "indexes": {
@@ -1075,6 +1088,12 @@
         },
         "meta": {
           "name": "meta",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lines": {
+          "name": "lines",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false
