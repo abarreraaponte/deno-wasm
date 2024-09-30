@@ -1,22 +1,35 @@
+# Build, runtime and cache
+/.phpunit.cache
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/build
+/.cache
+/dist
+
+# Env
+.env
+.env.backup
+.env.production
+
 # Dependencies
-node_modules
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
 
 # IDEs
+/.fleet
+/.idea
+/.vscode
+/.zed
 *.code-workspace
-.vscode
-.idea
-*.sublime-project
-*.sublime-workspace
-
-# Build files
-dist
-/.cache
-/build
-.env
-
-# env
-.env
-.env.production
 
 # Apple files
 .DS_Store
