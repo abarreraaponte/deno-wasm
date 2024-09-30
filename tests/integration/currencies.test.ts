@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { config } from 'dotenv';
-import { server } from '@platform/index';
+import { server } from '@api/index';
 import { v7 as uuid } from 'uuid';
 
 config();
@@ -36,8 +36,6 @@ describe('Currency endpoints and common actions', () => {
 		
 		const res = await makeRequest(test_data, 'POST', '/api/currencies');
 		const json :any = await res.json();
-
-		console.log('Response', res);
 	
 		expect(res.status).toBe(200);
 		expect(json.id).toHaveLength(36);

@@ -1,22 +1,36 @@
 {
+	"include": [
+	  "**/*.ts",
+	  "**/*.tsx",
+	  "**/.server/**/*.ts",
+	  "**/.server/**/*.tsx",
+	  "**/.client/**/*.ts",
+	  "**/.client/**/*.tsx"
+, "vite.config.mts"	],
 	"compilerOptions": {
-		"lib": ["ES2023"],
-		"target": "ES2022",
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"paths": {
-			"@/*": ["./src/*"],
-			"@platform/*": ["./platform/*"],
-		},
-		"outDir": "./dist",
-		"types": [
-			"node"
-		],
-		"jsx": "react-jsx",
-		"jsxImportSource": "hono/jsx",
+	  "lib": ["DOM", "DOM.Iterable", "ES2022"],
+	  "types": ["@remix-run/node", "vite/client"],
+	  "isolatedModules": true,
+	  "esModuleInterop": true,
+	  "jsx": "react-jsx",
+	  "module": "ESNext",
+	  "moduleResolution": "Bundler",
+	  "resolveJsonModule": true,
+	  "target": "ES2022",
+	  "strict": true,
+	  "allowJs": true,
+	  "skipLibCheck": true,
+	  "forceConsistentCasingInFileNames": true,
+	  "baseUrl": ".",
+	  "outDir": "build",
+	  "paths": {
+		"@app/*": ["./app/*"],
+		"@platform/*": ["./platform/*"],
+		"@api/*": ["./api/*"],
+	  },
+  
+	  // Vite takes care of building everything, not tsc.
+	  "noEmit": true
 	}
 }
+  
