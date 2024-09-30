@@ -10,8 +10,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"paths": {
 			"@/*": ["./src/*"],
-			"@server/*": ["./src/server/*"],
-			"@client/*": ["./src/client/*"],
+			"@platform/*": ["./platform/*"],
 		},
 		"outDir": "./dist",
 		"types": [

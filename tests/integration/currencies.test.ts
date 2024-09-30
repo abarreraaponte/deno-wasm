@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { config } from 'dotenv';
-import { server } from '@/server';
+import { server } from '@platform/index';
 import { v7 as uuid } from 'uuid';
 
 config();

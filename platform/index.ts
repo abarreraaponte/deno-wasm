@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
-import CurrencyRouter from '@server/currencies/CurrencyHttpHandler';
-import LedgerRouter from '@server/ledgers/LedgerHttpHandler';
-import AccountRouter from '@server/accounts/AccountHttpHandler';
+import CurrencyRouter from '@platform/currencies/CurrencyHttpHandler';
+import LedgerRouter from '@platform/ledgers/LedgerHttpHandler';
+import AccountRouter from '@platform/accounts/AccountHttpHandler';
 import { config } from 'dotenv';
 
 config();
