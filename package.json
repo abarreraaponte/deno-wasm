@@ -6,7 +6,7 @@
   "description": "Framework for building fast and reliable transactional systems",
   "scripts": {
     "build": "tsc",
-    "dev": "tsx watch api/index.ts",
+    "dev": "tsx watch src/server.ts",
     "start": "node ./build/api/index.cjs",
 	"db:custom": "drizzle-kit generate --custom",
     "db:generate": "drizzle-kit generate",

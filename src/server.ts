@@ -9,12 +9,8 @@ config();
 
 const app = new Hono();
 
-app.get('/', (c) => {
-	return c.text(`Hello`);
-});
-
-app.get('/health', (c) => {
-  return c.text('UP');
+app.get('/api/health', (c) => {
+  return c.json({ status: 'ok' });
 });
 
 app.route('/api/accounts', AccountRouter);
