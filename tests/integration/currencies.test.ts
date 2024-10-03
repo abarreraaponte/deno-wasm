@@ -2,10 +2,13 @@ import { describe, expect, test } from 'vitest'
 import { config } from 'dotenv';
 import { server } from '@/server.js';
 import { v7 as uuid } from 'uuid';
+import { CurrencyFactory } from '@/database/factories.js';
 
 config();
 
 describe('Currency endpoints and common actions', () => {
+
+	console.table((new CurrencyFactory).makeMany(50));
 
 	async function makeRequest(data: any, method: string, endpoint: string) : Promise<any>
 	{
@@ -31,8 +34,6 @@ describe('Currency endpoints and common actions', () => {
 			"decimal_separator": ".",
 			"thousands_separator": ","
 		};
-
-		console.table(test_data);
 		
 		const res = await makeRequest(test_data, 'POST', '/api/currencies');
 		const json :any = await res.json();
