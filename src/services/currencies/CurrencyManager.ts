@@ -1,8 +1,8 @@
-import { db } from "@platform/database/db";
-import { currencies } from "@platform/database/schema";
+import { db } from "@/services/database/db";
+import { currencies } from "@/services/database/schema";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq } from "drizzle-orm";
-import { valueIsAvailable } from "@platform/database/validation";
+import { valueIsAvailable } from "@/services/database/validation";
 
 export type Currency = InferSelectModel<typeof currencies>;
 export type NewCurrency = InferInsertModel<typeof currencies>;
