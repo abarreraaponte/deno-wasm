@@ -68,11 +68,11 @@ export const uom_types = pgTable('uom_types', {
 
 export const uom_type_relations = relations(uom_types, ({one, many}) => {
 	return {
-		uoms: many(uom),
+		uoms: many(uoms),
 	}
 });
 
-export const uom = pgTable('uom', {
+export const uoms = pgTable('uoms', {
 	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
@@ -94,9 +94,9 @@ export const uom = pgTable('uom', {
 	}
 });
 
-export const uom_relations = relations(uom, ({one, many}) => {
+export const uom_relations = relations(uoms, ({one, many}) => {
 	return {
-		uom_type: one(uom_types, {fields: [uom.id], references: [uom_types.id],}),
+		uom_type: one(uom_types, {fields: [uoms.id], references: [uom_types.id],}),
 	}
 });
 
@@ -193,7 +193,6 @@ export const transaction_models = pgTable('transaction_models', {
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
-	requires_lines: boolean('requires_lines').default(false),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),
@@ -236,10 +235,11 @@ export const entries = pgTable('entries', {
 	ledger_id: uuid('ledger_id').references(() => ledgers.id).notNull(),
 	debit_account_id: uuid('debit_account_id').references(() => accounts.id).notNull(),
 	credit_account_id: uuid('credit_account_id').references(() => accounts.id).notNull(),
-	uom_id: uuid('uom_id').references(() => uom.id).notNull(),
+	uom_id: uuid('uom_id').references(() => uoms.id).notNull(),
 	quantity: numeric('quantity', { precision: 64, scale: 16 }),
 	amount: numeric('quantity', { precision: 64, scale: 16 }),
 	transaction_id: uuid('transaction_id').references(() => transactions.id).notNull(),
+	product_id: uuid('product_id').references(() => products.id),
 	dimensions: jsonb('dimensions').$type<DimensionType>(),
 }, (table) => {
 	return {
@@ -251,5 +251,49 @@ export const entries = pgTable('entries', {
 export const entry_relations = relations(entries, ({one, many}) => {
 	return {
 		transaction: one(transactions, {fields: [entries.id], references: [transactions.id],}),
+		ledger: one(ledgers, {fields: [entries.id], references: [ledgers.id],}),
+		debit_account: one(accounts, {fields: [entries.id], references: [accounts.id],}),
+		credit_account: one(accounts, {fields: [entries.id], references: [accounts.id],}),
+		uom: one(uoms, {fields: [entries.id], references: [uoms.id],}),
+		product: one(products, {fields: [entries.id], references: [products.id],}),
+	}
+});
+
+export const product_models = pgTable('product_models', {
+	id: uuid('id').primaryKey(),
+	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
+	alt_id: varchar('alt_id', { length: 64 }).unique(),
+	name: varchar('name', { length: 255 }).unique().notNull(),
+}, (table) => {
+	return {
+		ref_id_idx: index().on(table.ref_id),
+		alt_id_idx: index().on(table.alt_id),
+		name_idx: index().on(table.name),
+	}
+});
+
+export const product_model_relations = relations(product_models, ({one, many}) => {
+	return {
+		products: many(products),
+	}
+});
+
+export const products = pgTable('products', {
+	id: uuid('id').primaryKey(),
+	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
+	alt_id: varchar('alt_id', { length: 64 }).unique(),
+	product_model_id: uuid('product_model_id').references(() => product_models.id).notNull(),
+	meta: jsonb('meta').$type<MetaType>(),
+}, (table) => {
+	return {
+		ref_id_idx: index().on(table.ref_id),
+		alt_id_idx: index().on(table.alt_id),
+	}
+});
+
+export const product_relations = relations(products, ({one, many}) => {
+	return {
+		product_model: one(product_models, {fields: [products.id], references: [product_models.id],}),
+		entries: many(entries),
 	}
 });

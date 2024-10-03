@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS "entries" (
 	"uom_id" uuid NOT NULL,
 	"quantity" numeric(64, 16),
 	"transaction_id" uuid NOT NULL,
+	"product_id" uuid,
 	"dimensions" jsonb,
 	CONSTRAINT "entries_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "entries_alt_id_unique" UNIQUE("alt_id")
@@ -91,12 +92,31 @@ CREATE TABLE IF NOT EXISTS "ledgers" (
 	CONSTRAINT "ledgers_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "product_models" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"ref_id" varchar(64) NOT NULL,
+	"alt_id" varchar(64),
+	"name" varchar(255) NOT NULL,
+	CONSTRAINT "product_models_ref_id_unique" UNIQUE("ref_id"),
+	CONSTRAINT "product_models_alt_id_unique" UNIQUE("alt_id"),
+	CONSTRAINT "product_models_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "products" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"ref_id" varchar(64) NOT NULL,
+	"alt_id" varchar(64),
+	"product_model_id" uuid NOT NULL,
+	"meta" jsonb,
+	CONSTRAINT "products_ref_id_unique" UNIQUE("ref_id"),
+	CONSTRAINT "products_alt_id_unique" UNIQUE("alt_id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transaction_models" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
 	"name" varchar(255) NOT NULL,
-	"requires_lines" boolean DEFAULT false,
 	CONSTRAINT "transaction_models_ref_id_unique" UNIQUE("ref_id"),
 	CONSTRAINT "transaction_models_alt_id_unique" UNIQUE("alt_id"),
 	CONSTRAINT "transaction_models_name_unique" UNIQUE("name")
@@ -113,7 +133,17 @@ CREATE TABLE IF NOT EXISTS "transactions" (
 	CONSTRAINT "transactions_alt_id_unique" UNIQUE("alt_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "uom" (
+CREATE TABLE IF NOT EXISTS "uom_types" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"ref_id" varchar(64) NOT NULL,
+	"alt_id" varchar(64),
+	"name" varchar(255) NOT NULL,
+	CONSTRAINT "uom_types_ref_id_unique" UNIQUE("ref_id"),
+	CONSTRAINT "uom_types_alt_id_unique" UNIQUE("alt_id"),
+	CONSTRAINT "uom_types_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "uoms" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"ref_id" varchar(64) NOT NULL,
 	"alt_id" varchar(64),
@@ -124,22 +154,12 @@ CREATE TABLE IF NOT EXISTS "uom" (
 	"plural_symbol" varchar(20) NOT NULL,
 	"rate" numeric(24, 8),
 	"active" boolean DEFAULT true,
-	CONSTRAINT "uom_ref_id_unique" UNIQUE("ref_id"),
-	CONSTRAINT "uom_alt_id_unique" UNIQUE("alt_id"),
-	CONSTRAINT "uom_name_unique" UNIQUE("name"),
-	CONSTRAINT "uom_plural_name_unique" UNIQUE("plural_name"),
-	CONSTRAINT "uom_symbol_unique" UNIQUE("symbol"),
-	CONSTRAINT "uom_plural_symbol_unique" UNIQUE("plural_symbol")
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "uom_types" (
-	"id" uuid PRIMARY KEY NOT NULL,
-	"ref_id" varchar(64) NOT NULL,
-	"alt_id" varchar(64),
-	"name" varchar(255) NOT NULL,
-	CONSTRAINT "uom_types_ref_id_unique" UNIQUE("ref_id"),
-	CONSTRAINT "uom_types_alt_id_unique" UNIQUE("alt_id"),
-	CONSTRAINT "uom_types_name_unique" UNIQUE("name")
+	CONSTRAINT "uoms_ref_id_unique" UNIQUE("ref_id"),
+	CONSTRAINT "uoms_alt_id_unique" UNIQUE("alt_id"),
+	CONSTRAINT "uoms_name_unique" UNIQUE("name"),
+	CONSTRAINT "uoms_plural_name_unique" UNIQUE("plural_name"),
+	CONSTRAINT "uoms_symbol_unique" UNIQUE("symbol"),
+	CONSTRAINT "uoms_plural_symbol_unique" UNIQUE("plural_symbol")
 );
 --> statement-breakpoint
 DO $$ BEGIN
@@ -185,13 +205,19 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "entries" ADD CONSTRAINT "entries_uom_id_uom_id_fk" FOREIGN KEY ("uom_id") REFERENCES "public"."uom"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "entries" ADD CONSTRAINT "entries_uom_id_uoms_id_fk" FOREIGN KEY ("uom_id") REFERENCES "public"."uoms"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "entries" ADD CONSTRAINT "entries_transaction_id_transactions_id_fk" FOREIGN KEY ("transaction_id") REFERENCES "public"."transactions"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "entries" ADD CONSTRAINT "entries_product_id_products_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -215,13 +241,19 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "products" ADD CONSTRAINT "products_product_model_id_product_models_id_fk" FOREIGN KEY ("product_model_id") REFERENCES "public"."product_models"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "transactions" ADD CONSTRAINT "transactions_transaction_model_id_transaction_models_id_fk" FOREIGN KEY ("transaction_model_id") REFERENCES "public"."transaction_models"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "uom" ADD CONSTRAINT "uom_uom_type_id_uom_types_id_fk" FOREIGN KEY ("uom_type_id") REFERENCES "public"."uom_types"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "uoms" ADD CONSTRAINT "uoms_uom_type_id_uom_types_id_fk" FOREIGN KEY ("uom_type_id") REFERENCES "public"."uom_types"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -245,17 +277,22 @@ CREATE INDEX IF NOT EXISTS "exchange_rates_valid_to_index" ON "exchange_rates" U
 CREATE INDEX IF NOT EXISTS "ledgers_name_index" ON "ledgers" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "ledgers_ref_id_index" ON "ledgers" USING btree ("ref_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "ledgers_alt_id_index" ON "ledgers" USING btree ("alt_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "product_models_ref_id_index" ON "product_models" USING btree ("ref_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "product_models_alt_id_index" ON "product_models" USING btree ("alt_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "product_models_name_index" ON "product_models" USING btree ("name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "products_ref_id_index" ON "products" USING btree ("ref_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "products_alt_id_index" ON "products" USING btree ("alt_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "transaction_models_ref_id_index" ON "transaction_models" USING btree ("ref_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "transaction_models_alt_id_index" ON "transaction_models" USING btree ("alt_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "transaction_models_name_index" ON "transaction_models" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "transactions_ref_id_index" ON "transactions" USING btree ("ref_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "transactions_alt_id_index" ON "transactions" USING btree ("alt_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "uom_ref_id_index" ON "uom" USING btree ("ref_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "uom_alt_id_index" ON "uom" USING btree ("alt_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "uom_name_index" ON "uom" USING btree ("name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "uom_plural_name_index" ON "uom" USING btree ("plural_name");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "uom_symbol_index" ON "uom" USING btree ("symbol");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "uom_plural_symbol_index" ON "uom" USING btree ("plural_symbol");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "uom_types_name_index" ON "uom_types" USING btree ("name");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "uom_types_ref_id_index" ON "uom_types" USING btree ("ref_id");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "uom_types_alt_id_index" ON "uom_types" USING btree ("alt_id");
+CREATE INDEX IF NOT EXISTS "uom_types_alt_id_index" ON "uom_types" USING btree ("alt_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "uoms_ref_id_index" ON "uoms" USING btree ("ref_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "uoms_alt_id_index" ON "uoms" USING btree ("alt_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "uoms_name_index" ON "uoms" USING btree ("name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "uoms_plural_name_index" ON "uoms" USING btree ("plural_name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "uoms_symbol_index" ON "uoms" USING btree ("symbol");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "uoms_plural_symbol_index" ON "uoms" USING btree ("plural_symbol");

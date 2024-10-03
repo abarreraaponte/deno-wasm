@@ -8,6 +8,7 @@
     "build": "tsc",
     "dev": "tsx watch api/index.ts",
     "start": "node ./build/api/index.cjs",
+	"db:custom": "drizzle-kit generate --custom",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "test": "vitest --run",
