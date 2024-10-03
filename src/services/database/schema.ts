@@ -1,7 +1,7 @@
 import { pgTable, pgEnum, varchar, char, bigint, text, boolean, index, integer, numeric, AnyPgColumn, jsonb, uuid } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { balance_types } from '@/services/accounts/balance';
-import { MetaType, TransactionLineType, DimensionType } from './validation';
+import { balance_types } from '@/services/accounts/balance.js';
+import { MetaType, TransactionLineType, DimensionType } from './validation.js';
 export const  balance_type_pg_enum = pgEnum('balance_type', balance_types);
 
 export const ledgers = pgTable('ledgers', {

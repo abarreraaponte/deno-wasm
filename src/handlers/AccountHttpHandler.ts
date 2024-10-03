@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import AccountManager, { NewAccount } from "@/services/accounts/AccountManager";
+import AccountManager, { NewAccount } from "@/services/accounts/AccountManager.js";
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();

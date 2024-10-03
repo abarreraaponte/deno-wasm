@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
-import CurrencyRouter from '@/handlers/CurrencyHttpHandler';
-import LedgerRouter from '@/handlers/LedgerHttpHandler';
-import AccountRouter from '@/handlers/AccountHttpHandler';
+import CurrencyRouter from '@/handlers/CurrencyHttpHandler.js';
+import LedgerRouter from '@/handlers/LedgerHttpHandler.js';
+import AccountRouter from '@/handlers/AccountHttpHandler.js';
 import { config } from 'dotenv';
 
 config();
@@ -17,7 +17,7 @@ app.route('/api/accounts', AccountRouter);
 app.route('/api/currencies', CurrencyRouter);
 app.route('/api/ledgers', LedgerRouter);
 
-const port = Number(process.env.API_PORT || 3001);
+const port = Number(process.env.SERVER_PORT || 3000);
 console.log(`Server is running on port ${port}`);
 
 // Export to use instance in testing client.

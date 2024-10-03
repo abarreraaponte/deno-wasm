@@ -1,8 +1,8 @@
-import { db } from "@/services/database/db";
-import { currencies } from "@/services/database/schema";
+import { db } from "@/services/database/db.js";
+import { currencies } from "@/services/database/schema.js";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq } from "drizzle-orm";
-import { valueIsAvailable } from "@/services/database/validation";
+import { valueIsAvailable } from "@/services/database/validation.js";
 
 export type Currency = InferSelectModel<typeof currencies>;
 export type NewCurrency = InferInsertModel<typeof currencies>;
@@ -18,13 +18,13 @@ class CurrencyManager {
 	}
 
 	// Check if name is unique.
-	async nameIsAvailable(name: string)
+	private async nameIsAvailable(name: string)
 	{
 		return await valueIsAvailable(currencies, 'name', name);
 	}
 
 	// Check if ISO code is unique
-	async isoCodeIsAvailable(iso_code: string)
+	private async isoCodeIsAvailable(iso_code: string)
 	{
 		return await valueIsAvailable(currencies, 'iso_code', iso_code);
 	}
@@ -51,7 +51,16 @@ class CurrencyManager {
 
 	async create(data: NewCurrency)
 	{	
-		return db.insert(currencies).values(data).returning({id: currencies.id});
+		return db.insert(currencies).values(data).returning({
+			id: currencies.id,
+			name: currencies.name,
+			symbol: currencies.symbol,
+			iso_code: currencies.iso_code,
+			precision: currencies.precision,
+			active: currencies.active,
+			decimal_separator: currencies.decimal_separator,
+			thousands_separator: currencies.thousands_separator,
+		});
 	}
 }
 

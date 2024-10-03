@@ -1,5 +1,5 @@
 import { PgTableWithColumns } from "drizzle-orm/pg-core";
-import { db } from "./db";
+import { db } from "./db.js";
 import { eq } from "drizzle-orm";
 import z from "zod";
 

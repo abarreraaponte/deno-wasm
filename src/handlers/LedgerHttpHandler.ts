@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import LedgerManager from '@/services/ledgers/LedgerManager';
+import LedgerManager from '@/services/ledgers/LedgerManager.js';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
