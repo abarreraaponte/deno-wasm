@@ -8,8 +8,6 @@ config();
 
 describe('Currency endpoints and common actions', () => {
 
-	console.table((new CurrencyFactory).makeMany(50));
-
 	async function makeRequest(data: any, method: string, endpoint: string) : Promise<any>
 	{
 		const req = new Request(`http://localhost:${process.env.SERVER_PORT}${endpoint}`, {
@@ -26,14 +24,8 @@ describe('Currency endpoints and common actions', () => {
 	const SUCCESS_ISO_CODE = `T${Math.floor(Math.random() * 99)}`;
 
 	test('Create a valid currency', async () => {
-		const test_data = {
-			"name": `Test currency ${uuid()}`,
-			"symbol": "$",
-			"iso_code": SUCCESS_ISO_CODE,
-			"precision": Math.floor(Math.random() * 9),
-			"decimal_separator": ".",
-			"thousands_separator": ","
-		};
+		const test_data = (new CurrencyFactory).make();
+		test_data.iso_code = SUCCESS_ISO_CODE;
 		
 		const res = await makeRequest(test_data, 'POST', '/api/currencies');
 		const json :any = await res.json();
@@ -43,32 +35,20 @@ describe('Currency endpoints and common actions', () => {
 	});
 
 	test('Invalid separators fail validation', async () => {
-		const test_data = {
-			"name": `Test currency ${uuid()}`,
-			"symbol": "$",
-			"iso_code": `T${Math.floor(Math.random() * 99)}`,
-			"precision": Math.floor(Math.random() * 9),
-			"decimal_separator": "-",
-			"thousands_separator": "#"
-		};
-	
+		const test_data = (new CurrencyFactory).make();
+		test_data.iso_code = SUCCESS_ISO_CODE;
+		test_data.decimal_separator = "-";
+		test_data.thousands_separator = "#";
 		
 		const res = await makeRequest(test_data, 'POST', '/api/currencies');
 	
 		expect(res.status).toBe(422);
 	});
 
-	test('Repeated ISO Code fails validatio', async () => {
-		const test_data = {
-			"name": `Test currency ${uuid()}`,
-			"symbol": "$",
-			"iso_code": SUCCESS_ISO_CODE,
-			"precision": Math.floor(Math.random() * 9),
-			"decimal_separator": ".",
-			"thousands_separator": "."
-		};
+	test('Repeated ISO Code fails validation', async () => {
+		const test_data = (new CurrencyFactory).make();
+		test_data.iso_code = SUCCESS_ISO_CODE;
 	
-		
 		const res = await makeRequest(test_data, 'POST', '/api/currencies');
 	
 		expect(res.status).toBe(422);
