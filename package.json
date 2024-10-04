@@ -6,8 +6,8 @@
   "version": "0.0.1",
   "description": "Framework for building fast and reliable transactional systems",
   "scripts": {
-    "build": "esbuild --bundle --minify --platform=node --outdir=build src/server.ts --format=cjs --out-extension:.js=.cjs",
-    "dev": "tsx watch src/server.ts",
+    "build": "esbuild --bundle --minify --platform=node --outdir=build src/index.ts --format=cjs --out-extension:.js=.cjs",
+    "dev": "tsx watch src/index.ts",
     "start": "node ./build/server.cjs",
     "db:custom": "drizzle-kit generate --custom",
     "db:generate": "drizzle-kit generate",

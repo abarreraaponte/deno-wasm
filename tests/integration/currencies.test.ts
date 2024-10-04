@@ -1,7 +1,6 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, afterAll } from 'vitest'
 import { config } from 'dotenv';
 import { server } from '@/server.js';
-import { v7 as uuid } from 'uuid';
 import { CurrencyFactory } from '@/database/factories.js';
 
 config();

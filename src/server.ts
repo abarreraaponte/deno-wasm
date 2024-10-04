@@ -17,13 +17,5 @@ app.route('/api/accounts', AccountRouter);
 app.route('/api/currencies', CurrencyRouter);
 app.route('/api/ledgers', LedgerRouter);
 
-const port = Number(process.env.SERVER_PORT || 3000);
-console.log(`Server is running on port ${port}`);
-
 // Export to use instance in testing client.
 export const server = app;
-
-serve({
-	fetch: app.fetch,
-	port: port,
-});

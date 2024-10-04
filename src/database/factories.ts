@@ -1,5 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { NewCurrency } from "@/services/currencies/CurrencyManager.js";
+import { NewLedger } from "@/services/ledgers/LedgerManager.js";
+import { NewAccount } from "@/services/accounts/AccountManager.js";
 import { v7 as uuid } from "uuid";
 
 abstract class Factory {
@@ -17,6 +19,24 @@ export class CurrencyFactory extends Factory {
 			"precision": faker.number.int(8),
 			"decimal_separator": ".",
 			"thousands_separator": ","
+		};
+	}
+
+	public makeMany(count: number) {
+		return Array.from({length: count}, () => this.make());
+	}
+}
+
+export class LedgerFactory extends Factory {
+	public make() :NewLedger {
+		return {
+			"id": uuid(),
+			"ref_id": uuid(),
+			"alt_id": uuid(),
+			"name": faker.company.name(),
+			"description": faker.company.catchPhrase(),
+			"currency_id": uuid(),
+			"active": true
 		};
 	}
 
