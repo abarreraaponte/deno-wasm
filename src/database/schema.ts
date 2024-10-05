@@ -297,3 +297,14 @@ export const product_relations = relations(products, ({one, many}) => {
 		entries: many(entries),
 	}
 });
+
+export const clients = pgTable('clients', {
+	id: uuid('id').primaryKey(),
+	name: varchar('name', { length: 255 }).unique().notNull(),
+	secret: varchar('secret', { length: 255 }).unique().notNull(),
+}, (table) => {
+	return {
+		name_idx: index().on(table.name),
+	}
+});
+	

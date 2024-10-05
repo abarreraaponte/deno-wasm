@@ -13,8 +13,8 @@ export class CurrencyFactory extends Factory {
 	public make() :NewCurrency {
 		return {
 			"id": uuid(),
-			"name": faker.finance.currencyName(),
-			"symbol": faker.finance.currencySymbol(),
+			"name": uuid(),
+			"symbol": faker.string.alphanumeric(3),
 			"iso_code": faker.finance.currencyCode(),
 			"precision": faker.number.int(8),
 			"decimal_separator": ".",
