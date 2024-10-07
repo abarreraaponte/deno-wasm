@@ -27,7 +27,7 @@ class AccountFactory extends Factory
             'name' => fake()->unique()->words(2, true),
             'balance_type' => fake()->randomElement(array_column(BalanceTypes::cases(), 'value')),
             'ledger_id' => $ledger->id,
-            'active' => fake()->boolean(),
+            'active' => true,
             'meta' => [
                 'key' => 'value',
             ],

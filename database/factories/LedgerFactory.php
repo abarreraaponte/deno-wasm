@@ -26,7 +26,7 @@ class LedgerFactory extends Factory
             'name' => fake()->unique()->words(2, true),
             'description' => fake()->optional()->sentence(),
             'currency_id' => $currency->id,
-            'active' => fake()->boolean(),
+            'active' => true,
         ];
     }
 }

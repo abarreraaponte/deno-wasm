@@ -1,13 +1,10 @@
 <?php
 
 use App\Models\Currency;
-use Illuminate\Support\Facades\Log;
 
 test('currency can be created', function () {
 
     $currency = Currency::factory()->make();
-
-    Log::info($currency->toArray());
 
     $response = $this->postJson('/api/currencies', $currency->toArray());
 

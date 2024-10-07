@@ -27,7 +27,9 @@ class CurrencyExists implements ValidationRule
 
             $query->where('iso_code', $value)->orWhere('name', $value);
 
-        })->first();
+        })
+		->where('active', true)
+		->first();
 
         if (! $currency) {
             $fail("Invalid currency: $value.");

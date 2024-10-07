@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Enums\CurrencySeparators;
-use App\Models\Currency;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,20 +33,5 @@ class StoreCurrencyRequest extends FormRequest
             'thousands_separator' => ['sometimes', 'nullable', 'string', Rule::in(array_column(CurrencySeparators::cases(), 'value'))],
             'decimal_separator' => ['sometimes', 'nullable', 'string', Rule::in(array_column(CurrencySeparators::cases(), 'value'))],
         ];
-    }
-
-    public function action(): Currency
-    {
-        $currency = new Currency;
-        $currency->name = $this->name;
-        $currency->iso_code = $this->iso_code;
-        $currency->symbol = $this->symbol;
-        $currency->precision = $this->precision ?? 2;
-        $currency->active = $this->active ?? true;
-        $currency->thousands_separator = $this->thousands_separator ?? '';
-        $currency->decimal_separator = $this->decimal_separator ?? '';
-        $currency->save();
-
-        return $currency;
     }
 }

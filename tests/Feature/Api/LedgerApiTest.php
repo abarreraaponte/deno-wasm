@@ -5,9 +5,7 @@ use App\Models\Ledger;
 
 test('ledger can be created', function () {
 
-    $currency = Currency::factory()->create();
-
-    $ledger = Ledger::factory()->make(['currency_id' => $currency->id]);
+    $ledger = Ledger::factory()->make();
 
     $response = $this->postJson('/api/ledgers', $ledger->toArray());
 
@@ -15,11 +13,10 @@ test('ledger can be created', function () {
 });
 
 test('Duplicate ledger can not be created', function () {
-    $currency = Currency::factory()->create();
 
-    $ledger1 = Ledger::factory()->create(['currency_id' => $currency->id]);
+    $ledger1 = Ledger::factory()->create();
 
-    $ledger2 = Ledger::factory()->make(['currency_id' => $currency->id, 'name' => $ledger1->name]);
+    $ledger2 = Ledger::factory()->make(['name' => $ledger1->name]);
 
     $response = $this->postJson('/api/ledgers', $ledger2->toArray());
 

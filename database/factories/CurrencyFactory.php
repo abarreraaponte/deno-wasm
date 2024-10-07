@@ -22,7 +22,7 @@ class CurrencyFactory extends Factory
             'iso_code' => fake()->unique()->regexify('[A-Z]{3}'),
             'symbol' => fake()->optional()->regexify('[A-Z]{3}'),
             'precision' => fake()->numberBetween(0, 12),
-            'active' => fake()->boolean(),
+            'active' => true,
             'thousands_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
             'decimal_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
         ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCurrencyRequest;
 use Illuminate\Http\Request;
+use App\Models\Currency;
 
 class CurrencyApiController extends Controller
 {
@@ -21,9 +22,24 @@ class CurrencyApiController extends Controller
      */
     public function store(StoreCurrencyRequest $request)
     {
-        $request->validated();
+        $validated = $request->validated();
 
-        return response()->json($request->action(), 201);
+		$currency = new Currency;
+        $currency->name = $validated['name'];
+        $currency->iso_code = $validated['iso_code'];
+        $currency->symbol = $validated['symbol'] ?? '';
+        $currency->precision = $validated['precision'] ?? 2;
+        $currency->active = $validated['active'] ?? true;
+        $currency->thousands_separator = $validated['thousands_separator'] ?? '';
+        $currency->decimal_separator = $validated['decimal_separator'] ?? '';
+        $currency->save();
+
+        return $currency;
+
+        return response()->json([
+			'currency' => $currency,
+			'message' => 'Currency created successfully'
+		], 201);
     }
 
     /**
