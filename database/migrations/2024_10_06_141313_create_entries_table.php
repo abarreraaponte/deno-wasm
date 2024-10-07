@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -14,22 +14,22 @@ return new class extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->uuid('id')->primary();
-			$table->string('ref_id', 64)->unique()->index();
-			$table->string('alt_id', 64)->nullable()->index();
-			$table->uuid('ledger_id');
-			$table->uuid('transaction_id');
-			$table->uuid('product_id')->nullable();
-			$table->uuid('uom_id')->nullable();
-			$table->uuid('debit_account_id');
-			$table->uuid('credit_account_id');
-			$table->decimal('quantity', 36, 12);
-			$table->decimal('amount', 36, 12);
-			$table->jsonb('dimensions')->nullable();
+            $table->string('ref_id', 64)->unique()->index();
+            $table->string('alt_id', 64)->nullable()->index();
+            $table->uuid('ledger_id');
+            $table->uuid('transaction_id');
+            $table->uuid('product_id')->nullable();
+            $table->uuid('uom_id')->nullable();
+            $table->uuid('debit_account_id');
+            $table->uuid('credit_account_id');
+            $table->decimal('quantity', 36, 12);
+            $table->decimal('amount', 36, 12);
+            $table->jsonb('dimensions')->nullable();
             $table->timestamps();
         });
 
-		// Check negative values
-		DB::unprepared("
+        // Check negative values
+        DB::unprepared("
 			CREATE OR REPLACE FUNCTION check_entry_negative_values() RETURNS TRIGGER AS $$
 			BEGIN
 				IF NEW.amount < 0 THEN
@@ -43,7 +43,7 @@ return new class extends Migration
 			$$ LANGUAGE plpgsql;
 		");
 
-		DB::unprepared("
+        DB::unprepared("
 			DO $$
 			BEGIN
 				IF NOT EXISTS (
@@ -60,8 +60,8 @@ return new class extends Migration
 			$$;
 		");
 
-		// Check product_id when quantity > 0
-		DB::unprepared("
+        // Check product_id when quantity > 0
+        DB::unprepared("
 			CREATE OR REPLACE FUNCTION check_entry_product_id() RETURNS TRIGGER AS $$
 			BEGIN
 				IF NEW.quantity > 0 AND (NEW.product_id IS NULL OR NEW.product_id = '') THEN
@@ -72,7 +72,7 @@ return new class extends Migration
 			$$ LANGUAGE plpgsql;
 		");
 
-		DB::unprepared("
+        DB::unprepared("
 			DO $$
 			BEGIN
 				IF NOT EXISTS (
@@ -89,8 +89,8 @@ return new class extends Migration
 			$$;
 		");
 
-		// Check uom_id when quantity > 0
-		DB::unprepared("
+        // Check uom_id when quantity > 0
+        DB::unprepared("
 			CREATE OR REPLACE FUNCTION check_entry_uom_id() RETURNS TRIGGER AS $$
 			BEGIN
 				IF NEW.quantity > 0 AND (NEW.uom_id IS NULL OR NEW.uom_id = '') THEN
@@ -101,7 +101,7 @@ return new class extends Migration
 			$$ LANGUAGE plpgsql;
 		");
 
-		DB::unprepared("
+        DB::unprepared("
 			DO $$
 			BEGIN
 				IF NOT EXISTS (
@@ -124,12 +124,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-		DB::unprepared('DROP TRIGGER IF EXISTS check_entry_negative_values_trigger ON entries;');
-		DB::unprepared('DROP FUNCTION IF EXISTS check_entry_negative_values();');
-		DB::unprepared('DROP TRIGGER IF EXISTS check_entry_product_id_trigger ON entries;');
-		DB::unprepared('DROP FUNCTION IF EXISTS check_entry_product_id();');
-		DB::unprepared('DROP TRIGGER IF EXISTS check_entry_uom_id_trigger ON entries;');
-		DB::unprepared('DROP FUNCTION IF EXISTS check_entry_uom_id();');
+        DB::unprepared('DROP TRIGGER IF EXISTS check_entry_negative_values_trigger ON entries;');
+        DB::unprepared('DROP FUNCTION IF EXISTS check_entry_negative_values();');
+        DB::unprepared('DROP TRIGGER IF EXISTS check_entry_product_id_trigger ON entries;');
+        DB::unprepared('DROP FUNCTION IF EXISTS check_entry_product_id();');
+        DB::unprepared('DROP TRIGGER IF EXISTS check_entry_uom_id_trigger ON entries;');
+        DB::unprepared('DROP FUNCTION IF EXISTS check_entry_uom_id();');
         Schema::dropIfExists('entries');
     }
 };

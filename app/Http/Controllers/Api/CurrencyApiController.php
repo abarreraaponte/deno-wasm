@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreCurrencyRequest;
+use Illuminate\Http\Request;
 
 class CurrencyApiController extends Controller
 {
@@ -22,7 +22,8 @@ class CurrencyApiController extends Controller
     public function store(StoreCurrencyRequest $request)
     {
         $request->validated();
-		return response()->json($request->action(), 201);
+
+        return response()->json($request->action(), 201);
     }
 
     /**

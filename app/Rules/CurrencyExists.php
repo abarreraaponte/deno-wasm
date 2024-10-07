@@ -2,11 +2,11 @@
 
 namespace App\Rules;
 
+use App\Models\Currency;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
-use App\Models\Currency;
+use Illuminate\Support\Str;
 
 class CurrencyExists implements ValidationRule
 {
@@ -19,18 +19,18 @@ class CurrencyExists implements ValidationRule
     {
         $currency = Currency::where(function (Builder $query) use ($value) {
 
-			$isUuid = Str::isUuid($value);
+            $isUuid = Str::isUuid($value);
 
-			if ($isUuid) {
-				$query->where('id', $value)->orWhere('iso_code', $value)->orWhere('name', $value);
-			}
+            if ($isUuid) {
+                $query->where('id', $value)->orWhere('iso_code', $value)->orWhere('name', $value);
+            }
 
-			$query->where('iso_code', $value)->orWhere('name', $value);
-			
-		})->first();
+            $query->where('iso_code', $value)->orWhere('name', $value);
 
-		if (!$currency) {
-			$fail("Invalid currency: $value.");
-		}
+        })->first();
+
+        if (! $currency) {
+            $fail("Invalid currency: $value.");
+        }
     }
 }

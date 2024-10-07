@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Enums\CurrencySeparators;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Currency>
@@ -19,12 +19,12 @@ class CurrencyFactory extends Factory
     {
         return [
             'name' => fake()->unique()->words(2, true),
-			'iso_code' => fake()->unique()->regexify('[A-Z]{3}'),
-			'symbol' => fake()->optional()->regexify('[A-Z]{3}'),
-			'precision' => fake()->numberBetween(0, 12),
-			'active' => fake()->boolean(),
-			'thousands_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
-			'decimal_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
+            'iso_code' => fake()->unique()->regexify('[A-Z]{3}'),
+            'symbol' => fake()->optional()->regexify('[A-Z]{3}'),
+            'precision' => fake()->numberBetween(0, 12),
+            'active' => fake()->boolean(),
+            'thousands_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
+            'decimal_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
         ];
     }
 }

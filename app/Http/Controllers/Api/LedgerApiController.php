@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreLedgerRequest;
+use Illuminate\Http\Request;
 
 class LedgerApiController extends Controller
 {
@@ -22,7 +22,8 @@ class LedgerApiController extends Controller
     public function store(StoreLedgerRequest $request)
     {
         $request->validated();
-		return response()->json($request->action(), 201);
+
+        return response()->json($request->action(), 201);
     }
 
     /**

@@ -3,14 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory, HasUuids, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,19 +19,19 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'first_name',
-		'last_name',
+        'last_name',
         'email',
         'password',
     ];
 
-	/**
-	 * The attributes that should be appended to the model's array form.
-	 *
-	 * @var array<int, string>
-	 */
-	protected $appends = [
-		'name'
-	];
+    /**
+     * The attributes that should be appended to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'name',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -56,13 +56,11 @@ class User extends Authenticatable
         ];
     }
 
-	/**
-	 * Get the user's full name.
-	 * 
-	 * @return string
-	 */
-	public function getNameAttribute(): string
-	{
-		return "{$this->first_name} {$this->last_name}";
-	}
+    /**
+     * Get the user's full name.
+     */
+    public function getNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 }

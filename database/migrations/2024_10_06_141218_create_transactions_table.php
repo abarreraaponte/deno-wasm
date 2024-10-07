@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-			$table->string('ref_id', 64)->unique()->index();
-			$table->string('alt_id', 64)->nullable()->index();
-			$table->uuid('transaction_model_id');
-			$table->string('name')->unique()->index();
-			$table->jsonb('meta')->nullable();
+            $table->string('ref_id', 64)->unique()->index();
+            $table->string('alt_id', 64)->nullable()->index();
+            $table->uuid('transaction_model_id');
+            $table->string('name')->unique()->index();
+            $table->jsonb('meta')->nullable();
             $table->timestamps();
 
-			$table->foreign('transaction_model_id')->references('id')->on('transaction_models')->onDelete('cascade');
+            $table->foreign('transaction_model_id')->references('id')->on('transaction_models')->onDelete('cascade');
         });
     }
 

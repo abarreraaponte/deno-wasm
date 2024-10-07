@@ -23,7 +23,7 @@ class StoreAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
+
         ];
     }
 }

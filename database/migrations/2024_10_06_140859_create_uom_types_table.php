@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('uom_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
-			$table->string('ref_id', 64)->unique()->index();
-			$table->string('alt_id', 64)->nullable()->index();
-			$table->string('name')->unique()->index();
+            $table->string('ref_id', 64)->unique()->index();
+            $table->string('alt_id', 64)->nullable()->index();
+            $table->string('name')->unique()->index();
             $table->timestamps();
         });
     }

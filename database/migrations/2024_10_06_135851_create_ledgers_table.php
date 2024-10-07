@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('ledgers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-			$table->string('ref_id', 64)->unique()->index();
-			$table->string('alt_id', 64)->nullable()->index();
-			$table->string('name')->unique()->index();
-			$table->string('description')->nullable();
-			$table->uuid('currency_id');
-			$table->boolean('active')->default(true);
+            $table->string('ref_id', 64)->unique()->index();
+            $table->string('alt_id', 64)->nullable()->index();
+            $table->string('name')->unique()->index();
+            $table->string('description')->nullable();
+            $table->uuid('currency_id');
+            $table->boolean('active')->default(true);
             $table->timestamps();
 
-			$table->foreign('currency_id')->references('id')->on('currencies')->onDelete('restrict');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('restrict');
         });
     }
 
