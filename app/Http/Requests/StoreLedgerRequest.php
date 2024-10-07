@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Rules\CurrencyExists;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
 class StoreLedgerRequest extends FormRequest
 {

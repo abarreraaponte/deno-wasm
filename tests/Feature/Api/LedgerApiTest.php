@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Currency;
 use App\Models\Ledger;
 
 test('ledger can be created', function () {

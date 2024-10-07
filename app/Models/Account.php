@@ -12,9 +12,9 @@ class Account extends Model
 {
     use HasFactory, HasUuids;
 
-	protected $casts = [
-		'meta' => 'array'
-	];
+    protected $casts = [
+        'meta' => 'array',
+    ];
 
     public function ledger(): BelongsTo
     {

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Currency;
-use App\Models\Ledger;
-use Illuminate\Support\Str;
-
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLedgerRequest;
+use App\Models\Currency;
+use App\Models\Ledger;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class LedgerApiController extends Controller
 {
@@ -28,7 +27,7 @@ class LedgerApiController extends Controller
     {
         $validated = $request->validated();
 
-		$currency = Currency::where(function (Builder $query) use ($request) {
+        $currency = Currency::where(function (Builder $query) use ($request) {
 
             $isUuid = Str::isUuid($request->currency_id);
 
@@ -52,9 +51,9 @@ class LedgerApiController extends Controller
         return $ledger;
 
         return response()->json([
-			'ledger' => $ledger,
-			'message' => 'Ledger created successfully'
-		], 201);
+            'ledger' => $ledger,
+            'message' => 'Ledger created successfully',
+        ], 201);
     }
 
     /**

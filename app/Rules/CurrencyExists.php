@@ -28,8 +28,8 @@ class CurrencyExists implements ValidationRule
             $query->where('iso_code', $value)->orWhere('name', $value);
 
         })
-		->where('active', true)
-		->first();
+            ->where('active', true)
+            ->first();
 
         if (! $currency) {
             $fail("Invalid currency: $value.");
