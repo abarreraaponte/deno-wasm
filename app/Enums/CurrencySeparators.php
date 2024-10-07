@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum CurrencySeparators :string
+enum CurrencySeparators: string
 {
-	case COMMA = ',';
-	case DOT = '.';
-	case SPACE = ' ';
-	case UNDERSCORE = '_';
-	case NONE = '';
+    case COMMA = ',';
+    case DOT = '.';
+    case SPACE = ' ';
+    case UNDERSCORE = '_';
+    case NONE = '';
 }
