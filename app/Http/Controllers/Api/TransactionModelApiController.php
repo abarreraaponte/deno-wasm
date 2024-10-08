@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTransactionModelRequest;
-use App\Models\TransactionModel;
+use App\Actions\StoreTransactionModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class TransactionModelApiController extends Controller
 {
@@ -26,19 +25,9 @@ class TransactionModelApiController extends Controller
     {
         $validated = $request->validated();
 
-        $transaction_model = new TransactionModel;
-        $transaction_model->ref_id = $validated['ref_id'] ?? 'TM_'.Str::ulid();
-        $transaction_model->alt_id = $validated['alt_id'] ?? null;
-        $transaction_model->name = $validated['name'];
-        $transaction_model->description = $validated['description'] ?? '';
+        $transaction_model = (new StoreTransactionModel)->execute($validated);
 
-        $transaction_model->route = Str::slug($transaction_model->name);
-        $transaction_model->save();
-
-        return response()->json([
-            'transactionModel' => $transaction_model,
-            'message' => 'Transaction Model created successfully',
-        ], 201);
+        return response()->json($transaction_model, 201);
     }
 
     /**

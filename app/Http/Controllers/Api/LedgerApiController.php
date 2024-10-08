@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLedgerRequest;
-use App\Models\Currency;
-use App\Models\Ledger;
-use Illuminate\Database\Eloquent\Builder;
+use App\Actions\StoreLedger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class LedgerApiController extends Controller
 {
@@ -28,31 +25,9 @@ class LedgerApiController extends Controller
     {
         $validated = $request->validated();
 
-        $currency = Currency::where(function (Builder $query) use ($request) {
+        $ledger = (new StoreLedger)->execute($validated);
 
-            $isUuid = Str::isUuid($request->currency_id);
-
-            if ($isUuid) {
-                $query->where('id', $request->currency_id)->orWhere('iso_code', $request->currency_id)->orWhere('name', $request->currency_id);
-            } else {
-                $query->where('iso_code', $request->currency_id)->orWhere('name', $request->currency_id);
-            }
-
-        })->first();
-
-        $ledger = new Ledger;
-        $ledger->ref_id = $validated['ref_id'] ?? 'LED_'.Str::ulid();
-        $ledger->alt_id = $validated['alt_id'] ?? null;
-        $ledger->name = $validated['name'];
-        $ledger->description = $validated['description'] ?? null;
-        $ledger->currency_id = $currency->id;
-        $ledger->active = $validated['active'] ?? true;
-        $ledger->save();
-
-        return response()->json([
-            'ledger' => $ledger,
-            'message' => 'Ledger created successfully',
-        ], 201);
+        return response()->json($ledger, 201);
     }
 
     /**
