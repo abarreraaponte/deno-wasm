@@ -29,7 +29,7 @@ class StoreAccountRequest extends FormRequest
         return [
             'ref_id' => 'required|string|max:64|unique:accounts',
             'alt_id' => 'nullable|string|max:64|unique:accounts',
-            'name' => 'required|string|unique:accounts',
+            'name' => 'required|string|unique:accounts|max:120',
             'balance_type' => ['required', Rule::in(array_column(BalanceTypes::cases(), 'value'))],
             'ledger_id' => ['required', 'string', new LedgerExists],
             'parent_id' => ['sometimes', 'nullable', 'string', new AccountExists],

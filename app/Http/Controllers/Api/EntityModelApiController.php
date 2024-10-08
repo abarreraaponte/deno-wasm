@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCurrencyRequest;
-use App\Models\Currency;
+use App\Http\Requests\StoreEntityModelRequest;
+use App\Models\EntityModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-class CurrencyApiController extends Controller
+class EntityModelApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,23 +22,20 @@ class CurrencyApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCurrencyRequest $request): JsonResponse
+    public function store(StoreEntityModelRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
-        $currency = new Currency;
-        $currency->name = $validated['name'];
-        $currency->iso_code = $validated['iso_code'];
-        $currency->symbol = $validated['symbol'] ?? '';
-        $currency->precision = $validated['precision'] ?? 2;
-        $currency->active = $validated['active'] ?? true;
-        $currency->thousands_separator = $validated['thousands_separator'] ?? '';
-        $currency->decimal_separator = $validated['decimal_separator'] ?? '';
-        $currency->save();
+        $entityModel = new EntityModel;
+        $entityModel->ref_id = $validated['ref_id'] ?? 'ENT_'.Str::ulid();
+        $entityModel->alt_id = $validated['alt_id'] ?? null;
+        $entityModel->name = $validated['name'];
+        $entityModel->description = $validated['description'] ?? '';
+        $entityModel->save();
 
         return response()->json([
-            'currency' => $currency,
-            'message' => 'Currency created successfully',
+            'entityModel' => $entityModel,
+            'message' => 'Entity Model created successfully',
         ], 201);
     }
 

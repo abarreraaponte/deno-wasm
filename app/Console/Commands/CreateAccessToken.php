@@ -41,9 +41,9 @@ class CreateAccessToken extends Command
                     $query->where('id', $value);
                 }
 
-                $query->where('first_name', 'like', "%$value%")
-                    ->orWhere('last_name', 'like', "%$value%")
-                    ->orWhere('email', $value);
+                $query->where('first_name', 'ilike', "%$value%")
+                    ->orWhere('last_name', 'ilike', "%$value%")
+                    ->orWhere('email', 'ilike', "%$value%");
             })->get()->mapWithKeys(fn (User $user) => [$user->id => "{$user->first_name} {$user->last_name} ({$user->email})"])->all()
             : []
         );

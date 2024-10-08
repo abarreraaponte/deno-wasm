@@ -7,6 +7,7 @@ use App\Http\Requests\StoreAccountRequest;
 use App\Models\Account;
 use App\Models\Ledger;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,7 @@ class AccountApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAccountRequest $request)
+    public function store(StoreAccountRequest $request): JsonResponse
     {
         $validated = $request->validated();
 

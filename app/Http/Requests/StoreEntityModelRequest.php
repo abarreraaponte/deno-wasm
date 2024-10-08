@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\CurrencyExists;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreLedgerRequest extends FormRequest
+class StoreEntityModelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +23,10 @@ class StoreLedgerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ref_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:ledgers,ref_id'],
-            'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:ledgers,alt_id'],
-            'name' => ['required', 'string', 'unique:ledgers,name', 'max:120'],
-            'description' => ['nullable', 'string'],
-            'currency_id' => ['required', 'string', new CurrencyExists],
-            'active' => ['sometimes', 'nullable', 'boolean'],
+            'ref_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:entity_models,ref_id'],
+            'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:entity_models,alt_id'],
+            'name' => ['required', 'string', 'unique:entity_models,name', 'max:120'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
 }

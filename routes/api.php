@@ -9,7 +9,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/currencies', [Api\CurrencyApiController::class, 'store']);
-    Route::post('/ledgers', [Api\LedgerApiController::class, 'store']);
     Route::post('/accounts', [Api\AccountApiController::class, 'store']);
+    Route::post('/currencies', [Api\CurrencyApiController::class, 'store']);
+    Route::post('/entity-models', [Api\EntityModelApiController::class, 'store']);
+    Route::post('/ledgers', [Api\LedgerApiController::class, 'store']);
+    Route::post('/product-models', [Api\ProductModelApiController::class, 'store']);
+    Route::post('/transaction-models', [Api\TransactionModelApiController::class, 'store']);
 });

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('ref_id', 64)->unique()->index();
             $table->string('alt_id', 64)->nullable()->index();
             $table->string('name')->unique()->index();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

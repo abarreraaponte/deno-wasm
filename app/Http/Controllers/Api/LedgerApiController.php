@@ -7,6 +7,7 @@ use App\Http\Requests\StoreLedgerRequest;
 use App\Models\Currency;
 use App\Models\Ledger;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,7 @@ class LedgerApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLedgerRequest $request)
+    public function store(StoreLedgerRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
@@ -47,8 +48,6 @@ class LedgerApiController extends Controller
         $ledger->currency_id = $currency->id;
         $ledger->active = $validated['active'] ?? true;
         $ledger->save();
-
-        return $ledger;
 
         return response()->json([
             'ledger' => $ledger,
