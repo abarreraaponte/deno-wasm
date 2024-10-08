@@ -23,9 +23,9 @@ class CurrencyExists implements ValidationRule
 
             if ($isUuid) {
                 $query->where('id', $value)->orWhere('iso_code', $value)->orWhere('name', $value);
+            } else {
+                $query->where('iso_code', $value)->orWhere('name', $value);
             }
-
-            $query->where('iso_code', $value)->orWhere('name', $value);
 
         })
             ->where('active', true)

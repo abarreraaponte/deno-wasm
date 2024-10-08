@@ -2,13 +2,13 @@
 
 namespace App\Rules;
 
-use App\Models\Account;
+use App\Models\EntityModel;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class AccountExists implements ValidationRule
+class EntityModelExists implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -17,7 +17,7 @@ class AccountExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $account = Account::where(function (Builder $query) use ($value) {
+        $entity_model = EntityModel::where(function (Builder $query) use ($value) {
 
             $isUuid = Str::isUuid($value);
 
@@ -33,8 +33,8 @@ class AccountExists implements ValidationRule
             ->where('active', true)
             ->first();
 
-        if (! $account) {
-            $fail("Invalid account: $value.");
+        if (! $entity_model) {
+            $fail("Invalid entity model: $value.");
         }
     }
 }

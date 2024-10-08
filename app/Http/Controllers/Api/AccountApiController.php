@@ -37,9 +37,9 @@ class AccountApiController extends Controller
                 $query->where('id', $request->ledger_id)
                     ->orWhere('ref_id', $request->ledger_id)
                     ->orWhere('alt_id', $request->ledger_id);
+            } else {
+                $query->where('ref_id', $request->ledger_id)->orWhere('alt_id', $request->ledger_id);
             }
-
-            $query->where('ref_id', $request->ledger_id)->orWhere('alt_id', $request->ledger_id);
 
         })->first();
 
@@ -53,9 +53,9 @@ class AccountApiController extends Controller
                     $query->where('id', $request->parent_id)
                         ->orWhere('ref_id', $request->parent_id)
                         ->orWhere('alt_id', $request->parent_id);
+                } else {
+                    $query->where('ref_id', $request->parent_id)->orWhere('alt_id', $request->parent_id);
                 }
-
-                $query->where('ref_id', $request->parent_id)->orWhere('alt_id', $request->parent_id);
 
             })->first()
 

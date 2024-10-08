@@ -25,9 +25,9 @@ class LedgerExists implements ValidationRule
                 $query->where('id', $value)
                     ->orWhere('ref_id', $value)
                     ->orWhere('alt_id', $value);
+            } else {
+                $query->where('ref_id', $value)->orWhere('alt_id', $value);
             }
-
-            $query->where('ref_id', $value)->orWhere('alt_id', $value);
 
         })
             ->where('active', true)

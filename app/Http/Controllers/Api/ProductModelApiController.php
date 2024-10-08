@@ -26,15 +26,17 @@ class ProductModelApiController extends Controller
     {
         $validated = $request->validated();
 
-        $productModel = new ProductModel;
-        $productModel->ref_id = $validated['ref_id'] ?? 'PM_'.Str::ulid();
-        $productModel->alt_id = $validated['alt_id'] ?? null;
-        $productModel->name = $validated['name'];
-        $productModel->description = $validated['description'] ?? '';
-        $productModel->save();
+        $product_model = new ProductModel;
+        $product_model->ref_id = $validated['ref_id'] ?? 'PM_'.Str::ulid();
+        $product_model->alt_id = $validated['alt_id'] ?? null;
+        $product_model->name = $validated['name'];
+        $product_model->description = $validated['description'] ?? '';
+
+        $product_model->route = Str::slug($product_model->name);
+        $product_model->save();
 
         return response()->json([
-            'productModel' => $productModel,
+            'productModel' => $product_model,
             'message' => 'Product Model created successfully',
         ], 201);
     }

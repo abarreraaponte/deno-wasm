@@ -34,9 +34,9 @@ class LedgerApiController extends Controller
 
             if ($isUuid) {
                 $query->where('id', $request->currency_id)->orWhere('iso_code', $request->currency_id)->orWhere('name', $request->currency_id);
+            } else {
+                $query->where('iso_code', $request->currency_id)->orWhere('name', $request->currency_id);
             }
-
-            $query->where('iso_code', $request->currency_id)->orWhere('name', $request->currency_id);
 
         })->first();
 

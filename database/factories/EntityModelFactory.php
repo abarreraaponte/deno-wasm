@@ -21,6 +21,7 @@ class EntityModelFactory extends Factory
             'ref_id' => 'EM_'.Str::ulid(),
             'alt_id' => 'ALT_EM_'.Str::ulid(),
             'name' => fake()->unique()->words(2, true),
+            'route' => Str::ulid(),
         ];
     }
 }

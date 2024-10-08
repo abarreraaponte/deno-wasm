@@ -26,15 +26,17 @@ class TransactionModelApiController extends Controller
     {
         $validated = $request->validated();
 
-        $transactionModel = new TransactionModel;
-        $transactionModel->ref_id = $validated['ref_id'] ?? 'TM_'.Str::ulid();
-        $transactionModel->alt_id = $validated['alt_id'] ?? null;
-        $transactionModel->name = $validated['name'];
-        $transactionModel->description = $validated['description'] ?? '';
-        $transactionModel->save();
+        $transaction_model = new TransactionModel;
+        $transaction_model->ref_id = $validated['ref_id'] ?? 'TM_'.Str::ulid();
+        $transaction_model->alt_id = $validated['alt_id'] ?? null;
+        $transaction_model->name = $validated['name'];
+        $transaction_model->description = $validated['description'] ?? '';
+
+        $transaction_model->route = Str::slug($transaction_model->name);
+        $transaction_model->save();
 
         return response()->json([
-            'transactionModel' => $transactionModel,
+            'transactionModel' => $transaction_model,
             'message' => 'Transaction Model created successfully',
         ], 201);
     }

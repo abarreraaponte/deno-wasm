@@ -26,15 +26,17 @@ class EntityModelApiController extends Controller
     {
         $validated = $request->validated();
 
-        $entityModel = new EntityModel;
-        $entityModel->ref_id = $validated['ref_id'] ?? 'ENT_'.Str::ulid();
-        $entityModel->alt_id = $validated['alt_id'] ?? null;
-        $entityModel->name = $validated['name'];
-        $entityModel->description = $validated['description'] ?? '';
-        $entityModel->save();
+        $entity_model = new EntityModel;
+        $entity_model->ref_id = $validated['ref_id'] ?? 'ENT_'.Str::ulid();
+        $entity_model->alt_id = $validated['alt_id'] ?? null;
+        $entity_model->name = $validated['name'];
+        $entity_model->description = $validated['description'] ?? '';
+
+        $entity_model->route = Str::slug($entity_model->name);
+        $entity_model->save();
 
         return response()->json([
-            'entityModel' => $entityModel,
+            'entityModel' => $entity_model,
             'message' => 'Entity Model created successfully',
         ], 201);
     }

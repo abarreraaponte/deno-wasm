@@ -21,6 +21,7 @@ class ProductModelFactory extends Factory
             'ref_id' => 'PM_'.Str::ulid(),
             'alt_id' => 'ALT_PM_'.Str::ulid(),
             'name' => fake()->unique()->words(2, true),
+            'route' => Str::ulid(),
         ];
     }
 }

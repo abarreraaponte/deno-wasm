@@ -21,6 +21,7 @@ class TransactionModelFactory extends Factory
             'ref_id' => 'TM_'.Str::ulid(),
             'alt_id' => 'ALT_TM_'.Str::ulid(),
             'name' => fake()->unique()->words(2, true),
+            'route' => Str::ulid(),
         ];
     }
 }

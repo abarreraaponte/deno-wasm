@@ -19,6 +19,7 @@ return new class extends Migration
             $table->uuid('parent_id')->nullable();
             $table->string('name')->unique()->index();
             $table->jsonb('meta')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
 
             $table->foreign('entity_model_id')->references('id')->on('entity_models')->onDelete('restrict');
