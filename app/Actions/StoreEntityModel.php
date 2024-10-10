@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Models\EntityModel;
 use Illuminate\Support\Str;
 
-class StoreEntityModel implements ActionInterface
+class StoreEntityModel
 {
     /**
      * Create a new class instance.

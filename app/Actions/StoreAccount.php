@@ -7,7 +7,7 @@ use App\Models\Ledger;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class StoreAccount implements ActionInterface
+class StoreAccount
 {
     /**
      * Create a new class instance.

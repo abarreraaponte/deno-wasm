@@ -6,7 +6,7 @@ use App\Models\Entity;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
-class StoreEntity implements ActionInterface
+class StoreEntity
 {
 	public string $entity_model_id;
 

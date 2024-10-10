@@ -24,7 +24,7 @@ class CurrencyFactory extends Factory
             'precision' => fake()->numberBetween(0, 12),
             'active' => true,
             'thousands_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
-            'decimal_separator' => fake()->randomElement(array_column(CurrencySeparators::cases(), 'value')),
+            'decimal_separator' => fake()->randomElement(array_filter(array_column(CurrencySeparators::cases(), 'value'), fn ($separator) => strlen($separator) > 0)),
         ];
     }
 }

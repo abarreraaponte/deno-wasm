@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Models\TransactionModel;
 use Illuminate\Support\Str;
 
-class StoreTransactionModel implements ActionInterface
+class StoreTransactionModel
 {
     /**
      * Create a new class instance.

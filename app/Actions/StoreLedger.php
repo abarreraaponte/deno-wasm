@@ -7,7 +7,7 @@ use App\Models\Currency;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 
-class StoreLedger implements ActionInterface
+class StoreLedger
 {
     /**
      * Create a new class instance.

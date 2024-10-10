@@ -11,6 +11,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/accounts', [Api\AccountApiController::class, 'store']);
     Route::post('/currencies', [Api\CurrencyApiController::class, 'store']);
+	Route::put('/currencies/{id}', [Api\CurrencyApiController::class, 'update']);
     Route::post('/entities/{model_route}', [Api\EntityApiController::class, 'store']);
     Route::post('/entity-models', [Api\EntityModelApiController::class, 'store']);
     Route::post('/ledgers', [Api\LedgerApiController::class, 'store']);

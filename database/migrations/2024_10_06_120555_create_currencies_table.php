@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('symbol', 5)->nullable();
             $table->smallInteger('precision', false, true)->default(2);
             $table->boolean('active')->default(true);
-            $table->enum('thousands_separator', array_column(CurrencySeparators::cases(), 'value'));
-            $table->enum('decimal_separator', array_column(CurrencySeparators::cases(), 'value'));
+            $table->enum('thousands_separator', array_column(CurrencySeparators::cases(), 'value'))->nullable();
+            $table->enum('decimal_separator', array_filter(array_column(CurrencySeparators::cases(), 'value'), fn ($separator) => strlen($separator) > 0));
             $table->timestamps();
         });
     }

@@ -3,7 +3,7 @@
 namespace App\Actions;
 use App\Models\Currency;
 
-class StoreCurrency implements ActionInterface
+class StoreCurrency
 {
     /**
      * Create a new class instance.
