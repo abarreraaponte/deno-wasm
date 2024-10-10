@@ -17,23 +17,9 @@ class LedgerExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $ledger = Ledger::where(function (Builder $query) use ($value) {
+        $exists = Ledger::IdExists($value);
 
-            $isUuid = Str::isUuid($value);
-
-            if ($isUuid) {
-                $query->where('id', $value)
-                    ->orWhere('ref_id', $value)
-                    ->orWhere('alt_id', $value);
-            } else {
-                $query->where('ref_id', $value)->orWhere('alt_id', $value);
-            }
-
-        })
-            ->where('active', true)
-            ->first();
-
-        if (! $ledger) {
+        if (! $exists) {
             $fail("Invalid ledger: $value.");
         }
     }

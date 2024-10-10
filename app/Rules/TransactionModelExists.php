@@ -17,21 +17,9 @@ class TransactionModelExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $transaction_model = TransactionModel::where(function (Builder $query) use ($value) {
-            $isUuid = Str::isUuid($value);
+        $exists = TransactionModel::IdExists($value);
 
-            if ($isUuid) {
-                $query->where('id', $value)
-                    ->orWhere('ref_id', $value)
-                    ->orWhere('alt_id', $value);
-            } else {
-                $query->where('ref_id', $value)->orWhere('alt_id', $value);
-            }
-        })
-            ->where('active', true)
-            ->first();
-
-        if (! $transaction_model) {
+        if (! $exists) {
             $fail("Invalid transaction model: $value.");
         }
     }

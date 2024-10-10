@@ -26,34 +26,12 @@ class StoreAccount implements ActionInterface
 
         $account = new Account;
 
-        $ledger = Ledger::where(function (Builder $query) use ($data_class) {
-            $isUuid = Str::isUuid($data_class->ledger_id);
-
-            if ($isUuid) {
-                $query->where('id', $data_class->ledger_id)
-                    ->orWhere('ref_id', $data_class->ledger_id)
-                    ->orWhere('alt_id', $data_class->ledger_id);
-            } else {
-                $query->where('ref_id', $data_class->ledger_id)->orWhere('alt_id', $data_class->ledger_id);
-            }
-
-        })->first();
+        $ledger = Ledger::findById($data_class->ledger_id);
 
         // Get the parent account if it exists.
         $parent_account = !empty($data_class->parent_id) ?
 
-            Account::where(function (Builder $query) use ($data_class) {
-                $isUuid = Str::isUuid($data_class->parent_id);
-
-                if ($isUuid) {
-                    $query->where('id', $data_class->parent_id)
-                        ->orWhere('ref_id', $data_class->parent_id)
-                        ->orWhere('alt_id', $data_class->parent_id);
-                } else {
-                    $query->where('ref_id', $data_class->parent_id)->orWhere('alt_id', $data_class->parent_id);
-                }
-
-            })->first()
+            Account::findById($data_class->parent_id)
 
         : null;
 

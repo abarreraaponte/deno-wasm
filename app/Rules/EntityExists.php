@@ -17,21 +17,9 @@ class EntityExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $entity = Entity::where(function (Builder $query) use ($value) {
-            $isUuid = Str::isUuid($value);
+        $exists = Entity::IdExists($value);
 
-            if ($isUuid) {
-                $query->where('id', $value)
-                    ->orWhere('ref_id', $value)
-                    ->orWhere('alt_id', $value);
-            } else {
-                $query->where('ref_id', $value)->orWhere('alt_id', $value);
-            }
-        })
-            ->where('active', true)
-            ->first();
-
-        if (! $entity) {
+        if (!$exists) {
             $fail("Invalid entity: $value.");
         }
     }

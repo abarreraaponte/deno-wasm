@@ -17,23 +17,9 @@ class AccountExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $account = Account::where(function (Builder $query) use ($value) {
+        $exists = Account::IdExists($value);
 
-            $isUuid = Str::isUuid($value);
-
-            if ($isUuid) {
-                $query->where('id', $value)
-                    ->orWhere('ref_id', $value)
-                    ->orWhere('alt_id', $value);
-            } else {
-                $query->where('ref_id', $value)->orWhere('alt_id', $value);
-            }
-
-        })
-            ->where('active', true)
-            ->first();
-
-        if (! $account) {
+        if (!$exists) {
             $fail("Invalid account: $value.");
         }
     }

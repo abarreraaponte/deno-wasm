@@ -27,18 +27,7 @@ class StoreEntity implements ActionInterface
 
         $parent_entity = !empty($validated_class->parent_id) ?
 
-            Entity::where(function (Builder $query) use ($validated_class) {
-                $isUuid = Str::isUuid($validated_class->parent_id);
-
-                if ($isUuid) {
-                    $query->where('id', $validated_class->parent_id)
-                        ->where('ref_id', $validated_class->parent_id)
-                        ->orWhere('alt_id', $validated_class->parent_id);
-                } else {
-                    $query->where('ref_id', $validated_class->parent_id)->orWhere('alt_id', $validated_class->parent_id);
-                }
-
-            })->first()
+            Entity::findById($validated_class->parent_id)
 
         : null;
 
