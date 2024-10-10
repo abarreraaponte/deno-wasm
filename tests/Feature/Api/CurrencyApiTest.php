@@ -25,14 +25,12 @@ test('Duplicate currency can not be created', function () {
 });
 
 test('Update and existing currency', function () {
-	$user = User::factory()->create();
-	$currency = Currency::factory()->create();
+    $user = User::factory()->create();
+    $currency = Currency::factory()->create();
 
-	$currency->name = fake()->unique()->name;
+    $currency->name = fake()->unique()->name;
 
-	echo $currency;
+    $response = $this->actingAs($user)->putJson('/api/currencies/'.$currency->id, $currency->toArray());
 
-	$response = $this->actingAs($user)->putJson('/api/currencies/' . $currency->id, $currency->toArray());
-
-	$response->assertStatus(200);
+    $response->assertStatus(200);
 });

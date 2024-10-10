@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\StoreCurrency;
+use App\Actions\UpdateCurrency;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCurrencyRequest;
 use App\Http\Requests\UpdateCurrencyRequest;
 use App\Models\Currency;
-use App\Actions\StoreCurrency;
-use App\Actions\UpdateCurrency;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CurrencyApiController extends Controller
 {
@@ -48,11 +47,11 @@ class CurrencyApiController extends Controller
     {
         $currency = Currency::findByIdOrIsoCode($id);
 
-		$validated = $request->validated();
+        $validated = $request->validated();
 
-		$updated_currency = (new UpdateCurrency)->execute($currency, $validated);
+        $updated_currency = (new UpdateCurrency)->execute($currency, $validated);
 
-		return response()->json($updated_currency, 200);
+        return response()->json($updated_currency, 200);
     }
 
     /**

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\StoreEntity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEntityRequest;
-use App\Actions\StoreEntity;
 use App\Models\EntityModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ class EntityApiController extends Controller
             abort(404, 'Entity Model not found');
         }
 
-		$validated = $request->validated();
+        $validated = $request->validated();
 
         $entity = (new StoreEntity($entity_model->id))->execute($validated);
 

@@ -5,8 +5,6 @@ namespace App\Rules;
 use App\Models\Ledger;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class LedgerExists implements ValidationRule
 {
@@ -17,7 +15,7 @@ class LedgerExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $exists = Ledger::IdExists($value);
+        $exists = Ledger::findById($value);
 
         if (! $exists) {
             $fail("Invalid ledger: $value.");

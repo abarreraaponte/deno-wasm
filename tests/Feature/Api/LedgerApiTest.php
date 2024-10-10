@@ -24,3 +24,17 @@ test('Duplicate ledger can not be created', function () {
 
     $response->assertStatus(422);
 });
+
+test('Update an existing ledger', function () {
+    $user = User::factory()->create();
+    $ledger = Ledger::factory()->create();
+
+    $ledger->name = fake()->unique()->name;
+
+    // Remove the currency_id from the ledger object.
+    unset($ledger->currency_id);
+
+    $response = $this->actingAs($user)->putJson('/api/ledgers/'.$ledger->id, $ledger->toArray());
+
+    $response->assertStatus(200);
+});

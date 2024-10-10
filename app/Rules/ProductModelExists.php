@@ -5,8 +5,6 @@ namespace App\Rules;
 use App\Models\ProductModel;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class ProductModelExists implements ValidationRule
 {
@@ -17,7 +15,7 @@ class ProductModelExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $exists = ProductModel::IdExists($value);
+        $exists = ProductModel::findById($value);
 
         if (! $exists) {
             $fail("Invalid product model: $value.");

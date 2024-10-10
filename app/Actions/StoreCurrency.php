@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Actions;
+
 use App\Models\Currency;
 
 class StoreCurrency
@@ -13,12 +14,12 @@ class StoreCurrency
         //
     }
 
-	/**
-	 * Execute the action.
-	 */
-	public function execute(array $data): Currency
-	{
-		$currency = new Currency;
+    /**
+     * Execute the action.
+     */
+    public function execute(array $data): Currency
+    {
+        $currency = new Currency;
         $currency->name = $data['name'];
         $currency->iso_code = $data['iso_code'];
         $currency->symbol = $data['symbol'] ?? '';
@@ -28,6 +29,6 @@ class StoreCurrency
         $currency->decimal_separator = $data['decimal_separator'] ?? '';
         $currency->save();
 
-		return $currency;
-	}
+        return $currency;
+    }
 }

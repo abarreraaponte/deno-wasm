@@ -3,29 +3,28 @@
 namespace App\Actions;
 
 use App\Models\Entity;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class StoreEntity
 {
-	public string $entity_model_id;
+    public string $entity_model_id;
 
     /**
      * Create a new class instance.
      */
     public function __construct(string $entity_model_id)
-	{
-		$this->entity_model_id = $entity_model_id;
-	}
+    {
+        $this->entity_model_id = $entity_model_id;
+    }
 
-	/**
-	 * Execute the action.
-	 */
-	public function execute(array $validated) :Entity
-	{
-		$validated_class = (object) $validated;
+    /**
+     * Execute the action.
+     */
+    public function execute(array $validated): Entity
+    {
+        $validated_class = (object) $validated;
 
-        $parent_entity = !empty($validated_class->parent_id) ?
+        $parent_entity = ! empty($validated_class->parent_id) ?
 
             Entity::findById($validated_class->parent_id)
 
@@ -41,6 +40,6 @@ class StoreEntity
 
         $entity->save();
 
-		return $entity;
-	}
+        return $entity;
+    }
 }

@@ -5,8 +5,6 @@ namespace App\Rules;
 use App\Models\Entity;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class EntityExists implements ValidationRule
 {
@@ -17,9 +15,9 @@ class EntityExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $exists = Entity::IdExists($value);
+        $exists = Entity::findById($value);
 
-        if (!$exists) {
+        if (! $exists) {
             $fail("Invalid entity: $value.");
         }
     }

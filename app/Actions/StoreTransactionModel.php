@@ -15,12 +15,12 @@ class StoreTransactionModel
         //
     }
 
-	/**
-	 * Execute the action.
-	 */
-	public function execute(array $validated): TransactionModel
-	{
-		$transaction_model = new TransactionModel;
+    /**
+     * Execute the action.
+     */
+    public function execute(array $validated): TransactionModel
+    {
+        $transaction_model = new TransactionModel;
         $transaction_model->ref_id = $validated['ref_id'] ?? 'TM_'.Str::ulid();
         $transaction_model->alt_id = $validated['alt_id'] ?? null;
         $transaction_model->name = $validated['name'];
@@ -29,6 +29,6 @@ class StoreTransactionModel
         $transaction_model->route = Str::slug($transaction_model->name);
         $transaction_model->save();
 
-		return $transaction_model;
-	}
+        return $transaction_model;
+    }
 }

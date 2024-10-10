@@ -49,8 +49,11 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
+		"format": [
+			"./vendor/bin/pint"
+		],
 		"test": [
-			"@php artisan test"
+			"./vendor/bin/pest"
 		],
 		"create-user": [
 			"@php artisan app:create-user"

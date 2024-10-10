@@ -5,8 +5,6 @@ namespace App\Rules;
 use App\Models\Account;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class AccountExists implements ValidationRule
 {
@@ -17,9 +15,9 @@ class AccountExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $exists = Account::IdExists($value);
+        $exists = Account::findById($value);
 
-        if (!$exists) {
+        if (! $exists) {
             $fail("Invalid account: $value.");
         }
     }

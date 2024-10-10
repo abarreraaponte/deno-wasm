@@ -5,8 +5,6 @@ namespace App\Rules;
 use App\Models\TransactionModel;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class TransactionModelExists implements ValidationRule
 {
@@ -17,7 +15,7 @@ class TransactionModelExists implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $exists = TransactionModel::IdExists($value);
+        $exists = TransactionModel::findById($value);
 
         if (! $exists) {
             $fail("Invalid transaction model: $value.");

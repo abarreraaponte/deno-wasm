@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\StoreEntityModel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEntityModelRequest;
-use App\Actions\StoreEntityModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

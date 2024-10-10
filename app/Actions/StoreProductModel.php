@@ -14,13 +14,13 @@ class StoreProductModel
     {
         //
     }
-	
-	/**
-	 * Execute the action.
-	 */
-	public function execute(array $validated): ProductModel
-	{
-		$product_model = new ProductModel;
+
+    /**
+     * Execute the action.
+     */
+    public function execute(array $validated): ProductModel
+    {
+        $product_model = new ProductModel;
         $product_model->ref_id = $validated['ref_id'] ?? 'PM_'.Str::ulid();
         $product_model->alt_id = $validated['alt_id'] ?? null;
         $product_model->name = $validated['name'];
@@ -29,6 +29,6 @@ class StoreProductModel
         $product_model->route = Str::slug($product_model->name);
         $product_model->save();
 
-		return $product_model;
-	}
+        return $product_model;
+    }
 }

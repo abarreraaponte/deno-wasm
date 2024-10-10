@@ -2,10 +2,9 @@
 
 namespace App\Actions;
 
-use App\Models\Ledger;
 use App\Models\Currency;
+use App\Models\Ledger;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Builder;
 
 class StoreLedger
 {
@@ -17,24 +16,14 @@ class StoreLedger
         //
     }
 
-	/**
-	 * Execute the action.
-	 */
-	public function execute(array $validated): Ledger
-	{
-		$validated_object = (object) $validated;
+    /**
+     * Execute the action.
+     */
+    public function execute(array $validated): Ledger
+    {
+        $validated_object = (object) $validated;
 
-		$currency = Currency::where(function (Builder $query) use ($validated_object) {
-
-            $isUuid = Str::isUuid($validated_object->currency_id);
-
-            if ($isUuid) {
-                $query->where('id', $validated_object->currency_id)->orWhere('iso_code', $validated_object->currency_id)->orWhere('name', $validated_object->currency_id);
-            } else {
-                $query->where('iso_code', $validated_object->currency_id)->orWhere('name', $validated_object->currency_id);
-            }
-
-        })->first();
+        $currency = Currency::findByIdOrIsoCode($validated_object->currency_id);
 
         $ledger = new Ledger;
         $ledger->ref_id = $validated['ref_id'] ?? 'LED_'.Str::ulid();
@@ -45,6 +34,6 @@ class StoreLedger
         $ledger->active = $validated['active'] ?? true;
         $ledger->save();
 
-		return $ledger;
-	}
+        return $ledger;
+    }
 }

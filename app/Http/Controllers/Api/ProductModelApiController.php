@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\StoreProductModel;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductModelRequest;
-use App\Actions\StoreProductModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

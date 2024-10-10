@@ -13,7 +13,7 @@ class AccountApiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() :JsonResponse
+    public function index(): JsonResponse
     {
         return response()->json(['message' => 'Hello World']);
     }
@@ -33,7 +33,7 @@ class AccountApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) :JsonResponse
+    public function show(string $id): JsonResponse
     {
         //
     }

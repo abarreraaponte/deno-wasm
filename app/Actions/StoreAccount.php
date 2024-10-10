@@ -4,7 +4,6 @@ namespace App\Actions;
 
 use App\Models\Account;
 use App\Models\Ledger;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class StoreAccount
@@ -29,7 +28,7 @@ class StoreAccount
         $ledger = Ledger::findById($data_class->ledger_id);
 
         // Get the parent account if it exists.
-        $parent_account = !empty($data_class->parent_id) ?
+        $parent_account = ! empty($data_class->parent_id) ?
 
             Account::findById($data_class->parent_id)
 
