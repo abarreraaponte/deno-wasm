@@ -17,5 +17,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/ledgers', [Api\LedgerApiController::class, 'store']);
     Route::put('/ledgers/{id}', [Api\LedgerApiController::class, 'update']);
     Route::post('/product-models', [Api\ProductModelApiController::class, 'store']);
+	Route::post('/products/{model_route}', [Api\ProductApiController::class, 'store']);
     Route::post('/transaction-models', [Api\TransactionModelApiController::class, 'store']);
 });

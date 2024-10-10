@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('product_model_id');
             $table->string('name')->unique()->index();
             $table->jsonb('meta')->nullable();
+			$table->boolean('active')->default(true);
             $table->timestamps();
 
             $table->foreign('product_model_id')->references('id')->on('product_models')->onDelete('restrict');
