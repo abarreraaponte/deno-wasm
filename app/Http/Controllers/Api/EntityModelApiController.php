@@ -26,7 +26,7 @@ class EntityModelApiController extends Controller
 
         $creator = new StoreEntityModel;
 
-        $validated = $request->validated($creator->getValidationRules());
+        $validated = $request->validate($creator->getValidationRules());
 
         $entity_model = $creator->execute($validated);
 

@@ -31,9 +31,9 @@ class ProductApiController extends Controller
             abort(404, 'Product Model not found');
         }
 
-        $creator = new StoreProduct($product_model);
+        $creator = new StoreProduct($product_model->id);
 
-        $validated = $request->validated($creator->getValidationRules());
+        $validated = $request->validate($creator->getValidationRules());
 
         $product = $creator->execute($validated);
 

@@ -26,7 +26,7 @@ class ProductModelApiController extends Controller
 
         $creator = new StoreProductModel;
 
-        $validated = $request->validated($creator->getValidationRules());
+        $validated = $request->validate($creator->getValidationRules());
 
         $product_model = $creator->execute($validated);
 

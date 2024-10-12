@@ -26,7 +26,7 @@ class TransactionModelApiController extends Controller
 
         $creator = new StoreTransactionModel;
 
-        $validated = $request->validated($creator->getValidationRules());
+        $validated = $request->validate($creator->getValidationRules());
 
         $transaction_model = $creator->execute($validated);
 

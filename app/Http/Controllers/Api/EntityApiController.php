@@ -32,9 +32,9 @@ class EntityApiController extends Controller
             abort(404, 'Entity Model not found');
         }
 
-        $creator = new StoreEntity($entity_model);
+        $creator = new StoreEntity($entity_model->id);
 
-        $validated = $request->validated();
+        $validated = $request->validate($creator->getValidationRules());
 
         $entity = $creator->execute($validated);
 

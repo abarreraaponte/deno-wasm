@@ -23,7 +23,7 @@ class AccountApiController extends Controller
 
         $creator = new StoreAccount;
 
-        $validated = $request->validated($creator->getValidationRules());
+        $validated = $request->validate($creator->getValidationRules());
 
         $account = $creator->execute($validated);
 
