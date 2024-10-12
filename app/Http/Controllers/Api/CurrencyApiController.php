@@ -6,7 +6,7 @@ use App\Actions\StoreCurrency;
 use App\Actions\UpdateCurrency;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCurrencyRequest;
-use App\Http\Requests\UpdateCurrencyRequest;
+use Illuminate\Http\Request;
 use App\Models\Currency;
 use Illuminate\Http\JsonResponse;
 
@@ -43,9 +43,9 @@ class CurrencyApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCurrencyRequest $request, string $id)
+    public function update(Request $request, string $currency_id)
     {
-        $currency = Currency::findByIdOrIsoCode($id);
+        $currency = Currency::findByIdOrIsoCode($currency_id);
 
         $validated = $request->validated();
 

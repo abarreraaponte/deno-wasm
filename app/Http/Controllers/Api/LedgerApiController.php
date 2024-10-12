@@ -6,7 +6,7 @@ use App\Actions\StoreLedger;
 use App\Actions\UpdateLedger;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLedgerRequest;
-use App\Http\Requests\UpdateLedgerRequest;
+use Illuminate\Http\Request;
 use App\Models\Ledger;
 use Illuminate\Http\JsonResponse;
 
@@ -23,9 +23,11 @@ class LedgerApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLedgerRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validated();
+		$creator = new StoreLedger;
+
+        $validated = $request->validate($creator->getValidationRules());
 
         $ledger = (new StoreLedger)->execute($validated);
 
@@ -43,13 +45,21 @@ class LedgerApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLedgerRequest $request, string $id)
+    public function update(Request $request, string $ledger_id)
     {
-        $ledger = Ledger::findById($id);
+		$updater = new UpdateLedger;
 
-        $validated = $request->validated();
+        $ledger = Ledger::findById($ledger_id);
 
-        $updated_ledger = (new UpdateLedger)->execute($ledger, $validated);
+		if (!$ledger) {
+			return response()->json(['message' => 'Ledger not found'], 404);
+		}
+
+        $validated = $request->validate($updater->getValidationRules($ledger), [
+			'currency_id.missing' => 'The currency_id field is not allowed.',
+		]);
+
+        $updated_ledger = $updater->execute($ledger, $validated);
 
         return response()->json($updated_ledger, 200);
     }

@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\Ledger;
+use Illuminate\Validation\Rule;
 
 class UpdateLedger
 {
@@ -14,34 +15,24 @@ class UpdateLedger
         //
     }
 
+	public function getValidationRules(Ledger $ledger): array
+	{
+		return [
+            'ref_id' => ['sometimes', 'required', 'string', 'max:64', Rule::unique('ledgers', 'ref_id')->ignore($ledger)],
+            'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', Rule::unique('ledgers', 'alt_id')->ignore($ledger)],
+            'name' => ['sometimes', 'required', 'string', Rule::unique('ledgers', 'name')->ignore($ledger), 'max:120'],
+            'description' => ['sometimes', 'nullable', 'string'],
+            'currency_id' => ['missing'],
+            'active' => ['sometimes', 'nullable', 'boolean'],
+        ];
+	}
+
     /**
      * Execute the action.
      */
     public function execute(Ledger $ledger, array $validated): Ledger
     {
-        $validated_object = (object) $validated;
-
-        if ($validated_object->ref_id) {
-            $ledger->ref_id = $validated['ref_id'];
-        }
-
-        if ($validated_object->alt_id) {
-            $ledger->alt_id = $validated['alt_id'];
-        }
-
-        if ($validated_object->name) {
-            $ledger->name = $validated['name'];
-        }
-
-        if ($validated_object->description) {
-            $ledger->description = $validated['description'] ?? '';
-        }
-
-        if ($validated_object->active) {
-            $ledger->active = $validated['active'];
-        }
-
-        $ledger->save();
+		$ledger->update($validated);
 
         return $ledger;
     }
