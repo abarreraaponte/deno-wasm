@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\StoreProduct;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\ProductModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -43,9 +44,20 @@ class ProductApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $model_route, string $product_id)
     {
-        //
+        // Temp: Implement authorization here
+        $product_model = ProductModel::where('route', $model_route)->first();
+
+        if (! $product_model) {
+            abort(404, 'Product Model not found');
+        }
+
+        $product_query = Product::getIdSearchQuery($product_id);
+
+        $product = $product_query->where('product_model_id', $product_model->id)->first();
+
+        return response()->json($product);
     }
 
     /**

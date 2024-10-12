@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Contracts\DeletionProtected;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
-class Currency extends Model
+class Currency extends Model implements DeletionProtected
 {
     use HasFactory, HasUuids;
 
@@ -26,6 +27,12 @@ class Currency extends Model
             }
 
         })->first();
+    }
+
+    public function canBeDeleted(): bool
+    {
+        // For now allow deletion.
+        return true;
     }
 
     public function ledgers(): HasMany

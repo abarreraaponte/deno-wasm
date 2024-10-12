@@ -8,5 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Uom extends Model
 {
+    public function canBeDeleted(): bool
+    {
+        // For now allow deletion.
+        return true;
+    }
+
     use HasFactory, IsIdSearchable;
 }

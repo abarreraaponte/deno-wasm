@@ -38,7 +38,7 @@ class CurrencyApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) :JsonResponse
+    public function show(string $id): JsonResponse
     {
         // Temp: Implement authorization here.
 
@@ -50,7 +50,7 @@ class CurrencyApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $currency_id) :JsonResponse
+    public function update(Request $request, string $currency_id): JsonResponse
     {
         // Temp: Implement authorization here.
 

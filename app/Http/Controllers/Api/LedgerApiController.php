@@ -70,8 +70,22 @@ class LedgerApiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $ledger_id)
     {
-        //
+        $ledger = Ledger::findById($ledger_id);
+
+        if (! $ledger) {
+            abort(404, 'Ledger not found');
+        }
+
+        $check = $ledger->canBeDeleted();
+
+        if (! $check) {
+            abort(400, 'Ledger cannot be deleted');
+        }
+
+        $ledger->delete();
+
+        return response()->json([], 200);
     }
 }

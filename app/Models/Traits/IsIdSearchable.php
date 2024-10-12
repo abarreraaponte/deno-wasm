@@ -23,9 +23,25 @@ trait IsIdSearchable
             }
 
         })
-            ->where('active', true)
             ->first();
 
         return $record;
+    }
+
+    public static function getIdSearchQuery(string $id): Builder
+    {
+        return self::where(function (Builder $query) use ($id) {
+
+            $isUuid = Str::isUuid($id);
+
+            if ($isUuid) {
+                $query->where('id', $id)
+                    ->orWhere('ref_id', $id)
+                    ->orWhere('alt_id', $id);
+            } else {
+                $query->where('ref_id', $id)->orWhere('alt_id', $id);
+            }
+
+        });
     }
 }

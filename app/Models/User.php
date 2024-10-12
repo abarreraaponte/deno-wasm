@@ -3,15 +3,22 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Contracts\DeletionProtected;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements DeletionProtected
 {
     use HasApiTokens, HasFactory, HasUuids, Notifiable;
+
+    public function canBeDeleted(): bool
+    {
+        // For now allow deletion.
+        return true;
+    }
 
     /**
      * The attributes that are mass assignable.
