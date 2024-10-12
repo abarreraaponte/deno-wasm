@@ -44,3 +44,13 @@ test('Account with parent account can be created', function () {
 
     $response->assertStatus(201);
 });
+
+test('Account can be updated', function () {
+
+	$user = User::factory()->create();
+	$account = Account::factory()->create();
+
+	$response = $this->actingAs($user)->putJson("/api/accounts/{$account->id}", ['name' => 'Updated Account']);
+
+	$response->assertStatus(200);
+});

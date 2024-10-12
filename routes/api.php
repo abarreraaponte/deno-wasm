@@ -10,6 +10,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/accounts', [Api\AccountApiController::class, 'store']);
+	Route::put('/accounts/{account_id}', [Api\AccountApiController::class, 'update']);
     Route::post('/currencies', [Api\CurrencyApiController::class, 'store']);
     Route::put('/currencies/{currency_id}', [Api\CurrencyApiController::class, 'update']);
     Route::post('/entities/{model_route}', [Api\EntityApiController::class, 'store']);
