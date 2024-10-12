@@ -3,8 +3,8 @@
 namespace App\Actions;
 
 use App\Models\Product;
-use Illuminate\Support\Str;
 use App\Rules\ProductExists;
+use Illuminate\Support\Str;
 
 class StoreProduct
 {
@@ -18,16 +18,16 @@ class StoreProduct
         $this->product_model_id = $product_model_id;
     }
 
-	public function getValidationRules() :array
-	{
-		return [
+    public function getValidationRules(): array
+    {
+        return [
             'ref_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:product_models,ref_id'],
             'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:product_models,alt_id'],
             'parent_id' => ['sometimes', 'nullable', 'string', new ProductExists],
             'name' => ['required', 'string', 'unique:products,name', 'max:120'],
             'active' => ['sometimes', 'nullable', 'boolean'],
         ];
-	}
+    }
 
     /**
      * Execute the action.

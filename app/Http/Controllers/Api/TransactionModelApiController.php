@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\StoreTransactionModel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTransactionModelRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,7 +22,9 @@ class TransactionModelApiController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-		$creator = new StoreTransactionModel;
+        // Temp: Implement authorization here.
+
+        $creator = new StoreTransactionModel;
 
         $validated = $request->validated($creator->getValidationRules());
 

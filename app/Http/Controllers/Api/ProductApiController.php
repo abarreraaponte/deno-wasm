@@ -23,14 +23,15 @@ class ProductApiController extends Controller
      */
     public function store(Request $request, string $model_route): JsonResponse
     {
-        // Check the route first
+        // Temp: Implement authorization here.
+
         $product_model = ProductModel::where('route', $model_route)->first();
 
         if (! $product_model) {
             abort(404, 'Product Model not found');
         }
 
-		$creator = new StoreProduct($product_model);
+        $creator = new StoreProduct($product_model);
 
         $validated = $request->validated($creator->getValidationRules());
 

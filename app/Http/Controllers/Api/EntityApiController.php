@@ -23,6 +23,8 @@ class EntityApiController extends Controller
      */
     public function store(Request $request, string $model_route): JsonResponse
     {
+        // Temp: Implement authorization here.
+
         // Check the route first
         $entity_model = EntityModel::where('route', $model_route)->first();
 
@@ -30,7 +32,7 @@ class EntityApiController extends Controller
             abort(404, 'Entity Model not found');
         }
 
-		$creator = new StoreEntity($entity_model);
+        $creator = new StoreEntity($entity_model);
 
         $validated = $request->validated();
 

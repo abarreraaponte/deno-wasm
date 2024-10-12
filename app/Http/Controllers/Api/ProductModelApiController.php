@@ -22,7 +22,9 @@ class ProductModelApiController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-		$creator = new StoreProductModel;
+        // Temp: Implement authorization here.
+
+        $creator = new StoreProductModel;
 
         $validated = $request->validated($creator->getValidationRules());
 

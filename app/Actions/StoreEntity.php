@@ -3,8 +3,8 @@
 namespace App\Actions;
 
 use App\Models\Entity;
-use Illuminate\Support\Str;
 use App\Rules\EntityExists;
+use Illuminate\Support\Str;
 
 class StoreEntity
 {
@@ -18,16 +18,16 @@ class StoreEntity
         $this->entity_model_id = $entity_model_id;
     }
 
-	public function getValidationRules(): array
-	{
-		return [
+    public function getValidationRules(): array
+    {
+        return [
             'ref_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:entity_models,ref_id'],
             'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:entity_models,alt_id'],
             'parent_id' => ['sometimes', 'nullable', 'string', new EntityExists],
             'name' => ['required', 'string', 'unique:entities,name', 'max:120'],
             'active' => ['sometimes', 'nullable', 'boolean'],
         ];
-	}
+    }
 
     /**
      * Execute the action.

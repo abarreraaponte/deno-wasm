@@ -12,17 +12,16 @@ class AccountApiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
-    {
-        return response()->json(['message' => 'Hello World']);
-    }
+    public function index() {}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request): JsonResponse
     {
-		$creator = new StoreAccount;
+        // Temp: Implement authorization here.
+
+        $creator = new StoreAccount;
 
         $validated = $request->validated($creator->getValidationRules());
 

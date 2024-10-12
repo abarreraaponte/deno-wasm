@@ -24,6 +24,8 @@ class CurrencyApiController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        // Temp: Implement authorization here.
+
         $creator = new StoreCurrency;
 
         $validated = $request->validate($creator->getValidationRules());
@@ -46,6 +48,8 @@ class CurrencyApiController extends Controller
      */
     public function update(Request $request, string $currency_id)
     {
+        // Temp: Implement authorization here.
+
         $updater = new UpdateCurrency;
 
         $currency = Currency::findByIdOrIsoCode($currency_id);

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\StoreEntityModel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreEntityModelRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,7 +22,9 @@ class EntityModelApiController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-		$creator = new StoreEntityModel;
+        // Temp: Implement authorization here.
+
+        $creator = new StoreEntityModel;
 
         $validated = $request->validated($creator->getValidationRules());
 

@@ -24,6 +24,8 @@ class LedgerApiController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        // Temp: Implement authorization here.
+
         $creator = new StoreLedger;
 
         $validated = $request->validate($creator->getValidationRules());
@@ -46,6 +48,8 @@ class LedgerApiController extends Controller
      */
     public function update(Request $request, string $ledger_id)
     {
+        // Temp: Implement authorization here.
+
         $updater = new UpdateLedger;
 
         $ledger = Ledger::findById($ledger_id);
