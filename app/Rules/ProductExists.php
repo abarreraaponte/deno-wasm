@@ -2,9 +2,9 @@
 
 namespace App\Rules;
 
+use App\Models\Product;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
-use App\Models\Product;
 
 class ProductExists implements ValidationRule
 {
@@ -17,8 +17,8 @@ class ProductExists implements ValidationRule
     {
         $exitsts = Product::findById($value);
 
-		if (! $exitsts) {
-			$fail("Invalid product: $value.");
-		}
+        if (! $exitsts) {
+            $fail("Invalid product: $value.");
+        }
     }
 }

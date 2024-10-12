@@ -18,7 +18,7 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-		$product_model = ProductModel::factory()->create();
+        $product_model = ProductModel::factory()->create();
 
         return [
             'ref_id' => 'E_'.Str::ulid(),

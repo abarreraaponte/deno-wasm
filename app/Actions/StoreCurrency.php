@@ -2,7 +2,9 @@
 
 namespace App\Actions;
 
+use App\Enums\CurrencySeparators;
 use App\Models\Currency;
+use Illuminate\Validation\Rule;
 
 class StoreCurrency
 {
@@ -12,6 +14,19 @@ class StoreCurrency
     public function __construct()
     {
         //
+    }
+
+    public function getValidationRules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'unique:currencies,name', 'max:64'],
+            'iso_code' => ['required', 'string', 'max:3', 'unique:currencies,iso_code'],
+            'symbol' => ['nullable', 'string', 'max:5'],
+            'precision' => ['required', 'integer', 'min:0', 'max:12'],
+            'active' => ['sometimes', 'nullable', 'boolean'],
+            'thousands_separator' => ['sometimes', 'nullable', 'string', Rule::in(array_column(CurrencySeparators::cases(), 'value'))],
+            'decimal_separator' => ['required', 'string', Rule::in(array_column(CurrencySeparators::cases(), 'value'))],
+        ];
     }
 
     /**

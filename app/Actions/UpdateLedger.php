@@ -15,9 +15,9 @@ class UpdateLedger
         //
     }
 
-	public function getValidationRules(Ledger $ledger): array
-	{
-		return [
+    public function getValidationRules(Ledger $ledger): array
+    {
+        return [
             'ref_id' => ['sometimes', 'required', 'string', 'max:64', Rule::unique('ledgers', 'ref_id')->ignore($ledger)],
             'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', Rule::unique('ledgers', 'alt_id')->ignore($ledger)],
             'name' => ['sometimes', 'required', 'string', Rule::unique('ledgers', 'name')->ignore($ledger), 'max:120'],
@@ -25,14 +25,14 @@ class UpdateLedger
             'currency_id' => ['missing'],
             'active' => ['sometimes', 'nullable', 'boolean'],
         ];
-	}
+    }
 
     /**
      * Execute the action.
      */
     public function execute(Ledger $ledger, array $validated): Ledger
     {
-		$ledger->update($validated);
+        $ledger->update($validated);
 
         return $ledger;
     }

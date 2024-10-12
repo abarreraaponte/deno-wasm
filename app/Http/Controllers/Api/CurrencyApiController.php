@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Actions\StoreCurrency;
 use App\Actions\UpdateCurrency;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreCurrencyRequest;
-use Illuminate\Http\Request;
 use App\Models\Currency;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CurrencyApiController extends Controller
 {
@@ -23,11 +22,13 @@ class CurrencyApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCurrencyRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validated();
+        $creator = new StoreCurrency;
 
-        $currency = (new StoreCurrency)->execute($validated);
+        $validated = $request->validate($creator->getValidationRules());
+
+        $currency = $creator->execute($validated);
 
         return response()->json($currency, 201);
     }
@@ -45,9 +46,11 @@ class CurrencyApiController extends Controller
      */
     public function update(Request $request, string $currency_id)
     {
+        $updater = new UpdateCurrency;
+
         $currency = Currency::findByIdOrIsoCode($currency_id);
 
-        $validated = $request->validated();
+        $validated = $request->validate($updater->getValidationRules($currency));
 
         $updated_currency = (new UpdateCurrency)->execute($currency, $validated);
 

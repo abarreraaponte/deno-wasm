@@ -13,7 +13,7 @@ class Ledger extends Model
 {
     use HasFactory, HasUuids, IsIdSearchable;
 
-	protected $fillable = ['ref_id', 'alt_id', 'name', 'description', 'active'];
+    protected $fillable = ['ref_id', 'alt_id', 'name', 'description', 'active'];
 
     public function currency(): BelongsTo
     {

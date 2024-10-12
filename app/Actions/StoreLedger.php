@@ -4,8 +4,8 @@ namespace App\Actions;
 
 use App\Models\Currency;
 use App\Models\Ledger;
-use Illuminate\Support\Str;
 use App\Rules\CurrencyExists;
+use Illuminate\Support\Str;
 
 class StoreLedger
 {
@@ -17,9 +17,9 @@ class StoreLedger
         //
     }
 
-	public function getValidationRules()
-	{
-		return [
+    public function getValidationRules()
+    {
+        return [
             'ref_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:ledgers,ref_id'],
             'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:ledgers,alt_id'],
             'name' => ['required', 'string', 'unique:ledgers,name', 'max:120'],
@@ -27,7 +27,7 @@ class StoreLedger
             'currency_id' => ['required', 'string', new CurrencyExists],
             'active' => ['sometimes', 'nullable', 'boolean'],
         ];
-	}
+    }
 
     /**
      * Execute the action.

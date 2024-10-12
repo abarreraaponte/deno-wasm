@@ -2,8 +2,8 @@
 
 namespace App\Actions;
 
-use App\Models\Currency;
 use App\Enums\CurrencySeparators;
+use App\Models\Currency;
 use Illuminate\Validation\Rule;
 
 class UpdateCurrency
@@ -16,9 +16,9 @@ class UpdateCurrency
         //
     }
 
-	public function getValidationRules(Currency $currency): array
-	{
-		return [
+    public function getValidationRules(Currency $currency): array
+    {
+        return [
             'name' => ['sometimes', 'required', 'string', Rule::unique('currencies', 'name')->ignore($currency), 'max:64'],
             'iso_code' => ['sometimes', 'required', 'string', 'max:3', Rule::unique('currencies', 'iso_code')->ignore($currency)],
             'symbol' => ['sometimes', 'nullable', 'string', 'max:5'],
@@ -27,7 +27,7 @@ class UpdateCurrency
             'thousands_separator' => ['sometimes', 'nullable', 'string', Rule::in(array_column(CurrencySeparators::cases(), 'value'))],
             'decimal_separator' => ['sometimes', 'required', 'string', Rule::in(array_column(CurrencySeparators::cases(), 'value'))],
         ];
-	}
+    }
 
     /**
      * Execute the action.
