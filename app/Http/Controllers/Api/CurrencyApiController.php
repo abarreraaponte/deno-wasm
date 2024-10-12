@@ -32,21 +32,25 @@ class CurrencyApiController extends Controller
 
         $currency = $creator->execute($validated);
 
-        return response()->json($currency, 201);
+        return new JsonResponse($currency, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id) :JsonResponse
     {
-        //
+        // Temp: Implement authorization here.
+
+        $currency = Currency::findByIdOrIsoCode($id);
+
+        return new JsonResponse($currency, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $currency_id)
+    public function update(Request $request, string $currency_id) :JsonResponse
     {
         // Temp: Implement authorization here.
 
