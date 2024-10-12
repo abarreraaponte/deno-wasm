@@ -21,11 +21,13 @@ class EntityModelApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEntityModelRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validated();
+		$creator = new StoreEntityModel;
 
-        $entity_model = (new StoreEntityModel)->execute($validated);
+        $validated = $request->validated($creator->getValidationRules());
+
+        $entity_model = $creator->execute($validated);
 
         return response()->json($entity_model, 201);
     }

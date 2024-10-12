@@ -21,11 +21,13 @@ class TransactionModelApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTransactionModelRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validated();
+		$creator = new StoreTransactionModel;
 
-        $transaction_model = (new StoreTransactionModel)->execute($validated);
+        $validated = $request->validated($creator->getValidationRules());
+
+        $transaction_model = $creator->execute($validated);
 
         return response()->json($transaction_model, 201);
     }

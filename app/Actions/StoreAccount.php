@@ -5,6 +5,10 @@ namespace App\Actions;
 use App\Models\Account;
 use App\Models\Ledger;
 use Illuminate\Support\Str;
+use App\Rules\LedgerExists;
+use App\Enums\BalanceTypes;
+use Illuminate\Validation\Rule;
+use App\Rules\AccountExists;
 
 class StoreAccount
 {
@@ -16,6 +20,18 @@ class StoreAccount
         //
     }
 
+	public function getValidationRules()
+	{
+		return [
+            'ref_id' => 'required|string|max:64|unique:accounts',
+            'alt_id' => 'nullable|string|max:64|unique:accounts',
+            'name' => 'required|string|unique:accounts|max:120',
+            'balance_type' => ['required', Rule::in(array_column(BalanceTypes::cases(), 'value'))],
+            'ledger_id' => ['required', 'string', new LedgerExists],
+            'parent_id' => ['sometimes', 'nullable', 'string', new AccountExists],
+            'active' => ['sometimes', 'nullable', 'boolean'],
+        ];
+	}
     /**
      * Execute the action.
      */

@@ -52,7 +52,7 @@ class CurrencyApiController extends Controller
 
         $validated = $request->validate($updater->getValidationRules($currency));
 
-        $updated_currency = (new UpdateCurrency)->execute($currency, $validated);
+        $updated_currency = $updater->execute($currency, $validated);
 
         return response()->json($updated_currency, 200);
     }

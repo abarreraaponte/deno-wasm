@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\StoreAccount;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAccountRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -21,11 +20,13 @@ class AccountApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAccountRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validated();
+		$creator = new StoreAccount;
 
-        $account = (new StoreAccount)->execute($validated);
+        $validated = $request->validated($creator->getValidationRules());
+
+        $account = $creator->execute($validated);
 
         return response()->json($account, 201);
     }
@@ -33,7 +34,7 @@ class AccountApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): JsonResponse
+    public function show(string $id)
     {
         //
     }

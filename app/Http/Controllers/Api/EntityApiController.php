@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\StoreEntity;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreEntityRequest;
 use App\Models\EntityModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +21,7 @@ class EntityApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEntityRequest $request, string $model_route): JsonResponse
+    public function store(Request $request, string $model_route): JsonResponse
     {
         // Check the route first
         $entity_model = EntityModel::where('route', $model_route)->first();
@@ -31,9 +30,11 @@ class EntityApiController extends Controller
             abort(404, 'Entity Model not found');
         }
 
+		$creator = new StoreEntity($entity_model);
+
         $validated = $request->validated();
 
-        $entity = (new StoreEntity($entity_model->id))->execute($validated);
+        $entity = $creator->execute($validated);
 
         return response()->json($entity, 201);
     }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\StoreProductModel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreProductModelRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -21,11 +20,13 @@ class ProductModelApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductModelRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $validated = $request->validated();
+		$creator = new StoreProductModel;
 
-        $product_model = (new StoreProductModel)->execute($validated);
+        $validated = $request->validated($creator->getValidationRules());
+
+        $product_model = $creator->execute($validated);
 
         return response()->json($product_model, 201);
     }

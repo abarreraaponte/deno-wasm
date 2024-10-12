@@ -15,6 +15,16 @@ class StoreProductModel
         //
     }
 
+	public function getValidationRules() :array
+	{
+		return [
+            'ref_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:product_models,ref_id'],
+            'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', 'unique:product_models,alt_id'],
+            'name' => ['required', 'string', 'unique:product_models,name', 'max:120'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:255'],
+        ];
+	}
+
     /**
      * Execute the action.
      */
