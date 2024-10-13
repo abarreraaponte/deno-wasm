@@ -14,6 +14,16 @@ class Currency extends Model implements DeletionProtected
 {
     use HasFactory, HasUuids;
 
+    protected $fillable = [
+        'name',
+        'iso_code',
+        'symbol',
+        'precision',
+        'active',
+        'thousands_separator',
+        'decimal_separator',
+    ];
+
     public static function findByIdOrIsoCode(string $id): Currency
     {
         return self::where(function (Builder $query) use ($id) {

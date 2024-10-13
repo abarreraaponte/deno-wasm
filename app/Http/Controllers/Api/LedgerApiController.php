@@ -55,7 +55,7 @@ class LedgerApiController extends Controller
         $ledger = Ledger::findById($ledger_id);
 
         if (! $ledger) {
-            return response()->json(['message' => 'Ledger not found'], 404);
+            abort(404, 'Ledger not found');
         }
 
         $validated = $request->validate($updater->getValidationRules($ledger), [
@@ -81,11 +81,11 @@ class LedgerApiController extends Controller
         $check = $ledger->canBeDeleted();
 
         if (! $check) {
-            abort(400, 'Ledger cannot be deleted');
+            abort(403, 'Ledger cannot be deleted');
         }
 
         $ledger->delete();
 
-        return response()->json([], 200);
+        return response()->json([], 204);
     }
 }

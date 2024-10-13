@@ -24,3 +24,28 @@ test('Duplicate product model can not be created', function () {
 
     $response->assertStatus(422);
 });
+
+test('product model can be updated', function () {
+
+    $user = User::factory()->create();
+    $productModel = ProductModel::factory()->create();
+
+    $productModel->name = fake()->unique()->words(2, true);
+
+    $response = $this->actingAs($user)->putJson('/api/product-models/'.$productModel->id, $productModel->toArray());
+
+    $response->assertStatus(200);
+});
+
+test('product model and slug can be updated', function () {
+
+    $user = User::factory()->create();
+    $productModel = ProductModel::factory()->create();
+
+    $productModel->name = fake()->unique()->words(2, true);
+    $productModel->update_slug = true;
+
+    $response = $this->actingAs($user)->putJson('/api/product-models/'.$productModel->id, $productModel->toArray());
+
+    $response->assertStatus(200);
+});

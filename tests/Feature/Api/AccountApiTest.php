@@ -47,10 +47,10 @@ test('Account with parent account can be created', function () {
 
 test('Account can be updated', function () {
 
-	$user = User::factory()->create();
-	$account = Account::factory()->create();
+    $user = User::factory()->create();
+    $account = Account::factory()->create();
 
-	$response = $this->actingAs($user)->putJson("/api/accounts/{$account->id}", ['name' => 'Updated Account']);
+    $response = $this->actingAs($user)->putJson("/api/accounts/{$account->id}", ['name' => 'Updated Account']);
 
-	$response->assertStatus(200);
+    $response->assertStatus(200);
 });

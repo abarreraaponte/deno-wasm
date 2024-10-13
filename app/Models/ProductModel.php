@@ -13,6 +13,13 @@ class ProductModel extends Model implements DeletionProtected
 {
     use HasFactory, HasUuids, IsIdSearchable;
 
+    protected $fillable = [
+        'ref_id',
+        'alt_id',
+        'name',
+        'description',
+    ];
+
     public function canBeDeleted(): bool
     {
         // For now allow deletion.
