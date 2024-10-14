@@ -22,7 +22,7 @@ class UpdateEntityModel
             'ref_id' => ['sometimes', 'required', 'string', 'max:64', Rule::unique('ledgers', 'ref_id')->ignore($entity_model)],
             'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', Rule::unique('ledgers', 'alt_id')->ignore($entity_model)],
             'name' => ['sometimes', 'required', 'string', Rule::unique('ledgers', 'name')->ignore($entity_model), 'max:120'],
-            'update_slug' => ['sometimes', 'required', 'boolean'],
+            'update_route' => ['sometimes', 'required', 'boolean'],
             'description' => ['sometimes', 'nullable', 'string'],
         ];
     }
@@ -34,7 +34,7 @@ class UpdateEntityModel
     {
         $entity_model->fill($validated);
 
-        if (isset($validated['update_slug']) && $validated['update_slug']) {
+        if (isset($validated['update_route']) && $validated['update_route']) {
             $entity_model->route = Str::slug($validated['name']);
         }
 

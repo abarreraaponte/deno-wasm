@@ -43,7 +43,7 @@ test('product model and slug can be updated', function () {
     $productModel = ProductModel::factory()->create();
 
     $productModel->name = fake()->unique()->words(2, true);
-    $productModel->update_slug = true;
+    $productModel->update_route = true;
 
     $response = $this->actingAs($user)->putJson('/api/product-models/'.$productModel->id, $productModel->toArray());
 

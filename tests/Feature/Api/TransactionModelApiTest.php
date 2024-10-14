@@ -43,7 +43,7 @@ test('transaction model and slug can be updated', function () {
     $transactionModel = TransactionModel::factory()->create();
 
     $transactionModel->name = fake()->unique()->words(2, true);
-    $transactionModel->update_slug = true;
+    $transactionModel->update_route = true;
 
     $response = $this->actingAs($user)->putJson('/api/transaction-models/'.$transactionModel->id, $transactionModel->toArray());
 

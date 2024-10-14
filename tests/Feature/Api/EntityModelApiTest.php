@@ -43,7 +43,7 @@ test('entity model and slug can be updated', function () {
     $entityModel = EntityModel::factory()->create();
 
     $entityModel->name = fake()->unique()->words(2, true);
-    $entityModel->update_slug = true;
+    $entityModel->update_route = true;
 
     $response = $this->actingAs($user)->putJson('/api/entity-models/'.$entityModel->id, $entityModel->toArray());
 

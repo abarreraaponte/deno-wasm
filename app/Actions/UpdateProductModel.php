@@ -22,6 +22,7 @@ class UpdateProductModel
             'ref_id' => ['sometimes', 'required', 'string', 'max:64', Rule::unique('ledgers', 'ref_id')->ignore($product_model)],
             'alt_id' => ['sometimes', 'nullable', 'string', 'max:64', Rule::unique('ledgers', 'alt_id')->ignore($product_model)],
             'name' => ['sometimes', 'required', 'string', Rule::unique('ledgers', 'name')->ignore($product_model), 'max:120'],
+            'update_route' => ['sometimes', 'required', 'boolean'],
             'description' => ['sometimes', 'nullable', 'string'],
         ];
     }
@@ -33,7 +34,7 @@ class UpdateProductModel
     {
         $product_model->fill($validated);
 
-        if (isset($validated['update_slug']) && $validated['update_slug']) {
+        if (isset($validated['update_route']) && $validated['update_route']) {
             $product_model->route = Str::slug($validated['name']);
         }
 
