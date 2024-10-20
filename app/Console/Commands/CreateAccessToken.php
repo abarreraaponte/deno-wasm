@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 use function Laravel\Prompts\search;
 
@@ -35,7 +36,7 @@ class CreateAccessToken extends Command
             options: fn (string $value) => strlen($value) > 0
             ? User::where(function (Builder $query) use ($value) {
 
-                $is_uuid = Str::isUuid($value);
+                $is_uuid = Uuid::isValid($value);
 
                 if ($is_uuid) {
                     $query->where('id', $value);

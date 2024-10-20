@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class Currency extends Model implements DeletionProtected
 {
@@ -24,11 +25,16 @@ class Currency extends Model implements DeletionProtected
         'decimal_separator',
     ];
 
+	public function newUniqueId() :string
+	{
+		return Uuid::uuid7();
+	}
+
     public static function findByIdOrIsoCode(string $id): Currency
     {
         return self::where(function (Builder $query) use ($id) {
 
-            $isUuid = Str::isUuid($id);
+            $isUuid = Uuid::isValid($id);
 
             if ($isUuid) {
                 $query->where('id', $id)->orWhere('iso_code', $id)->orWhere('name', $id);

@@ -9,10 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Ramsey\Uuid\Uuid;
 
 class User extends Authenticatable implements DeletionProtected
 {
     use HasApiTokens, HasFactory, HasUuids, Notifiable;
+
+	public function newUniqueId() :string
+	{
+		return Uuid::uuid7();
+	}
 
     public function canBeDeleted(): bool
     {

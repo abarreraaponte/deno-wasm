@@ -5,6 +5,7 @@ namespace App\Models\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 trait IsIdSearchable
 {
@@ -12,7 +13,7 @@ trait IsIdSearchable
     {
         $record = self::where(function (Builder $query) use ($id) {
 
-            $isUuid = Str::isUuid($id);
+            $isUuid = Uuid::isValid($id);
 
             if ($isUuid) {
                 $query->where('id', $id)
@@ -32,7 +33,7 @@ trait IsIdSearchable
     {
         return self::where(function (Builder $query) use ($id) {
 
-            $isUuid = Str::isUuid($id);
+            $isUuid = Uuid::isValid($id);
 
             if ($isUuid) {
                 $query->where('id', $id)
