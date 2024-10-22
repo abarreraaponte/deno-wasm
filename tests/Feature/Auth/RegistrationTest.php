@@ -8,9 +8,9 @@ test('registration screen can be rendered', function () {
 
 test('new users can register', function () {
     $response = $this->post('/register', [
-        'first_name' => $this->faker->firstName,
-		'last_name' => $this->faker->lastName,
-        'email' => $this->faker->unique()->safeEmail,
+        'first_name' => fake()->firstName,
+        'last_name' => fake()->lastName,
+        'email' => fake()->unique()->safeEmail,
         'password' => 'password',
         'password_confirmation' => 'password',
     ]);
