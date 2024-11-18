@@ -1,7 +1,7 @@
 import { pgTable, pgEnum, varchar, char, bigint, text, boolean, index, integer, numeric, AnyPgColumn, jsonb, uuid } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { balance_types } from '@/services/accounts/balance.js';
-import { MetaType, TransactionLineType, DimensionType } from './validation.js';
+import { balance_types } from '../services/accounts/balance.ts';
+import { MetaType, TransactionLineType, DimensionType } from './validation.ts';
 export const  balance_type_pg_enum = pgEnum('balance_type', balance_types);
 
 export const ledgers = pgTable('ledgers', {
@@ -20,7 +20,7 @@ export const ledgers = pgTable('ledgers', {
 	}
 });
 
-export const ledger_relations = relations(ledgers, ({one, many}) => {
+export const ledger_relations = relations(ledgers, ({one}) => {
 	return {
 		currency: one(currencies, {fields: [ledgers.currency_id], references: [currencies.id],}),
 	}
@@ -66,7 +66,7 @@ export const uom_types = pgTable('uom_types', {
 	}
 });
 
-export const uom_type_relations = relations(uom_types, ({one, many}) => {
+export const uom_type_relations = relations(uom_types, ({many}) => {
 	return {
 		uoms: many(uoms),
 	}
@@ -94,7 +94,7 @@ export const uoms = pgTable('uoms', {
 	}
 });
 
-export const uom_relations = relations(uoms, ({one, many}) => {
+export const uom_relations = relations(uoms, ({one}) => {
 	return {
 		uom_type: one(uom_types, {fields: [uoms.id], references: [uom_types.id],}),
 	}
@@ -113,7 +113,7 @@ export const entity_models = pgTable('entity_models', {
 	}
 });
 
-export const entity_model_relations = relations(entity_models, ({one, many}) => {
+export const entity_model_relations = relations(entity_models, ({many}) => {
 	return {
 		ledgers: many(ledgers),
 		entities: many(entities),
@@ -161,7 +161,7 @@ export const currencies = pgTable('currencies', {
 	}
 });
 
-export const currency_relations = relations(currencies, ({one, many}) => {
+export const currency_relations = relations(currencies, ({many}) => {
 	return {
 		ledgers: many(ledgers),
 	}
@@ -181,7 +181,7 @@ export const exchange_rates = pgTable('exchange_rates', {
 	}
 });
 
-export const exchange_rate_relations = relations(exchange_rates, ({one, many}) => {
+export const exchange_rate_relations = relations(exchange_rates, ({one}) => {
 	return {
 		from_currency: one(currencies, {fields: [exchange_rates.from_currency_id], references: [currencies.id],}),
 		to_currency: one(currencies, {fields: [exchange_rates.to_currency_id], references: [currencies.id],}),
@@ -201,7 +201,7 @@ export const transaction_models = pgTable('transaction_models', {
 	}
 });
 
-export const transaction_model_relations = relations(transaction_models, ({one, many}) => {
+export const transaction_model_relations = relations(transaction_models, ({many}) => {
 	return {
 		transactions: many(transactions),
 	}
@@ -222,7 +222,7 @@ export const transactions = pgTable('transactions', {
 	}
 });
 
-export const transaction_relations = relations(transactions, ({one, many}) => {
+export const transaction_relations = relations(transactions, ({one}) => {
 	return {
 		transaction_model: one(transaction_models, {fields: [transactions.id], references: [transaction_models.id],}),
 	}
@@ -248,7 +248,7 @@ export const entries = pgTable('entries', {
 	}
 });
 
-export const entry_relations = relations(entries, ({one, many}) => {
+export const entry_relations = relations(entries, ({one}) => {
 	return {
 		transaction: one(transactions, {fields: [entries.id], references: [transactions.id],}),
 		ledger: one(ledgers, {fields: [entries.id], references: [ledgers.id],}),
@@ -272,7 +272,7 @@ export const product_models = pgTable('product_models', {
 	}
 });
 
-export const product_model_relations = relations(product_models, ({one, many}) => {
+export const product_model_relations = relations(product_models, ({many}) => {
 	return {
 		products: many(products),
 	}

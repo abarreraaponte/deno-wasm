@@ -1,11 +1,11 @@
-import { Hono } from 'hono'
-import CurrencyManager from '@/services/currencies/CurrencyManager.js';
+import { Hono, type Context } from '@hono/hono'
+import CurrencyManager from '../services/currencies/CurrencyManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
-router.post('/', async (c) => {
+router.post('/', async (c :Context) => {
 
 	const currencyManager = new CurrencyManager();
 	const body = await c.req.json();

@@ -1,15 +1,11 @@
-import { Hono } from 'hono';
-import { serve } from '@hono/node-server';
-import CurrencyRouter from '@/handlers/CurrencyHttpHandler.js';
-import LedgerRouter from '@/handlers/LedgerHttpHandler.js';
-import AccountRouter from '@/handlers/AccountHttpHandler.js';
-import { config } from 'dotenv';
-
-config();
+import { Hono, type Context } from '@hono/hono';
+import CurrencyRouter from './handlers/CurrencyHttpHandler.ts';
+import LedgerRouter from './handlers/LedgerHttpHandler.ts';
+import AccountRouter from './handlers/AccountHttpHandler.ts';
 
 const app = new Hono();
 
-app.get('/health', (c) => {
+app.get('/health', (c: Context) => {
   return c.json({ status: 'ok' });
 });
 

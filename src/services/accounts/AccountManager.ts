@@ -1,9 +1,9 @@
-import { db } from "@/database/db.js";
-import { accounts, currencies, ledgers } from "@/database/schema.js";
+import { db } from "../../database/db.ts";
+import { accounts, ledgers } from "../../database/schema.ts";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
-import { valueIsAvailable } from "@/database/validation.js";
-import { balance_types, BalanceType } from "./balance.js";
+import { valueIsAvailable } from "../../database/validation.ts";
+import { balance_types, BalanceType } from "./balance.ts";
 import { v7 as uuid } from 'uuid';
 
 export type Account = InferSelectModel<typeof accounts>;
@@ -48,7 +48,7 @@ class AccountManager {
 			.refine(this.refIdIsAvailable, {message: 'Ref ID already exists'})
 			.optional()
 			.nullable()
-			.transform(async (ref_id, ctx) => {
+			.transform((ref_id) => {
 				if(!ref_id)
 				{
 					return `${this.prefix}${uuid()}`;
@@ -138,14 +138,14 @@ class AccountManager {
 			}
 		});
 
-		return validation_schema.safeParseAsync(data);
+		return await validation_schema.safeParseAsync(data);
 
 
 	}
 
 	async create(data: NewAccount)
 	{	
-		return db.insert(accounts).values(data).returning({id: accounts.id});
+		return await db.insert(accounts).values(data).returning({id: accounts.id});
 	}
 }
 

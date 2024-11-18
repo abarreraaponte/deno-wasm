@@ -1,13 +1,6 @@
-import { serve } from '@hono/node-server';
-import { server } from './server.js';
-import { config } from 'dotenv';
+import { server } from './server.ts';
 
-config();
-
-const port = Number(process.env.SERVER_PORT || 3000);
+const port = Number(Deno.env.get('KL_SERVER_PORT') || 3000);
 console.log(`Server is running on port ${port}`);
 
-serve({
-	fetch: server.fetch,
-	port: port,
-});
+Deno.serve({port}, server.fetch);

@@ -1,11 +1,11 @@
-import { Hono } from "hono";
-import AccountManager, { NewAccount } from "@/services/accounts/AccountManager.js";
+import { Hono, type Context } from "@hono/hono";
+import AccountManager, { NewAccount } from "../services/accounts/AccountManager.ts";
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
-router.post('/', async (c) => {
+router.post('/', async (c: Context) => {
 	const accountManager = new AccountManager();
 	const body = await c.req.json();
 	body.guid = uuid();

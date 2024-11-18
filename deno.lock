@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@hono/hono@^4.6.10": "4.6.10",
     "npm:@faker-js/faker@^9.0.3": "9.2.0",
+    "npm:drizzle-kit@0.24.2": "0.24.2_esbuild@0.19.12",
     "npm:drizzle-kit@~0.24.2": "0.24.2_esbuild@0.19.12",
     "npm:drizzle-orm@0.33": "0.33.0_postgres@3.4.5",
     "npm:postgres@^3.4.4": "3.4.5",
@@ -297,13 +298,6 @@
       "npm:postgres@^3.4.4",
       "npm:uuid@10",
       "npm:zod@^3.23.8"
-    ],
-    "packageJson": {
-      "dependencies": [
-        "npm:drizzle-kit@~0.24.2",
-        "npm:drizzle-orm@0.33",
-        "npm:zod@^3.23.8"
-      ]
-    }
+    ]
   }
 }

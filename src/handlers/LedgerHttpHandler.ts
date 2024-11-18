@@ -1,11 +1,11 @@
-import { Hono } from 'hono'
-import LedgerManager from '@/services/ledgers/LedgerManager.js';
+import { Hono, type Context } from '@hono/hono'
+import LedgerManager from '../services/ledgers/LedgerManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
-router.post('/', async (c) => {
+router.post('/', async (c: Context) => {
 	const ledgerManager = new LedgerManager();
 	const body = await c.req.json();
 	body.id = uuid();

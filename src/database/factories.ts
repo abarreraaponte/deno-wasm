@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { NewCurrency } from "@/services/currencies/CurrencyManager.js";
-import { NewLedger } from "@/services/ledgers/LedgerManager.js";
-import { NewAccount } from "@/services/accounts/AccountManager.js";
+import { NewCurrency } from "../services/currencies/CurrencyManager.ts";
+import { NewLedger } from "../services/ledgers/LedgerManager.ts";
 import { v7 as uuid } from "uuid";
 
 abstract class Factory {

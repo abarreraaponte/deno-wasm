@@ -1,8 +1,8 @@
-import { db } from "@/database/db.js";
-import { ledgers, currencies } from "@/database/schema.js";
+import { db } from "../../database/db.ts";
+import { ledgers, currencies } from "../../database/schema.ts";
 import z from "zod";
 import { InferInsertModel, InferSelectModel, eq, or } from "drizzle-orm";
-import { valueIsAvailable } from "@/database/validation.js";
+import { valueIsAvailable } from "../../database/validation.ts";
 import { v7 as uuid } from 'uuid';
 
 export type Ledger = InferSelectModel<typeof ledgers>;
@@ -43,7 +43,7 @@ class LedgerManager {
 			.refine(this.refIdIsAvailable, {message: 'Ref ID already exists'})
 			.optional()
 			.nullable()
-			.transform(async (ref_id, ctx) => {
+			.transform((ref_id) => {
 				if(!ref_id)
 				{
 					return `${this.prefix}${uuid()}`;
@@ -84,12 +84,12 @@ class LedgerManager {
 			active: z.boolean().optional().nullable(),
 		});
 
-		return validation_schema.safeParseAsync(data);
+		return await validation_schema.safeParseAsync(data);
 	}
 
 	async create(data: NewLedger)
 	{	
-		return db.insert(ledgers).values(data).returning({id: ledgers.id});
+		return await db.insert(ledgers).values(data).returning({id: ledgers.id});
 	}
 }
 

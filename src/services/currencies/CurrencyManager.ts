@@ -1,8 +1,8 @@
-import { db } from "@/database/db.js";
-import { currencies } from "@/database/schema.js";
+import { db } from "../../database/db.ts";
+import { currencies } from "../../database/schema.ts";
 import z from "zod";
-import { InferInsertModel, InferSelectModel, eq } from "drizzle-orm";
-import { valueIsAvailable } from "@/database/validation.js";
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { valueIsAvailable } from "../../database/validation.ts";
 
 export type Currency = InferSelectModel<typeof currencies>;
 export type NewCurrency = InferInsertModel<typeof currencies>;
@@ -46,12 +46,12 @@ class CurrencyManager {
 			thousands_separator: z.enum(this.available_separators),
 		});
 
-		return validation_schema.safeParseAsync(data);
+		return await validation_schema.safeParseAsync(data);
 	}
 
 	async create(data: NewCurrency)
 	{	
-		return db.insert(currencies).values(data).returning({
+		return await db.insert(currencies).values(data).returning({
 			id: currencies.id,
 			name: currencies.name,
 			symbol: currencies.symbol,

@@ -1,10 +1,10 @@
 import { defineConfig } from 'drizzle-kit'
 
-const user = process.env.DB_USER || '';
-const password = process.env.DB_PASSWORD || '';
-const host = process.env.DB_HOST || 'localhost';
-const port = parseInt(process.env.DB_PORT || '5432');
-const database = process.env.DB_NAME || 'kitledger';
+const user = Deno.env.get('DB_USER') || '';
+const password = Deno.env.get('DB_PASSWORD') || '';
+const host = Deno.env.get('DB_HOST') || 'localhost';
+const port = parseInt(Deno.env.get('DB_PORT') || '5432');
+const database = Deno.env.get('DB_NAME') || 'kitledger';
 
 export const postgresUrl = `postgres://${user}:${password}@${host}:${port}/${database}`;
 
