@@ -2,6 +2,8 @@
   "version": "4",
   "specifiers": {
     "jsr:@hono/hono@^4.6.10": "4.6.10",
+    "jsr:@std/assert@^1.0.8": "1.0.8",
+    "jsr:@std/internal@^1.0.5": "1.0.5",
     "npm:@faker-js/faker@^9.0.3": "9.2.0",
     "npm:drizzle-kit@0.24.2": "0.24.2_esbuild@0.19.12",
     "npm:drizzle-kit@~0.24.2": "0.24.2_esbuild@0.19.12",
@@ -13,6 +15,15 @@
   "jsr": {
     "@hono/hono@4.6.10": {
       "integrity": "dae93ac8bb49881f99506aa8e01e5536d5d72cc3c2b556bde2816fdf25ca609c"
+    },
+    "@std/assert@1.0.8": {
+      "integrity": "ebe0bd7eb488ee39686f77003992f389a06c3da1bbd8022184804852b2fa641b",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/internal@1.0.5": {
+      "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
     }
   },
   "npm": {
@@ -292,6 +303,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@hono/hono@^4.6.10",
+      "jsr:@std/assert@^1.0.8",
       "npm:@faker-js/faker@^9.0.3",
       "npm:drizzle-kit@~0.24.2",
       "npm:drizzle-orm@0.33",

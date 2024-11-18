@@ -1,59 +1,66 @@
-import { describe, expect, test } from 'vitest'
-import { config } from 'dotenv';
-import { server } from '@/server.js';
-import { LedgerFactory, CurrencyFactory } from '@/database/factories.js';
-import CurrencyManager from '@/services/currencies/CurrencyManager.js';
+import { assertEquals } from '@std/assert/equals';
+import { server } from '../../src/server.ts';
+import { LedgerFactory, CurrencyFactory } from '../../src/database/factories.ts';
+import CurrencyManager from '../../src/services/currencies/CurrencyManager.ts';
 
-config();
+const currency = await (new CurrencyManager).create((new CurrencyFactory).make());
 
-describe('Ledger endpoints and common actions', async () => {
+async function makeRequest(data: any, method: string, endpoint: string) : Promise<any>
+{
+	const req = new Request(`http://localhost:${Deno.env.get('KL_SERVER_PORT')}${endpoint}`, {
+		method: method,
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	});
 
-	const currency = await (new CurrencyManager).create((new CurrencyFactory).make());
+	return await server.fetch(req);
+}
 
-	async function makeRequest(data: any, method: string, endpoint: string) : Promise<any>
-	{
-		const req = new Request(`http://localhost:${process.env.SERVER_PORT}${endpoint}`, {
-			method: method,
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
-		});
-	
-		return await server.fetch(req);
-	}
+const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
 
-	const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
-
-	test('Create a valid ledger', async () => {
+Deno.test({
+	name: 'Create a valid ledger',
+	async fn() {
 		const test_data = (new LedgerFactory).make();
 		test_data.ref_id = SUCCESS_REF_ID;
 		test_data.currency_id = currency[0].id;
 		
 		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
 		const json :any = await res.json();
-	
-		expect(res.status).toBe(200);
-		expect(json.id).toHaveLength(36);
-	});
 
-	test('Invalid name fails validation', async () => {
+		assertEquals(res.status, 200);
+		assertEquals(json.id.length, 36);
+	},
+	sanitizeOps: false,
+	sanitizeResources: false,
+});
+
+Deno.test({
+	name: 'Invalid name fails validation',
+	async fn() {
 		const test_data = (new LedgerFactory).make();
 		test_data.name = 'A'.repeat(256);
 		test_data.currency_id = currency[0].id;
 		
 		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
-	
-		expect(res.status).toBe(422);
-	});
 
-	test('Repeated Ref ID fails validation', async () => {
+		assertEquals(res.status, 422)
+	},
+	sanitizeOps: false,
+});
+
+Deno.test({
+	name: 'Repeated Ref ID fails validation',
+	async fn() {
 		const test_data = (new LedgerFactory).make();
 		test_data.ref_id = SUCCESS_REF_ID;
 		test_data.currency_id = currency[0].id;
-	
+
 		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
-	
-		expect(res.status).toBe(422);
-	});
+
+		assertEquals(res.status, 422);
+	},
+	sanitizeOps: false,
 });
