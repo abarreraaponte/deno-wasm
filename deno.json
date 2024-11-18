@@ -1,0 +1,33 @@
+{
+	"fmt": {
+		"useTabs": true,
+		"lineWidth": 80,
+		"indentWidth": 4,
+		"semiColons": true,
+		"singleQuote": true,
+		"proseWrap": "preserve",
+		"include": ["src/", "tests/"],
+		"exclude": ["node_modules/"]
+	},
+	"imports": {
+		"@faker-js/faker": "npm:@faker-js/faker@^9.0.3",
+		"@hono/hono": "jsr:@hono/hono@^4.6.10",
+		"drizzle-kit": "npm:drizzle-kit@^0.24.2",
+		"drizzle-orm": "npm:drizzle-orm@^0.33.0",
+		"postgres": "npm:postgres@^3.4.4",
+		"uuid": "npm:uuid@^10.0.0",
+		"zod": "npm:zod@^3.23.8"
+	},
+	"nodeModulesDir": "auto",
+	"tasks": {
+		"db:custom": "drizzle-kit generate --custom",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate",
+		"dev": "deno run --allow-net --allow-read src/index.ts",
+		"format": "deno fmt",
+		"test": "deno test -A"
+	},
+	"test": {
+		"include": ["tests/"]
+	}
+}
