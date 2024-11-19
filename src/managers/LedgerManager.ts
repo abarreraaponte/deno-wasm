@@ -3,7 +3,7 @@ import { currencies, ledgers } from '../services/database/schema.ts';
 import z from 'zod';
 import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { valueIsAvailable } from '../services/database/validation.ts';
-import { validate as validateUuid, v7 as uuid } from 'uuid';
+import { v7 as uuid, validate as validateUuid } from 'uuid';
 
 export type Ledger = InferSelectModel<typeof ledgers>;
 export type NewLedger = InferInsertModel<typeof ledgers>;
@@ -13,7 +13,6 @@ export type UpdateLedger = Pick<
 >;
 
 const prefix = 'LGR_';
-
 
 async function nameIsAvailable(name: string) {
 	return await valueIsAvailable(ledgers, 'name', name);
@@ -59,16 +58,19 @@ export async function validateCreation(data: NewLedger) {
 		description: z.string().optional().nullable(),
 		currency_id: z.string()
 			.transform(async (currency_id, ctx) => {
-
 				const is_uuid = validateUuid(currency_id);
 
-				const filters = is_uuid ? {
-					where: eq(currencies.id, currency_id)
-				} : {
-					where: eq(currencies.iso_code, currency_id),
-				};
+				const filters = is_uuid
+					? {
+						where: eq(currencies.id, currency_id),
+					}
+					: {
+						where: eq(currencies.iso_code, currency_id),
+					};
 
-				const existing_currency = await db.query.currencies.findFirst(filters);
+				const existing_currency = await db.query.currencies.findFirst(
+					filters,
+				);
 
 				if (!existing_currency) {
 					ctx.addIssue({
@@ -87,7 +89,6 @@ export async function validateCreation(data: NewLedger) {
 	return await validation_schema.safeParseAsync(data);
 }
 
-
 export async function create(data: NewLedger) {
 	return await db.insert(ledgers).values(data).returning();
-};
+}

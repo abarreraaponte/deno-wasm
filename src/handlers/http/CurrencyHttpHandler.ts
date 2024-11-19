@@ -1,5 +1,5 @@
 import { type Context, Hono } from '@hono/hono';
-import { validateCreation, create } from '../../managers/CurrencyManager.ts';
+import { create, validateCreation } from '../../managers/CurrencyManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();

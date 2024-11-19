@@ -1,6 +1,10 @@
 import { assertEquals } from '@std/assert/equals';
 import { server } from '../../src/handlers/http/http.ts';
-import { LedgerFactory, AccountFactory, CurrencyFactory } from '../../src/services/database/factories.ts';
+import {
+	AccountFactory,
+	CurrencyFactory,
+	LedgerFactory,
+} from '../../src/services/database/factories.ts';
 import { create } from '../../src/managers/LedgerManager.ts';
 import { create as createCurrency } from '../../src/managers/CurrencyManager.ts';
 
@@ -78,4 +82,3 @@ Deno.test({
 	sanitizeOps: false,
 	sanitizeResources: false,
 });
-

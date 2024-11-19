@@ -1,5 +1,9 @@
 import { type Context, Hono } from '@hono/hono';
-import { NewAccount, validateCreation, create } from '../../managers/AccountManager.ts';
+import {
+	create,
+	NewAccount,
+	validateCreation,
+} from '../../managers/AccountManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
