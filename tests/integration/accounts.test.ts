@@ -1,14 +1,15 @@
 import { assertEquals } from '@std/assert/equals';
 import { server } from '../../src/handlers/http/http.ts';
-import {
-	CurrencyFactory,
-	LedgerFactory,
-} from '../../src/services/database/factories.ts';
-import { create } from '../../src/managers/CurrencyManager.ts';
+import { LedgerFactory, AccountFactory, CurrencyFactory } from '../../src/services/database/factories.ts';
+import { create } from '../../src/managers/LedgerManager.ts';
+import { create as createCurrency } from '../../src/managers/CurrencyManager.ts';
 
-const currency = await create(
+const sameple_ledger_data = (new LedgerFactory()).make();
+const currency = await createCurrency(
 	(new CurrencyFactory()).make(),
 );
+sameple_ledger_data.currency_id = currency[0].id;
+const ledger = await create(sameple_ledger_data);
 
 async function makeRequest(
 	data: any,
@@ -32,13 +33,13 @@ async function makeRequest(
 const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
 
 Deno.test({
-	name: 'Create a valid ledger',
+	name: 'Create a valid account',
 	async fn() {
-		const test_data = (new LedgerFactory()).make();
+		const test_data = (new AccountFactory()).make();
 		test_data.ref_id = SUCCESS_REF_ID;
-		test_data.currency_id = currency[0].id;
+		test_data.ledger_id = ledger[0].id;
 
-		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
+		const res = await makeRequest(test_data, 'POST', '/api/accounts');
 		const json: any = await res.json();
 
 		assertEquals(res.status, 200);
@@ -51,27 +52,30 @@ Deno.test({
 Deno.test({
 	name: 'Invalid name fails validation',
 	async fn() {
-		const test_data = (new LedgerFactory()).make();
+		const test_data = (new AccountFactory()).make();
 		test_data.name = 'A'.repeat(256);
-		test_data.currency_id = currency[0].id;
+		test_data.ledger_id = ledger[0].id;
 
-		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
+		const res = await makeRequest(test_data, 'POST', '/api/accounts');
 
 		assertEquals(res.status, 422);
 	},
 	sanitizeOps: false,
+	sanitizeResources: false,
 });
 
 Deno.test({
 	name: 'Repeated Ref ID fails validation',
 	async fn() {
-		const test_data = (new LedgerFactory()).make();
+		const test_data = (new AccountFactory()).make();
 		test_data.ref_id = SUCCESS_REF_ID;
-		test_data.currency_id = currency[0].id;
+		test_data.ledger_id = ledger[0].id;
 
-		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
+		const res = await makeRequest(test_data, 'POST', '/api/accounts');
 
 		assertEquals(res.status, 422);
 	},
 	sanitizeOps: false,
+	sanitizeResources: false,
 });
+

@@ -1,7 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { NewCurrency } from '../../managers/CurrencyManager.ts';
 import { NewLedger } from '../../managers/LedgerManager.ts';
+import { NewAccount } from '../../managers/AccountManager.ts';
 import { v7 as uuid } from 'uuid';
+import { balance_types, BalanceType } from '../../handlers/types/balance.ts';
 
 abstract class Factory {
 	abstract make(): any;
@@ -35,6 +37,24 @@ export class LedgerFactory extends Factory {
 			'name': faker.company.name(),
 			'description': faker.company.catchPhrase(),
 			'currency_id': uuid(),
+			'active': true,
+		};
+	}
+
+	public makeMany(count: number) {
+		return Array.from({ length: count }, () => this.make());
+	}
+}
+
+export class AccountFactory extends Factory {
+	public make(): NewAccount {
+		return {
+			'id': uuid(),
+			'ref_id': uuid(),
+			'alt_id': uuid(),
+			'name': faker.company.name(),
+			'balance_type': 'debit',
+			'ledger_id': uuid(),
 			'active': true,
 		};
 	}

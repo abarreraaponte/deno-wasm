@@ -53,14 +53,5 @@ export async function validateCreation(data: NewCurrency) {
 }
 
 export async function create(data: NewCurrency) {
-	return await db.insert(currencies).values(data).returning({
-		id: currencies.id,
-		name: currencies.name,
-		symbol: currencies.symbol,
-		iso_code: currencies.iso_code,
-		precision: currencies.precision,
-		active: currencies.active,
-		decimal_separator: currencies.decimal_separator,
-		thousands_separator: currencies.thousands_separator,
-	});
+	return await db.insert(currencies).values(data).returning();
 }

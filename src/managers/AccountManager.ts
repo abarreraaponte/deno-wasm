@@ -4,7 +4,7 @@ import z from 'zod';
 import { eq, InferInsertModel, InferSelectModel, or } from 'drizzle-orm';
 import { valueIsAvailable } from '../services/database/validation.ts';
 import { balance_types, BalanceType } from '../handlers/types/balance.ts';
-import { v7 as uuid } from 'uuid';
+import { validate as validateUuid, v7 as uuid } from 'uuid';
 
 export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;
@@ -70,14 +70,20 @@ export async function validateCreation(data: NewAccount) {
 	})
 		.superRefine(async (data, ctx) => {
 			if (data.parent_id) {
-				// Verify that parent_id exists
-				const parent = await db.query.accounts.findFirst({
+
+				const is_uuid = validateUuid(data.parent_id);
+
+				const filters = is_uuid ? {
+					where: eq(accounts.id, data.parent_id)
+				} : {
 					where: or(
-						eq(accounts.id, data.parent_id),
 						eq(accounts.ref_id, data.parent_id),
 						eq(accounts.alt_id, data.parent_id),
-					),
-				});
+					)
+				};
+
+				// Verify that parent_id exists
+				const parent = await db.query.accounts.findFirst(filters);
 				if (!parent) {
 					ctx.addIssue({
 						path: ['parent_id'],
@@ -109,15 +115,19 @@ export async function validateCreation(data: NewAccount) {
 						code: z.ZodIssueCode.custom,
 					});
 				} else {
-					const ledger = await db.query.ledgers.findFirst(
-						{
-							where: or(
-								eq(ledgers.id, data.ledger_id),
-								eq(ledgers.ref_id, data.ledger_id),
-								eq(ledgers.alt_id, data.ledger_id),
-							),
-						},
-					);
+
+					const is_uuid = validateUuid(data.ledger_id);
+
+					const filters = is_uuid ?
+					{ where: eq(ledgers.id, data.ledger_id) } :
+					{
+						where: or(
+							eq(ledgers.ref_id, data.ledger_id),
+							eq(ledgers.alt_id, data.ledger_id),
+						),
+					}
+
+					const ledger = await db.query.ledgers.findFirst(filters);
 
 					if (!ledger) {
 						ctx.addIssue({
@@ -136,7 +146,5 @@ export async function validateCreation(data: NewAccount) {
 }
 
 export async function create(data: NewAccount) {
-	return await db.insert(accounts).values(data).returning({
-		id: accounts.id,
-	});
+	return await db.insert(accounts).values(data).returning();
 }
