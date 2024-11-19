@@ -1,12 +1,12 @@
-import { Hono, type Context } from '@hono/hono';
-import CurrencyRouter from './handlers/CurrencyHttpHandler.ts';
-import LedgerRouter from './handlers/LedgerHttpHandler.ts';
-import AccountRouter from './handlers/AccountHttpHandler.ts';
+import { type Context, Hono } from '@hono/hono';
+import CurrencyRouter from './CurrencyHttpHandler.ts';
+import LedgerRouter from './LedgerHttpHandler.ts';
+import AccountRouter from './AccountHttpHandler.ts';
 
 const app = new Hono();
 
 app.get('/health', (c: Context) => {
-  return c.json({ status: 'ok' });
+	return c.json({ status: 'ok' });
 });
 
 app.route('/api/accounts', AccountRouter);

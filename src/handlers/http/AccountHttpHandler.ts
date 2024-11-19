@@ -1,5 +1,5 @@
-import { Hono, type Context } from "@hono/hono";
-import AccountManager, { NewAccount } from "../services/accounts/AccountManager.ts";
+import { type Context, Hono } from '@hono/hono';
+import AccountManager, { NewAccount } from '../../managers/AccountManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
@@ -13,17 +13,16 @@ router.post('/', async (c: Context) => {
 	const validation_result = await accountManager.validateCreation(body);
 
 	// Return 422 if Zod Error
-	if(!validation_result.success)
-	{
+	if (!validation_result.success) {
 		return c.json(validation_result.error.issues, 422);
 	}
 
 	try {
-		const result = await accountManager.create(validation_result.data as NewAccount);
+		const result = await accountManager.create(
+			validation_result.data as NewAccount,
+		);
 		return c.json(result[0]);
-	}
-	
-	catch (error) {
+	} catch (error) {
 		// IMPLEMENT_LOGGER
 		console.error(error);
 		return c.json({ message: GENERIC_ERROR_MESSAGE }, 500);

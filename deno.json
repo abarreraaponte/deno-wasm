@@ -21,10 +21,10 @@
 	},
 	"nodeModulesDir": "auto",
 	"tasks": {
-		"db:custom": "drizzle-kit generate --custom",
-		"db:generate": "drizzle-kit generate",
-		"db:migrate": "drizzle-kit migrate",
-		"dev": "deno run --allow-env --allow-sys --allow-net --allow-read --env-file=.env src/index.ts",
+		"db:custom": "drizzle-kit generate --custom --config=src/services/database/drizzle.config.ts",
+		"db:generate": "drizzle-kit generate --config=src/services/database/drizzle.config.ts",
+		"db:migrate": "drizzle-kit migrate --config=src/services/database/drizzle.config.ts",
+		"dev": "deno run --allow-env --allow-sys --allow-net --allow-read --env-file=.env src/main.ts",
 		"format": "deno fmt",
 		"test": "deno test -A --env-file=.env"
 	},

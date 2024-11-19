@@ -1,12 +1,11 @@
-import { Hono, type Context } from '@hono/hono'
-import CurrencyManager from '../services/currencies/CurrencyManager.ts';
+import { type Context, Hono } from '@hono/hono';
+import CurrencyManager from '../../managers/CurrencyManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
-router.post('/', async (c :Context) => {
-
+router.post('/', async (c: Context) => {
 	const currencyManager = new CurrencyManager();
 	const body = await c.req.json();
 	body.id = uuid();
@@ -14,17 +13,14 @@ router.post('/', async (c :Context) => {
 	const validation_result = await currencyManager.validateCreation(body);
 
 	// Return 422 if Zod Error
-	if(!validation_result.success)
-	{
+	if (!validation_result.success) {
 		return c.json(validation_result.error.issues, 422);
 	}
 
 	try {
 		const result = await currencyManager.create(validation_result.data);
 		return c.json(result[0]);
-	}
-	
-	catch (error) {
+	} catch (error) {
 		// IMPLEMENT_LOGGER
 		console.error(error);
 		return c.json({ message: GENERIC_ERROR_MESSAGE }, 500);
