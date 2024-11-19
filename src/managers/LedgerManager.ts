@@ -12,87 +12,81 @@ export type UpdateLedger = Pick<
 	'ref_id' | 'alt_id' | 'name' | 'description' | 'active'
 >;
 
-class LedgerManager {
-	public prefix: string = 'LED_';
+const prefix = 'LED_';
 
-	constructor() {
-	}
 
-	// Check if name is unique.
-	async nameIsAvailable(name: string) {
-		return await valueIsAvailable(ledgers, 'name', name);
-	}
-
-	async refIdIsAvailable(ref_id: string) {
-		return await valueIsAvailable(ledgers, 'ref_id', ref_id);
-	}
-
-	async altIdIsAvailable(alt_id: string) {
-		return await valueIsAvailable(ledgers, 'alt_id', alt_id);
-	}
-
-	async validateCreation(data: NewLedger) {
-		const validation_schema = z.object({
-			id: z.string().uuid(),
-			ref_id: z.string()
-				.max(64, { message: 'Ref ID must be less than 64 characters' })
-				.refine(this.refIdIsAvailable, {
-					message: 'Ref ID already exists',
-				})
-				.optional()
-				.nullable()
-				.transform((ref_id) => {
-					if (!ref_id) {
-						return `${this.prefix}${uuid()}`;
-					}
-
-					return ref_id;
-				}),
-			alt_id: z.string()
-				.max(64, { message: 'Alt ID must be less than 64 characters' })
-				.refine(this.altIdIsAvailable, {
-					message: 'Alt ID already exists',
-				})
-				.optional()
-				.nullable(),
-			name: z.string()
-				.max(255, { message: 'Name must be less than 255 characters' })
-				.refine(this.nameIsAvailable, {
-					message: 'Name already exists',
-				}),
-			description: z.string().optional().nullable(),
-			currency_id: z.string()
-				.transform(async (currency_id, ctx) => {
-					const existing_currency = await db.query.currencies
-						.findFirst({
-							where: or(
-								eq(currencies.id, currency_id),
-								eq(currencies.iso_code, currency_id),
-							),
-						});
-
-					if (!existing_currency) {
-						ctx.addIssue({
-							code: z.ZodIssueCode.custom,
-							message: `Invalid currency ID ${currency_id}`,
-						});
-
-						return z.NEVER;
-					}
-
-					return existing_currency.id;
-				}),
-			active: z.boolean().optional().nullable(),
-		});
-
-		return await validation_schema.safeParseAsync(data);
-	}
-
-	async create(data: NewLedger) {
-		return await db.insert(ledgers).values(data).returning({
-			id: ledgers.id,
-		});
-	}
+async function nameIsAvailable(name: string) {
+	return await valueIsAvailable(ledgers, 'name', name);
 }
 
-export default LedgerManager;
+async function refIdIsAvailable(ref_id: string) {
+	return await valueIsAvailable(ledgers, 'ref_id', ref_id);
+}
+
+async function altIdIsAvailable(alt_id: string) {
+	return await valueIsAvailable(ledgers, 'alt_id', alt_id);
+}
+
+export async function validateCreation(data: NewLedger) {
+	const validation_schema = z.object({
+		id: z.string().uuid(),
+		ref_id: z.string()
+			.max(64, { message: 'Ref ID must be less than 64 characters' })
+			.refine(refIdIsAvailable, {
+				message: 'Ref ID already exists',
+			})
+			.optional()
+			.nullable()
+			.transform((ref_id) => {
+				if (!ref_id) {
+					return `${prefix}${uuid()}`;
+				}
+
+				return ref_id;
+			}),
+		alt_id: z.string()
+			.max(64, { message: 'Alt ID must be less than 64 characters' })
+			.refine(altIdIsAvailable, {
+				message: 'Alt ID already exists',
+			})
+			.optional()
+			.nullable(),
+		name: z.string()
+			.max(255, { message: 'Name must be less than 255 characters' })
+			.refine(nameIsAvailable, {
+				message: 'Name already exists',
+			}),
+		description: z.string().optional().nullable(),
+		currency_id: z.string()
+			.transform(async (currency_id, ctx) => {
+				const existing_currency = await db.query.currencies
+					.findFirst({
+						where: or(
+							eq(currencies.id, currency_id),
+							eq(currencies.iso_code, currency_id),
+						),
+					});
+
+				if (!existing_currency) {
+					ctx.addIssue({
+						code: z.ZodIssueCode.custom,
+						message: `Invalid currency ID ${currency_id}`,
+					});
+
+					return z.NEVER;
+				}
+
+				return existing_currency.id;
+			}),
+		active: z.boolean().optional().nullable(),
+	});
+
+	return await validation_schema.safeParseAsync(data);
+}
+
+
+export async function create(data: NewLedger) {
+	return await db.insert(ledgers).values(data).returning({
+		id: ledgers.id,
+	});
+};

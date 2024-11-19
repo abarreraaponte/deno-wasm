@@ -4,9 +4,9 @@ import {
 	CurrencyFactory,
 	LedgerFactory,
 } from '../../src/services/database/factories.ts';
-import CurrencyManager from '../../src/managers/CurrencyManager.ts';
+import { validateCreation, create } from '../../src/managers/CurrencyManager.ts';
 
-const currency = await (new CurrencyManager()).create(
+const currency = await create(
 	(new CurrencyFactory()).make(),
 );
 

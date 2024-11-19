@@ -17,59 +17,50 @@ export type UpdateCurrency = Pick<
 	| 'thousands_separator'
 >;
 
-class CurrencyManager {
-	public available_separators = [',', '.'] as const;
+const available_separators = [',', '.'] as const;
 
-	constructor() {
-	}
-
-	// Check if name is unique.
-	private async nameIsAvailable(name: string) {
-		return await valueIsAvailable(currencies, 'name', name);
-	}
-
-	// Check if ISO code is unique
-	private async isoCodeIsAvailable(iso_code: string) {
-		return await valueIsAvailable(currencies, 'iso_code', iso_code);
-	}
-
-	async validateCreation(data: NewCurrency) {
-		const validation_schema = z.object({
-			id: z.string().uuid(),
-			name: z.string()
-				.max(255, { message: 'Name must be less than 255 characters' })
-				.refine(this.nameIsAvailable, {
-					message: 'Name already exists',
-				}),
-			symbol: z.string().max(3, {
-				message: 'Symbol must be less than 20 characters',
-			}),
-			iso_code: z.string()
-				.max(3, { message: 'ISO code must be less than 8 characters' })
-				.refine(this.isoCodeIsAvailable, {
-					message: 'ISO code already exists',
-				}),
-			precision: z.number().max(8).optional().nullable(),
-			active: z.boolean().optional().nullable(),
-			decimal_separator: z.enum(this.available_separators),
-			thousands_separator: z.enum(this.available_separators),
-		});
-
-		return await validation_schema.safeParseAsync(data);
-	}
-
-	async create(data: NewCurrency) {
-		return await db.insert(currencies).values(data).returning({
-			id: currencies.id,
-			name: currencies.name,
-			symbol: currencies.symbol,
-			iso_code: currencies.iso_code,
-			precision: currencies.precision,
-			active: currencies.active,
-			decimal_separator: currencies.decimal_separator,
-			thousands_separator: currencies.thousands_separator,
-		});
-	}
+async function nameIsAvailable(name: string) {
+	return await valueIsAvailable(currencies, 'name', name);
 }
 
-export default CurrencyManager;
+async function isoCodeIsAvailable(iso_code: string) {
+	return await valueIsAvailable(currencies, 'iso_code', iso_code);
+}
+
+export async function validateCreation(data: NewCurrency) {
+	const validation_schema = z.object({
+		id: z.string().uuid(),
+		name: z.string()
+			.max(255, { message: 'Name must be less than 255 characters' })
+			.refine(nameIsAvailable, {
+				message: 'Name already exists',
+			}),
+		symbol: z.string().max(3, {
+			message: 'Symbol must be less than 20 characters',
+		}),
+		iso_code: z.string()
+			.max(3, { message: 'ISO code must be less than 8 characters' })
+			.refine(isoCodeIsAvailable, {
+				message: 'ISO code already exists',
+			}),
+		precision: z.number().max(8).optional().nullable(),
+		active: z.boolean().optional().nullable(),
+		decimal_separator: z.enum(available_separators),
+		thousands_separator: z.enum(available_separators),
+	});
+
+	return await validation_schema.safeParseAsync(data);
+}
+
+export async function create(data: NewCurrency) {
+	return await db.insert(currencies).values(data).returning({
+		id: currencies.id,
+		name: currencies.name,
+		symbol: currencies.symbol,
+		iso_code: currencies.iso_code,
+		precision: currencies.precision,
+		active: currencies.active,
+		decimal_separator: currencies.decimal_separator,
+		thousands_separator: currencies.thousands_separator,
+	});
+}

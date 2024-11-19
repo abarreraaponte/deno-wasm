@@ -1,16 +1,15 @@
 import { type Context, Hono } from '@hono/hono';
-import AccountManager, { NewAccount } from '../../managers/AccountManager.ts';
+import { NewAccount, validateCreation, create } from '../../managers/AccountManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
 router.post('/', async (c: Context) => {
-	const accountManager = new AccountManager();
 	const body = await c.req.json();
 	body.id = uuid();
 
-	const validation_result = await accountManager.validateCreation(body);
+	const validation_result = await validateCreation(body);
 
 	// Return 422 if Zod Error
 	if (!validation_result.success) {
@@ -18,7 +17,7 @@ router.post('/', async (c: Context) => {
 	}
 
 	try {
-		const result = await accountManager.create(
+		const result = await create(
 			validation_result.data as NewAccount,
 		);
 		return c.json(result[0]);

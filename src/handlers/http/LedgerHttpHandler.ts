@@ -1,23 +1,22 @@
 import { type Context, Hono } from '@hono/hono';
-import LedgerManager from '../../managers/LedgerManager.ts';
+import { validateCreation, create } from '../../managers/LedgerManager.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
 
 router.post('/', async (c: Context) => {
-	const ledgerManager = new LedgerManager();
 	const body = await c.req.json();
 	body.id = uuid();
 
-	const validation_result = await ledgerManager.validateCreation(body);
+	const validation_result = await validateCreation(body);
 
 	if (!validation_result.success) {
 		return c.json(validation_result.error.issues, 422);
 	}
 
 	try {
-		const result = await ledgerManager.create(validation_result.data);
+		const result = await create(validation_result.data);
 		return c.json(result[0]);
 	} catch (error) {
 		// IMPLEMENT_LOGGER
