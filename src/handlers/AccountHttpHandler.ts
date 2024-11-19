@@ -8,7 +8,7 @@ const GENERIC_ERROR_MESSAGE = 'Internal server error';
 router.post('/', async (c: Context) => {
 	const accountManager = new AccountManager();
 	const body = await c.req.json();
-	body.guid = uuid();
+	body.id = uuid();
 
 	const validation_result = await accountManager.validateCreation(body);
 

@@ -6,9 +6,6 @@ const SUCCESS_ISO_CODE = `T${Math.floor(Math.random() * 99)}`;
 
 async function makeRequest(data: any, method: string, endpoint: string) : Promise<any>
 {
-
-	console.table(Deno.env.toObject());
-
 	const req = new Request(`http://localhost:${Deno.env.get('KL_SERVER_PORT')}${endpoint}`, {
 		method: method,
 		headers: {
