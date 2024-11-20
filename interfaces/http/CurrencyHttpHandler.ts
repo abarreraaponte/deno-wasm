@@ -1,9 +1,5 @@
 import { type Context, Hono } from '@hono/hono';
-import {
-	create,
-	NewAccount,
-	validateCreation,
-} from '../../managers/AccountManager.ts';
+import { create, validateCreation } from '../../domain/actions/CurrencyActions.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
@@ -21,9 +17,7 @@ router.post('/', async (c: Context) => {
 	}
 
 	try {
-		const result = await create(
-			validation_result.data as NewAccount,
-		);
+		const result = await create(validation_result.data);
 		return c.json(result[0]);
 	} catch (error) {
 		// IMPLEMENT_LOGGER

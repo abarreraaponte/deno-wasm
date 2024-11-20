@@ -1,8 +1,8 @@
-import { db } from '../services/database/db.ts';
-import { currencies, ledgers } from '../services/database/schema.ts';
+import { db } from '../../infrastructure/database/db.ts';
+import { currencies, ledgers } from '../../infrastructure/database/schema.ts';
 import z from 'zod';
 import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import { valueIsAvailable } from '../services/database/validation.ts';
+import { valueIsAvailable } from '../../infrastructure/database/validation.ts';
 import { v7 as uuid, validate as validateUuid } from 'uuid';
 
 export type Ledger = InferSelectModel<typeof ledgers>;

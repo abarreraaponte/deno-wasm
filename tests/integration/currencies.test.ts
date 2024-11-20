@@ -1,6 +1,6 @@
 import { assertEquals } from '@std/assert';
-import { server } from '../../src/handlers/http/http.ts';
-import { CurrencyFactory } from '../../src/services/database/factories.ts';
+import { server } from '../../interfaces/http/http.ts';
+import { CurrencyFactory } from '../../infrastructure/database/factories.ts';
 
 const SUCCESS_ISO_CODE = `T${Math.floor(Math.random() * 99)}`;
 

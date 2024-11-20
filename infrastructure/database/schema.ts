@@ -14,7 +14,7 @@ import {
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { balance_types } from '../../handlers/types/balance.ts';
+import { balance_types } from '../../types/balance.ts';
 import { DimensionType, MetaType, TransactionLineType } from './validation.ts';
 export const balance_type_pg_enum = pgEnum('balance_type', balance_types);
 

@@ -1,9 +1,9 @@
-import { db } from '../services/database/db.ts';
-import { accounts, ledgers } from '../services/database/schema.ts';
+import { db } from '../../infrastructure/database/db.ts';
+import { accounts, ledgers } from '../../infrastructure/database/schema.ts';
 import z from 'zod';
 import { eq, InferInsertModel, InferSelectModel, or } from 'drizzle-orm';
-import { valueIsAvailable } from '../services/database/validation.ts';
-import { balance_types, BalanceType } from '../handlers/types/balance.ts';
+import { valueIsAvailable } from '../../infrastructure/database/validation.ts';
+import { balance_types, BalanceType } from '../../types/balance.ts';
 import { v7 as uuid, validate as validateUuid } from 'uuid';
 
 export type Account = InferSelectModel<typeof accounts>;

@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { NewCurrency } from '../../managers/CurrencyManager.ts';
-import { NewLedger } from '../../managers/LedgerManager.ts';
-import { NewAccount } from '../../managers/AccountManager.ts';
+import { NewCurrency } from '../../domain/actions/CurrencyActions.ts';
+import { NewLedger } from '../../domain/actions/LedgerActions.ts';
+import { NewAccount } from '../../domain/actions/AccountActions.ts';
 import { v7 as uuid } from 'uuid';
-import { balance_types, BalanceType } from '../../handlers/types/balance.ts';
+import { balance_types, BalanceType } from '../../types/balance.ts';
 
 abstract class Factory {
 	abstract make(): any;

@@ -1,10 +1,7 @@
 import { assertEquals } from '@std/assert/equals';
-import { server } from '../../src/handlers/http/http.ts';
-import {
-	CurrencyFactory,
-	LedgerFactory,
-} from '../../src/services/database/factories.ts';
-import { create } from '../../src/managers/CurrencyManager.ts';
+import { server } from '../../interfaces/http/http.ts';
+import {CurrencyFactory, LedgerFactory} from '../../infrastructure/database/factories.ts';
+import { create } from '../../domain/actions/CurrencyActions.ts';
 
 const currency = await create(
 	(new CurrencyFactory()).make(),

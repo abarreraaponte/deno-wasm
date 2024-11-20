@@ -1,12 +1,12 @@
 import { assertEquals } from '@std/assert/equals';
-import { server } from '../../src/handlers/http/http.ts';
+import { server } from '../../interfaces/http/http.ts';
 import {
 	AccountFactory,
 	CurrencyFactory,
 	LedgerFactory,
-} from '../../src/services/database/factories.ts';
-import { create } from '../../src/managers/LedgerManager.ts';
-import { create as createCurrency } from '../../src/managers/CurrencyManager.ts';
+} from '../../infrastructure/database/factories.ts';
+import { create } from '../../domain/actions/LedgerActions.ts';
+import { create as createCurrency } from '../../domain/actions/CurrencyActions.ts';
 
 const sameple_ledger_data = (new LedgerFactory()).make();
 const currency = await createCurrency(
