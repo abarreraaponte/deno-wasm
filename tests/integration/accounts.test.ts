@@ -2,17 +2,17 @@ import { assertEquals } from '@std/assert/equals';
 import { server } from '../../interfaces/http/http.ts';
 import {
 	AccountFactory,
-	CurrencyFactory,
+	UomTypeFactory,
 	LedgerFactory,
 } from '../../infrastructure/database/factories.ts';
 import { create } from '../../domain/actions/LedgerActions.ts';
-import { create as createCurrency } from '../../domain/actions/CurrencyActions.ts';
+import { create as createUomType } from '../../domain/actions/UomTypeActions.ts';
 
 const sameple_ledger_data = (new LedgerFactory()).make();
-const currency = await createCurrency(
-	(new CurrencyFactory()).make(),
+const uom_type = await createUomType(
+	(new UomTypeFactory()).make(),
 );
-sameple_ledger_data.currency_id = currency[0].id;
+sameple_ledger_data.uom_type_id = uom_type[0].id;
 const ledger = await create(sameple_ledger_data);
 
 async function makeRequest(

@@ -31,8 +31,6 @@ async function altIdIsAvailable(alt_id: string) {
 	return await valueIsAvailable(accounts, 'alt_id', alt_id);
 }
 
-const prefix = 'ACC_';
-
 export async function validateCreation(data: NewAccount) {
 	const validation_schema = z.object({
 		id: z.string().uuid(),
@@ -42,14 +40,7 @@ export async function validateCreation(data: NewAccount) {
 				message: 'Ref ID already exists',
 			})
 			.optional()
-			.nullable()
-			.transform((ref_id) => {
-				if (!ref_id) {
-					return `${prefix}${uuid()}`;
-				}
-
-				return ref_id;
-			}),
+			.nullable(),
 		alt_id: z.string()
 			.max(64, { message: 'Alt ID must be less than 64 characters' })
 			.refine(altIdIsAvailable, {

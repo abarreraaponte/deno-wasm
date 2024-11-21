@@ -1,6 +1,6 @@
 {
-  "id": "e1804762-ab79-466b-a57d-9da84efc9d22",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "7dac9a52-3a2e-4f66-bb8a-09025ede1e1e",
+  "prevId": "61287103-a72d-4ff8-a75b-ad423e971a82",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -523,6 +523,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "prefix": {
+          "name": "prefix",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -592,6 +598,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "alt_id"
+          ]
+        },
+        "entity_models_prefix_unique": {
+          "name": "entity_models_prefix_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "prefix"
           ]
         },
         "entity_models_name_unique": {
@@ -937,6 +950,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "prefix": {
+          "name": "prefix",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -1006,6 +1025,13 @@
           "nullsNotDistinct": false,
           "columns": [
             "alt_id"
+          ]
+        },
+        "transaction_models_prefix_unique": {
+          "name": "transaction_models_prefix_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "prefix"
           ]
         },
         "transaction_models_name_unique": {

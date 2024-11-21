@@ -1,9 +1,9 @@
 import { db } from '../../infrastructure/database/db.ts';
-import { currencies, ledgers } from '../../infrastructure/database/schema.ts';
+import { uom_types, ledgers } from '../../infrastructure/database/schema.ts';
 import z from 'zod';
-import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { eq, or, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { valueIsAvailable } from '../../infrastructure/database/validation.ts';
-import { v7 as uuid, validate as validateUuid } from 'uuid';
+import { validate as validateUuid } from 'uuid';
 
 export type Ledger = InferSelectModel<typeof ledgers>;
 export type NewLedger = InferInsertModel<typeof ledgers>;
@@ -11,8 +11,6 @@ export type UpdateLedger = Pick<
 	NewLedger,
 	'ref_id' | 'alt_id' | 'name' | 'description' | 'active'
 >;
-
-const prefix = 'LGR_';
 
 async function nameIsAvailable(name: string) {
 	return await valueIsAvailable(ledgers, 'name', name);
@@ -33,15 +31,6 @@ export async function validateCreation(data: NewLedger) {
 			.max(64, { message: 'Ref ID must be less than 64 characters' })
 			.refine(refIdIsAvailable, {
 				message: 'Ref ID already exists',
-			})
-			.optional()
-			.nullable()
-			.transform((ref_id) => {
-				if (!ref_id) {
-					return `${prefix}${uuid()}`;
-				}
-
-				return ref_id;
 			}),
 		alt_id: z.string()
 			.max(64, { message: 'Alt ID must be less than 64 characters' })
@@ -56,33 +45,36 @@ export async function validateCreation(data: NewLedger) {
 				message: 'Name already exists',
 			}),
 		description: z.string().optional().nullable(),
-		currency_id: z.string()
-			.transform(async (currency_id, ctx) => {
-				const is_uuid = validateUuid(currency_id);
+		uom_type_id: z.string()
+			.transform(async (uom_type_id, ctx) => {
+				const is_uuid = validateUuid(uom_type_id);
 
 				const filters = is_uuid
 					? {
-						where: eq(currencies.id, currency_id),
+						where: eq(uom_types.id, uom_type_id),
 					}
 					: {
-						where: eq(currencies.iso_code, currency_id),
+						where: or(
+							eq(uom_types.ref_id, uom_type_id),
+							eq(uom_types.alt_id, uom_type_id),
+						),
 					};
 
-				const existing_currency = await db.query.currencies.findFirst(
+				const existing_uom_type = await db.query.uom_types.findFirst(
 					filters,
 				);
 
-				if (!existing_currency) {
+				if (!existing_uom_type) {
 					ctx.addIssue({
 						code: z.ZodIssueCode.custom,
-						message: `Invalid currency ID ${currency_id}`,
+						message: `Invalid UOM type ID ${uom_type_id}`,
 					});
 
 					return z.NEVER;
 				}
 
-				return existing_currency.id;
-			}),
+				return existing_uom_type.id;
+			}).optional(),
 		active: z.boolean().optional().nullable(),
 	});
 

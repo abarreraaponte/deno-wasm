@@ -1,6 +1,6 @@
 {
-  "id": "04c461bb-6996-41df-afab-69e6f16b7811",
-  "prevId": "a7cd8307-eb2d-4ba4-be98-c9d9e14ed7ca",
+  "id": "61287103-a72d-4ff8-a75b-ad423e971a82",
+  "prevId": "e1804762-ab79-466b-a57d-9da84efc9d22",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -180,8 +180,8 @@
         }
       }
     },
-    "public.currencies": {
-      "name": "currencies",
+    "public.conversion_rates": {
+      "name": "conversion_rates",
       "schema": "",
       "columns": {
         "id": {
@@ -190,57 +190,92 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
+        "from_uom_id": {
+          "name": "from_uom_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "symbol": {
-          "name": "symbol",
-          "type": "varchar(3)",
+        "to_uom_id": {
+          "name": "to_uom_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "iso_code": {
-          "name": "iso_code",
-          "type": "varchar(3)",
+        "rate": {
+          "name": "rate",
+          "type": "numeric(24, 8)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "conversion_rates_from_uom_id_uoms_id_fk": {
+          "name": "conversion_rates_from_uom_id_uoms_id_fk",
+          "tableFrom": "conversion_rates",
+          "columnsFrom": [
+            "from_uom_id"
+          ],
+          "tableTo": "uoms",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        },
+        "conversion_rates_to_uom_id_uoms_id_fk": {
+          "name": "conversion_rates_to_uom_id_uoms_id_fk",
+          "tableFrom": "conversion_rates",
+          "columnsFrom": [
+            "to_uom_id"
+          ],
+          "tableTo": "uoms",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.dimensions": {
+      "name": "dimensions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "entry_id": {
+          "name": "entry_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
-        "precision": {
-          "name": "precision",
-          "type": "integer",
+        "entity_model_id": {
+          "name": "entity_model_id",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": false,
-          "default": 0
+          "notNull": false
         },
-        "active": {
-          "name": "active",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": true
-        },
-        "decimal_separator": {
-          "name": "decimal_separator",
-          "type": "char(1)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "thousands_separator": {
-          "name": "thousands_separator",
-          "type": "char(1)",
+        "entity_id": {
+          "name": "entity_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {
-        "currencies_iso_code_index": {
-          "name": "currencies_iso_code_index",
+        "dimensions_entry_id_index": {
+          "name": "dimensions_entry_id_index",
           "columns": [
             {
-              "expression": "iso_code",
+              "expression": "entry_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -251,11 +286,26 @@
           "method": "btree",
           "concurrently": false
         },
-        "currencies_name_index": {
-          "name": "currencies_name_index",
+        "dimensions_entity_model_id_index": {
+          "name": "dimensions_entity_model_id_index",
           "columns": [
             {
-              "expression": "name",
+              "expression": "entity_model_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "with": {},
+          "method": "btree",
+          "concurrently": false
+        },
+        "dimensions_entity_id_index": {
+          "name": "dimensions_entity_id_index",
+          "columns": [
+            {
+              "expression": "entity_id",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -267,24 +317,49 @@
           "concurrently": false
         }
       },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "currencies_name_unique": {
-          "name": "currencies_name_unique",
-          "columns": [
-            "name"
+      "foreignKeys": {
+        "dimensions_entry_id_entries_id_fk": {
+          "name": "dimensions_entry_id_entries_id_fk",
+          "tableFrom": "dimensions",
+          "columnsFrom": [
+            "entry_id"
           ],
-          "nullsNotDistinct": false
+          "tableTo": "entries",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
-        "currencies_iso_code_unique": {
-          "name": "currencies_iso_code_unique",
-          "columns": [
-            "iso_code"
+        "dimensions_entity_model_id_entity_models_id_fk": {
+          "name": "dimensions_entity_model_id_entity_models_id_fk",
+          "tableFrom": "dimensions",
+          "columnsFrom": [
+            "entity_model_id"
           ],
-          "nullsNotDistinct": false
+          "tableTo": "entity_models",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
+        },
+        "dimensions_entity_id_entities_id_fk": {
+          "name": "dimensions_entity_id_entities_id_fk",
+          "tableFrom": "dimensions",
+          "columnsFrom": [
+            "entity_id"
+          ],
+          "tableTo": "entities",
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
-      }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     },
     "public.entities": {
       "name": "entities",
@@ -574,29 +649,18 @@
           "primaryKey": false,
           "notNull": true
         },
-        "quantity": {
-          "name": "quantity",
+        "value": {
+          "name": "value",
           "type": "numeric(64, 16)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'0'"
         },
         "transaction_id": {
           "name": "transaction_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dimensions": {
-          "name": "dimensions",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {
@@ -696,19 +760,6 @@
           ],
           "onUpdate": "no action",
           "onDelete": "no action"
-        },
-        "entries_product_id_products_id_fk": {
-          "name": "entries_product_id_products_id_fk",
-          "tableFrom": "entries",
-          "columnsFrom": [
-            "product_id"
-          ],
-          "tableTo": "products",
-          "columnsTo": [
-            "id"
-          ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -728,110 +779,6 @@
           "nullsNotDistinct": false
         }
       }
-    },
-    "public.exchange_rates": {
-      "name": "exchange_rates",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "from_currency_id": {
-          "name": "from_currency_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "to_currency_id": {
-          "name": "to_currency_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "rate": {
-          "name": "rate",
-          "type": "numeric(24, 8)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "valid_from": {
-          "name": "valid_from",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "valid_to": {
-          "name": "valid_to",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "exchange_rates_valid_from_index": {
-          "name": "exchange_rates_valid_from_index",
-          "columns": [
-            {
-              "expression": "valid_from",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        },
-        "exchange_rates_valid_to_index": {
-          "name": "exchange_rates_valid_to_index",
-          "columns": [
-            {
-              "expression": "valid_to",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        }
-      },
-      "foreignKeys": {
-        "exchange_rates_from_currency_id_currencies_id_fk": {
-          "name": "exchange_rates_from_currency_id_currencies_id_fk",
-          "tableFrom": "exchange_rates",
-          "columnsFrom": [
-            "from_currency_id"
-          ],
-          "tableTo": "currencies",
-          "columnsTo": [
-            "id"
-          ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
-        },
-        "exchange_rates_to_currency_id_currencies_id_fk": {
-          "name": "exchange_rates_to_currency_id_currencies_id_fk",
-          "tableFrom": "exchange_rates",
-          "columnsFrom": [
-            "to_currency_id"
-          ],
-          "tableTo": "currencies",
-          "columnsTo": [
-            "id"
-          ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
     },
     "public.ledgers": {
       "name": "ledgers",
@@ -867,11 +814,11 @@
           "primaryKey": false,
           "notNull": false
         },
-        "currency_id": {
-          "name": "currency_id",
+        "uom_type_id": {
+          "name": "uom_type_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "active": {
           "name": "active",
@@ -929,13 +876,13 @@
         }
       },
       "foreignKeys": {
-        "ledgers_currency_id_currencies_id_fk": {
-          "name": "ledgers_currency_id_currencies_id_fk",
+        "ledgers_uom_type_id_uom_types_id_fk": {
+          "name": "ledgers_uom_type_id_uom_types_id_fk",
           "tableFrom": "ledgers",
           "columnsFrom": [
-            "currency_id"
+            "uom_type_id"
           ],
-          "tableTo": "currencies",
+          "tableTo": "uom_types",
           "columnsTo": [
             "id"
           ],
@@ -963,208 +910,6 @@
           "name": "ledgers_name_unique",
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
-        }
-      }
-    },
-    "public.product_models": {
-      "name": "product_models",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "ref_id": {
-          "name": "ref_id",
-          "type": "varchar(64)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "alt_id": {
-          "name": "alt_id",
-          "type": "varchar(64)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "product_models_ref_id_index": {
-          "name": "product_models_ref_id_index",
-          "columns": [
-            {
-              "expression": "ref_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        },
-        "product_models_alt_id_index": {
-          "name": "product_models_alt_id_index",
-          "columns": [
-            {
-              "expression": "alt_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        },
-        "product_models_name_index": {
-          "name": "product_models_name_index",
-          "columns": [
-            {
-              "expression": "name",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "product_models_ref_id_unique": {
-          "name": "product_models_ref_id_unique",
-          "columns": [
-            "ref_id"
-          ],
-          "nullsNotDistinct": false
-        },
-        "product_models_alt_id_unique": {
-          "name": "product_models_alt_id_unique",
-          "columns": [
-            "alt_id"
-          ],
-          "nullsNotDistinct": false
-        },
-        "product_models_name_unique": {
-          "name": "product_models_name_unique",
-          "columns": [
-            "name"
-          ],
-          "nullsNotDistinct": false
-        }
-      }
-    },
-    "public.products": {
-      "name": "products",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "ref_id": {
-          "name": "ref_id",
-          "type": "varchar(64)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "alt_id": {
-          "name": "alt_id",
-          "type": "varchar(64)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "product_model_id": {
-          "name": "product_model_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "meta": {
-          "name": "meta",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "products_ref_id_index": {
-          "name": "products_ref_id_index",
-          "columns": [
-            {
-              "expression": "ref_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        },
-        "products_alt_id_index": {
-          "name": "products_alt_id_index",
-          "columns": [
-            {
-              "expression": "alt_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        }
-      },
-      "foreignKeys": {
-        "products_product_model_id_product_models_id_fk": {
-          "name": "products_product_model_id_product_models_id_fk",
-          "tableFrom": "products",
-          "columnsFrom": [
-            "product_model_id"
-          ],
-          "tableTo": "product_models",
-          "columnsTo": [
-            "id"
-          ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "products_ref_id_unique": {
-          "name": "products_ref_id_unique",
-          "columns": [
-            "ref_id"
-          ],
-          "nullsNotDistinct": false
-        },
-        "products_alt_id_unique": {
-          "name": "products_alt_id_unique",
-          "columns": [
-            "alt_id"
           ],
           "nullsNotDistinct": false
         }
@@ -1514,29 +1259,30 @@
           "primaryKey": false,
           "notNull": true
         },
-        "plural_name": {
-          "name": "plural_name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "symbol": {
           "name": "symbol",
           "type": "varchar(20)",
           "primaryKey": false,
-          "notNull": true
-        },
-        "plural_symbol": {
-          "name": "plural_symbol",
-          "type": "varchar(20)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "rate": {
-          "name": "rate",
-          "type": "numeric(24, 8)",
-          "primaryKey": false,
           "notNull": false
+        },
+        "precision": {
+          "name": "precision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "decimal_separator": {
+          "name": "decimal_separator",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "thousands_separator": {
+          "name": "thousands_separator",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": true
         },
         "active": {
           "name": "active",
@@ -1592,41 +1338,11 @@
           "method": "btree",
           "concurrently": false
         },
-        "uoms_plural_name_index": {
-          "name": "uoms_plural_name_index",
-          "columns": [
-            {
-              "expression": "plural_name",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        },
         "uoms_symbol_index": {
           "name": "uoms_symbol_index",
           "columns": [
             {
               "expression": "symbol",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "with": {},
-          "method": "btree",
-          "concurrently": false
-        },
-        "uoms_plural_symbol_index": {
-          "name": "uoms_plural_symbol_index",
-          "columns": [
-            {
-              "expression": "plural_symbol",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1676,24 +1392,10 @@
           ],
           "nullsNotDistinct": false
         },
-        "uoms_plural_name_unique": {
-          "name": "uoms_plural_name_unique",
-          "columns": [
-            "plural_name"
-          ],
-          "nullsNotDistinct": false
-        },
         "uoms_symbol_unique": {
           "name": "uoms_symbol_unique",
           "columns": [
             "symbol"
-          ],
-          "nullsNotDistinct": false
-        },
-        "uoms_plural_symbol_unique": {
-          "name": "uoms_plural_symbol_unique",
-          "columns": [
-            "plural_symbol"
           ],
           "nullsNotDistinct": false
         }

@@ -1,10 +1,10 @@
 import { assertEquals } from '@std/assert/equals';
 import { server } from '../../interfaces/http/http.ts';
-import {CurrencyFactory, LedgerFactory} from '../../infrastructure/database/factories.ts';
-import { create } from '../../domain/actions/CurrencyActions.ts';
+import {UomTypeFactory, LedgerFactory} from '../../infrastructure/database/factories.ts';
+import { create } from '../../domain/actions/UomTypeActions.ts';
 
-const currency = await create(
-	(new CurrencyFactory()).make(),
+const uom_type = await create(
+	(new UomTypeFactory()).make(),
 );
 
 async function makeRequest(
@@ -33,7 +33,7 @@ Deno.test({
 	async fn() {
 		const test_data = (new LedgerFactory()).make();
 		test_data.ref_id = SUCCESS_REF_ID;
-		test_data.currency_id = currency[0].id;
+		test_data.uom_type_id = uom_type[0].id;
 
 		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
 		const json: any = await res.json();
@@ -50,7 +50,7 @@ Deno.test({
 	async fn() {
 		const test_data = (new LedgerFactory()).make();
 		test_data.name = 'A'.repeat(256);
-		test_data.currency_id = currency[0].id;
+		test_data.uom_type_id = uom_type[0].id;
 
 		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
 
@@ -64,7 +64,7 @@ Deno.test({
 	async fn() {
 		const test_data = (new LedgerFactory()).make();
 		test_data.ref_id = SUCCESS_REF_ID;
-		test_data.currency_id = currency[0].id;
+		test_data.uom_type_id = uom_type[0].id;
 
 		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
 
