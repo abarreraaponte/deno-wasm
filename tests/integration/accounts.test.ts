@@ -5,8 +5,8 @@ import {
 	UomTypeFactory,
 	LedgerFactory,
 } from '../../infrastructure/database/factories.ts';
-import { create } from '../../domain/actions/LedgerActions.ts';
-import { create as createUomType } from '../../domain/actions/UomTypeActions.ts';
+import { create } from '../../domain/actions/ledger_actions.ts';
+import { create as createUomType } from '../../domain/actions/uom_type_actions.ts';
 
 const sameple_ledger_data = (new LedgerFactory()).make();
 const uom_type = await createUomType(

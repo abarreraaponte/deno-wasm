@@ -1,5 +1,5 @@
 import { type Context, Hono } from '@hono/hono';
-import { create, validateCreation } from '../../domain/actions/UomTypeActions.ts';
+import { create, validate_creation } from '../../domain/actions/ledger_actions.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
@@ -9,9 +9,8 @@ router.post('/', async (c: Context) => {
 	const body = await c.req.json();
 	body.id = uuid();
 
-	const validation_result = await validateCreation(body);
+	const validation_result = await validate_creation(body);
 
-	// Return 422 if Zod Error
 	if (!validation_result.success) {
 		return c.json(validation_result.error.issues, 422);
 	}

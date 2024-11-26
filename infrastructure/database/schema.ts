@@ -149,6 +149,7 @@ export const entity_models = pgTable('entity_models', {
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	prefix: varchar('prefix', { length: 8 }).unique().notNull(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
+	active: boolean('active').default(true),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),
@@ -203,6 +204,7 @@ export const transaction_models = pgTable('transaction_models', {
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	prefix: varchar('prefix', { length: 8 }).unique().notNull(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
+	active: boolean('active').default(true),
 }, (table) => {
 	return {
 		ref_id_idx: index().on(table.ref_id),

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { NewLedger } from '../../domain/actions/LedgerActions.ts';
-import { NewAccount } from '../../domain/actions/AccountActions.ts';
+import { NewLedger } from '../../domain/actions/ledger_actions.ts';
+import { NewAccount } from '../../domain/actions/account_actions.ts';
 import { v7 as uuid } from 'uuid';
 import { balance_types, BalanceType } from '../../types/balance.ts';
 

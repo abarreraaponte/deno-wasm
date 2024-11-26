@@ -2,9 +2,9 @@ import { db } from '../../infrastructure/database/db.ts';
 import { accounts, ledgers } from '../../infrastructure/database/schema.ts';
 import z from 'zod';
 import { eq, InferInsertModel, InferSelectModel, or } from 'drizzle-orm';
-import { valueIsAvailable } from '../../infrastructure/database/validation.ts';
+import { value_is_available } from '../../infrastructure/database/validation.ts';
 import { balance_types, BalanceType } from '../../types/balance.ts';
-import { v7 as uuid, validate as validateUuid } from 'uuid';
+import { validate as validateUuid } from 'uuid';
 
 export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;
@@ -19,38 +19,53 @@ export type UpdateAccount = Pick<
 	'ref_id' | 'alt_id' | 'name' | 'balance_type' | 'meta' | 'active'
 >;
 
-async function nameIsAvailable(name: string) {
-	return await valueIsAvailable(accounts, 'name', name);
+/**
+ * Check if the name is available
+ * @param name 
+ * @returns Promise<boolean>
+ */
+async function name_is_available(name: string) :Promise<boolean> {
+	return await value_is_available(accounts, 'name', name);
 }
 
-async function refIdIsAvailable(ref_id: string) {
-	return await valueIsAvailable(accounts, 'ref_id', ref_id);
+/**
+ * Check if the ref_id is available
+ * @param ref_id 
+ * @returns :Promise<boolean>
+ */
+async function ref_id_is_available(ref_id: string) :Promise<boolean> {
+	return await value_is_available(accounts, 'ref_id', ref_id);
 }
 
-async function altIdIsAvailable(alt_id: string) {
-	return await valueIsAvailable(accounts, 'alt_id', alt_id);
+/**
+ * Check if the alt_id is available
+ * @param alt_id 
+ * @returns :Promise<boolean>
+ */
+async function alt_id_is_available(alt_id: string) :Promise<boolean> {
+	return await value_is_available(accounts, 'alt_id', alt_id);
 }
 
-export async function validateCreation(data: NewAccount) {
+export async function validate_creation(data: NewAccount) {
 	const validation_schema = z.object({
 		id: z.string().uuid(),
 		ref_id: z.string()
 			.max(64, { message: 'Ref ID must be less than 64 characters' })
-			.refine(refIdIsAvailable, {
+			.refine(ref_id_is_available, {
 				message: 'Ref ID already exists',
 			})
 			.optional()
 			.nullable(),
 		alt_id: z.string()
 			.max(64, { message: 'Alt ID must be less than 64 characters' })
-			.refine(altIdIsAvailable, {
+			.refine(alt_id_is_available, {
 				message: 'Alt ID already exists',
 			})
 			.optional()
 			.nullable(),
 		name: z.string()
 			.max(255, { message: 'Name must be less than 255 characters' })
-			.refine(nameIsAvailable, {
+			.refine(name_is_available, {
 				message: 'Name already exists',
 			}),
 		balance_type: z.enum(balance_types).optional().nullable(),
@@ -136,6 +151,11 @@ export async function validateCreation(data: NewAccount) {
 	return await validation_schema.safeParseAsync(data);
 }
 
+/**
+ * Create a new account
+ * @param data
+ * @returns Promise<InferSelectModel<typeof accounts>>
+ */
 export async function create(data: NewAccount) {
 	return await db.insert(accounts).values(data).returning();
 }
