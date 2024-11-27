@@ -1,6 +1,6 @@
 {
-  "id": "61287103-a72d-4ff8-a75b-ad423e971a82",
-  "prevId": "e1804762-ab79-466b-a57d-9da84efc9d22",
+  "id": "0f3e4d69-d748-48ac-a4de-18f1e63428d4",
+  "prevId": "36e6a8e9-1c35-47b2-a13c-cbb11f1578dd",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -211,26 +211,26 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "conversion_rates_from_uom_id_uoms_id_fk": {
-          "name": "conversion_rates_from_uom_id_uoms_id_fk",
+        "conversion_rates_from_uom_id_units_id_fk": {
+          "name": "conversion_rates_from_uom_id_units_id_fk",
           "tableFrom": "conversion_rates",
           "columnsFrom": [
             "from_uom_id"
           ],
-          "tableTo": "uoms",
+          "tableTo": "units",
           "columnsTo": [
             "id"
           ],
           "onUpdate": "no action",
           "onDelete": "no action"
         },
-        "conversion_rates_to_uom_id_uoms_id_fk": {
-          "name": "conversion_rates_to_uom_id_uoms_id_fk",
+        "conversion_rates_to_uom_id_units_id_fk": {
+          "name": "conversion_rates_to_uom_id_units_id_fk",
           "tableFrom": "conversion_rates",
           "columnsFrom": [
             "to_uom_id"
           ],
-          "tableTo": "uoms",
+          "tableTo": "units",
           "columnsTo": [
             "id"
           ],
@@ -528,6 +528,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         }
       },
       "indexes": {
@@ -735,13 +742,13 @@
           "onUpdate": "no action",
           "onDelete": "no action"
         },
-        "entries_uom_id_uoms_id_fk": {
-          "name": "entries_uom_id_uoms_id_fk",
+        "entries_uom_id_units_id_fk": {
+          "name": "entries_uom_id_units_id_fk",
           "tableFrom": "entries",
           "columnsFrom": [
             "uom_id"
           ],
-          "tableTo": "uoms",
+          "tableTo": "units",
           "columnsTo": [
             "id"
           ],
@@ -814,8 +821,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "uom_type_id": {
-          "name": "uom_type_id",
+        "unit_type_id": {
+          "name": "unit_type_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -876,13 +883,13 @@
         }
       },
       "foreignKeys": {
-        "ledgers_uom_type_id_uom_types_id_fk": {
-          "name": "ledgers_uom_type_id_uom_types_id_fk",
+        "ledgers_unit_type_id_unit_types_id_fk": {
+          "name": "ledgers_unit_type_id_unit_types_id_fk",
           "tableFrom": "ledgers",
           "columnsFrom": [
-            "uom_type_id"
+            "unit_type_id"
           ],
-          "tableTo": "uom_types",
+          "tableTo": "unit_types",
           "columnsTo": [
             "id"
           ],
@@ -942,6 +949,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
         }
       },
       "indexes": {
@@ -1123,8 +1137,8 @@
         }
       }
     },
-    "public.uom_types": {
-      "name": "uom_types",
+    "public.unit_types": {
+      "name": "unit_types",
       "schema": "",
       "columns": {
         "id": {
@@ -1153,8 +1167,8 @@
         }
       },
       "indexes": {
-        "uom_types_name_index": {
-          "name": "uom_types_name_index",
+        "unit_types_name_index": {
+          "name": "unit_types_name_index",
           "columns": [
             {
               "expression": "name",
@@ -1168,8 +1182,8 @@
           "method": "btree",
           "concurrently": false
         },
-        "uom_types_ref_id_index": {
-          "name": "uom_types_ref_id_index",
+        "unit_types_ref_id_index": {
+          "name": "unit_types_ref_id_index",
           "columns": [
             {
               "expression": "ref_id",
@@ -1183,8 +1197,8 @@
           "method": "btree",
           "concurrently": false
         },
-        "uom_types_alt_id_index": {
-          "name": "uom_types_alt_id_index",
+        "unit_types_alt_id_index": {
+          "name": "unit_types_alt_id_index",
           "columns": [
             {
               "expression": "alt_id",
@@ -1202,22 +1216,22 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "uom_types_ref_id_unique": {
-          "name": "uom_types_ref_id_unique",
+        "unit_types_ref_id_unique": {
+          "name": "unit_types_ref_id_unique",
           "columns": [
             "ref_id"
           ],
           "nullsNotDistinct": false
         },
-        "uom_types_alt_id_unique": {
-          "name": "uom_types_alt_id_unique",
+        "unit_types_alt_id_unique": {
+          "name": "unit_types_alt_id_unique",
           "columns": [
             "alt_id"
           ],
           "nullsNotDistinct": false
         },
-        "uom_types_name_unique": {
-          "name": "uom_types_name_unique",
+        "unit_types_name_unique": {
+          "name": "unit_types_name_unique",
           "columns": [
             "name"
           ],
@@ -1225,8 +1239,8 @@
         }
       }
     },
-    "public.uoms": {
-      "name": "uoms",
+    "public.units": {
+      "name": "units",
       "schema": "",
       "columns": {
         "id": {
@@ -1247,8 +1261,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "uom_type_id": {
-          "name": "uom_type_id",
+        "unit_type_id": {
+          "name": "unit_type_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -1293,8 +1307,8 @@
         }
       },
       "indexes": {
-        "uoms_ref_id_index": {
-          "name": "uoms_ref_id_index",
+        "units_ref_id_index": {
+          "name": "units_ref_id_index",
           "columns": [
             {
               "expression": "ref_id",
@@ -1308,8 +1322,8 @@
           "method": "btree",
           "concurrently": false
         },
-        "uoms_alt_id_index": {
-          "name": "uoms_alt_id_index",
+        "units_alt_id_index": {
+          "name": "units_alt_id_index",
           "columns": [
             {
               "expression": "alt_id",
@@ -1323,8 +1337,8 @@
           "method": "btree",
           "concurrently": false
         },
-        "uoms_name_index": {
-          "name": "uoms_name_index",
+        "units_name_index": {
+          "name": "units_name_index",
           "columns": [
             {
               "expression": "name",
@@ -1338,8 +1352,8 @@
           "method": "btree",
           "concurrently": false
         },
-        "uoms_symbol_index": {
-          "name": "uoms_symbol_index",
+        "units_symbol_index": {
+          "name": "units_symbol_index",
           "columns": [
             {
               "expression": "symbol",
@@ -1355,13 +1369,13 @@
         }
       },
       "foreignKeys": {
-        "uoms_uom_type_id_uom_types_id_fk": {
-          "name": "uoms_uom_type_id_uom_types_id_fk",
-          "tableFrom": "uoms",
+        "units_unit_type_id_unit_types_id_fk": {
+          "name": "units_unit_type_id_unit_types_id_fk",
+          "tableFrom": "units",
           "columnsFrom": [
-            "uom_type_id"
+            "unit_type_id"
           ],
-          "tableTo": "uom_types",
+          "tableTo": "unit_types",
           "columnsTo": [
             "id"
           ],
@@ -1371,29 +1385,29 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "uoms_ref_id_unique": {
-          "name": "uoms_ref_id_unique",
+        "units_ref_id_unique": {
+          "name": "units_ref_id_unique",
           "columns": [
             "ref_id"
           ],
           "nullsNotDistinct": false
         },
-        "uoms_alt_id_unique": {
-          "name": "uoms_alt_id_unique",
+        "units_alt_id_unique": {
+          "name": "units_alt_id_unique",
           "columns": [
             "alt_id"
           ],
           "nullsNotDistinct": false
         },
-        "uoms_name_unique": {
-          "name": "uoms_name_unique",
+        "units_name_unique": {
+          "name": "units_name_unique",
           "columns": [
             "name"
           ],
           "nullsNotDistinct": false
         },
-        "uoms_symbol_unique": {
-          "name": "uoms_symbol_unique",
+        "units_symbol_unique": {
+          "name": "units_symbol_unique",
           "columns": [
             "symbol"
           ],

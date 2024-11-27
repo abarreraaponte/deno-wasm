@@ -1,5 +1,5 @@
 import { type Context, Hono } from '@hono/hono';
-import { create, validate_creation } from '../../domain/actions/uom_type_actions.ts';
+import { create, validate_creation } from '../../domain/actions/unit_type_actions.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();

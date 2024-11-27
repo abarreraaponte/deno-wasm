@@ -1,11 +1,11 @@
 import { db } from '../../infrastructure/database/db.ts';
-import { uom_types } from '../../infrastructure/database/schema.ts';
+import { unit_types } from '../../infrastructure/database/schema.ts';
 import z from 'zod';
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { value_is_available } from '../../infrastructure/database/validation.ts';
 
-export type UomType = InferSelectModel<typeof uom_types>;
-export type NewUomType = InferInsertModel<typeof uom_types>;
+export type UnitType = InferSelectModel<typeof unit_types>;
+export type NewUnitType = InferInsertModel<typeof unit_types>;
 
 /**
  * Check if the name is available
@@ -13,7 +13,7 @@ export type NewUomType = InferInsertModel<typeof uom_types>;
  * @returns Promise<boolean>
  */
 async function nameIsAvailable(name: string) {
-	return await value_is_available(uom_types, 'name', name);
+	return await value_is_available(unit_types, 'name', name);
 }
 
 /**
@@ -22,7 +22,7 @@ async function nameIsAvailable(name: string) {
  * @returns Promise<boolean>
  */
 async function red_id_is_available(ref_id: string) {
-	return await value_is_available(uom_types, 'ref_id', ref_id);
+	return await value_is_available(unit_types, 'ref_id', ref_id);
 }
 
 /**
@@ -31,10 +31,10 @@ async function red_id_is_available(ref_id: string) {
  * @returns Promise<boolean>
  */
 async function alt_id_is_available(alt_id: string) {
-	return await value_is_available(uom_types, 'alt_id', alt_id);
+	return await value_is_available(unit_types, 'alt_id', alt_id);
 }
 
-export async function validate_creation(data: NewUomType) {
+export async function validate_creation(data: NewUnitType) {
 	const validation_schema = z.object({
 		id: z.string().uuid(),
 		ref_id: z.string()
@@ -63,8 +63,8 @@ export async function validate_creation(data: NewUomType) {
 /**
  * Create a new UOM type
  * @param data 
- * @returns Promise<UomType>
+ * @returns Promise<UnitType>
  */
-export async function create(data: NewUomType) {
-	return await db.insert(uom_types).values(data).returning();
+export async function create(data: NewUnitType) {
+	return await db.insert(unit_types).values(data).returning();
 }

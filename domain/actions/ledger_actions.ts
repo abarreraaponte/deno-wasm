@@ -1,5 +1,5 @@
 import { db } from '../../infrastructure/database/db.ts';
-import { uom_types, ledgers } from '../../infrastructure/database/schema.ts';
+import { unit_types, ledgers } from '../../infrastructure/database/schema.ts';
 import z from 'zod';
 import { eq, or, InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { value_is_available } from '../../infrastructure/database/validation.ts';
@@ -65,29 +65,29 @@ export async function validate_creation(data: NewLedger) {
 				message: 'Name already exists',
 			}),
 		description: z.string().optional().nullable(),
-		uom_type_id: z.string()
-			.transform(async (uom_type_id, ctx) => {
-				const is_uuid = validateUuid(uom_type_id);
+		unit_type_id: z.string()
+			.transform(async (unit_type_id, ctx) => {
+				const is_uuid = validateUuid(unit_type_id);
 
 				const filters = is_uuid
 					? {
-						where: eq(uom_types.id, uom_type_id),
+						where: eq(unit_types.id, unit_type_id),
 					}
 					: {
 						where: or(
-							eq(uom_types.ref_id, uom_type_id),
-							eq(uom_types.alt_id, uom_type_id),
+							eq(unit_types.ref_id, unit_type_id),
+							eq(unit_types.alt_id, unit_type_id),
 						),
 					};
 
-				const existing_uom_type = await db.query.uom_types.findFirst(
+				const existing_uom_type = await db.query.unit_types.findFirst(
 					filters,
 				);
 
 				if (!existing_uom_type) {
 					ctx.addIssue({
 						code: z.ZodIssueCode.custom,
-						message: `Invalid UOM type ID ${uom_type_id}`,
+						message: `Invalid UOM type ID ${unit_type_id}`,
 					});
 
 					return z.NEVER;

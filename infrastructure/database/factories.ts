@@ -1,6 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { NewLedger } from '../../domain/actions/ledger_actions.ts';
 import { NewAccount } from '../../domain/actions/account_actions.ts';
+import { NewUnitType } from '../../domain/actions/unit_type_actions.ts';
+import { NewEntityModel } from '../../domain/actions/entity_model_actions.ts';
+import { NewTransactionModel } from '../../domain/actions/transaction_model_actions.ts';
 import { v7 as uuid } from 'uuid';
 import { balance_types, BalanceType } from '../../types/balance.ts';
 
@@ -53,7 +56,7 @@ export class AccountFactory extends Factory {
 }
 
 export class UomTypeFactory extends Factory {
-	public make(type?: string) {
+	public make(type?: string) :NewUnitType {
 		type;
 
 		return {
@@ -61,7 +64,40 @@ export class UomTypeFactory extends Factory {
 			'ref_id': uuid(),
 			'alt_id': uuid(),
 			'name': faker.science.unit().name,
-			'active': true,
+		};
+	}
+
+	public makeMany(count: number, type?: string) {
+		return Array.from({ length: count }, () => this.make(type));
+	}
+}
+
+export class EntityModelFactory extends Factory {
+	public make(type?: string) :NewEntityModel {
+		type;
+
+		return {
+			'id': uuid(),
+			'ref_id': uuid(),
+			'alt_id': uuid(),
+			'name': faker.company.name(),
+		};
+	}
+
+	public makeMany(count: number, type?: string) {
+		return Array.from({ length: count }, () => this.make(type));
+	}
+}
+
+export class TransactionModelFactory extends Factory {
+	public make(type?: string) :NewTransactionModel {
+		type;
+
+		return {
+			'id': uuid(),
+			'ref_id': uuid(),
+			'alt_id': uuid(),
+			'name': faker.company.name(),
 		};
 	}
 

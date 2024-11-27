@@ -23,7 +23,7 @@ export const ledgers = pgTable('ledgers', {
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
 	description: text('description'),
-	uom_type_id: uuid('uom_type_id').references(() => uom_types.id),
+	unit_type_id: uuid('unit_type_id').references(() => unit_types.id),
 	active: boolean('active').default(true),
 }, (table) => {
 	return {
@@ -35,9 +35,9 @@ export const ledgers = pgTable('ledgers', {
 
 export const ledger_relations = relations(ledgers, ({ one }) => {
 	return {
-		uom_type: one(uom_types, {
-			fields: [ledgers.uom_type_id],
-			references: [uom_types.id],
+		unit_type: one(unit_types, {
+			fields: [ledgers.unit_type_id],
+			references: [unit_types.id],
 		}),
 	};
 });
@@ -75,7 +75,7 @@ export const account_relations = relations(accounts, ({ one, many }) => {
 	};
 });
 
-export const uom_types = pgTable('uom_types', {
+export const unit_types = pgTable('unit_types', {
 	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
@@ -88,17 +88,17 @@ export const uom_types = pgTable('uom_types', {
 	};
 });
 
-export const uom_type_relations = relations(uom_types, ({ many }) => {
+export const unit_type_relations = relations(unit_types, ({ many }) => {
 	return {
-		uoms: many(uoms),
+		units: many(units),
 	};
 });
 
-export const uoms = pgTable('uoms', {
+export const units = pgTable('units', {
 	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	uom_type_id: uuid('uom_type_id').references(() => uom_types.id).notNull(),
+	unit_type_id: uuid('unit_type_id').references(() => unit_types.id).notNull(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
 	symbol: varchar('symbol', { length: 20 }).unique(),
 	precision: integer('precision').default(0),
@@ -114,31 +114,31 @@ export const uoms = pgTable('uoms', {
 	};
 });
 
-export const uom_relations = relations(uoms, ({ one }) => {
+export const unit_relations = relations(units, ({ one }) => {
 	return {
-		uom_type: one(uom_types, {
-			fields: [uoms.id],
-			references: [uom_types.id],
+		unit_type: one(unit_types, {
+			fields: [units.id],
+			references: [unit_types.id],
 		}),
 	};
 });
 
 export const conversion_rates = pgTable('conversion_rates', {
 	id: uuid('id').primaryKey(),
-	from_uom_id: uuid('from_uom_id').references(() => uoms.id).notNull(),
-	to_uom_id: uuid('to_uom_id').references(() => uoms.id).notNull(),
+	from_uom_id: uuid('from_uom_id').references(() => units.id).notNull(),
+	to_uom_id: uuid('to_uom_id').references(() => units.id).notNull(),
 	rate: numeric('rate', { precision: 24, scale: 8 }).notNull(),
 });
 
 export const conversion_rate_relations = relations(conversion_rates, ({ one }) => {
 	return {
-		from_uom: one(uoms, {
+		from_uom: one(units, {
 			fields: [conversion_rates.from_uom_id],
-			references: [uoms.id],
+			references: [units.id],
 		}),
-		to_uom: one(uoms, {
+		to_uom: one(units, {
 			fields: [conversion_rates.to_uom_id],
-			references: [uoms.id],
+			references: [units.id],
 		}),
 	};
 });
@@ -147,7 +147,6 @@ export const entity_models = pgTable('entity_models', {
 	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	prefix: varchar('prefix', { length: 8 }).unique().notNull(),
 	name: varchar('name', { length: 255 }).unique().notNull(),
 	active: boolean('active').default(true),
 }, (table) => {
@@ -202,7 +201,6 @@ export const transaction_models = pgTable('transaction_models', {
 	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	prefix: varchar('prefix', { length: 8 }).unique().notNull(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
 	active: boolean('active').default(true),
 }, (table) => {
@@ -256,7 +254,7 @@ export const entries = pgTable('entries', {
 		.notNull(),
 	credit_account_id: uuid('credit_account_id').references(() => accounts.id)
 		.notNull(),
-	uom_id: uuid('uom_id').references(() => uoms.id).notNull(),
+	uom_id: uuid('uom_id').references(() => units.id).notNull(),
 	value: numeric('value', { precision: 64, scale: 16 }).default('0'),
 	transaction_id: uuid('transaction_id').references(() => transactions.id)
 		.notNull(),
@@ -285,7 +283,7 @@ export const entry_relations = relations(entries, ({ one, many }) => {
 			fields: [entries.id],
 			references: [accounts.id],
 		}),
-		uom: one(uoms, { fields: [entries.id], references: [uoms.id] }),
+		uom: one(units, { fields: [entries.id], references: [units.id] }),
 		dimensions: many(dimensions),
 	};
 });

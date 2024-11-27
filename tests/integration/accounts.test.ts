@@ -6,13 +6,13 @@ import {
 	LedgerFactory,
 } from '../../infrastructure/database/factories.ts';
 import { create } from '../../domain/actions/ledger_actions.ts';
-import { create as createUomType } from '../../domain/actions/uom_type_actions.ts';
+import { create as createUnitType } from '../../domain/actions/unit_type_actions.ts';
 
 const sameple_ledger_data = (new LedgerFactory()).make();
-const uom_type = await createUomType(
+const uom_type = await createUnitType(
 	(new UomTypeFactory()).make(),
 );
-sameple_ledger_data.uom_type_id = uom_type[0].id;
+sameple_ledger_data.unit_type_id = uom_type[0].id;
 const ledger = await create(sameple_ledger_data);
 
 async function makeRequest(
