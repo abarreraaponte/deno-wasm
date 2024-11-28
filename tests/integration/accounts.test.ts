@@ -1,19 +1,15 @@
 import { assertEquals } from '@std/assert/equals';
 import { server } from '../../interfaces/http/http.ts';
-import {
-	AccountFactory,
-	UomTypeFactory,
-	LedgerFactory,
-} from '../../infrastructure/database/factories.ts';
+import { AccountFactory, LedgerFactory, UomTypeFactory } from '../../infrastructure/database/factories.ts';
 import { create } from '../../domain/actions/ledger_actions.ts';
 import { create as createUnitType } from '../../domain/actions/unit_type_actions.ts';
 
-const sameple_ledger_data = (new LedgerFactory()).make();
+const sample_ledger_data = (new LedgerFactory()).make();
 const uom_type = await createUnitType(
 	(new UomTypeFactory()).make(),
 );
-sameple_ledger_data.unit_type_id = uom_type[0].id;
-const ledger = await create(sameple_ledger_data);
+sample_ledger_data.unit_type_id = uom_type[0].id;
+const ledger = await create(sample_ledger_data);
 
 async function makeRequest(
 	data: any,

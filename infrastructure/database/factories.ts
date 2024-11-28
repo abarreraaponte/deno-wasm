@@ -63,7 +63,7 @@ export class UomTypeFactory extends Factory {
 			'id': uuid(),
 			'ref_id': uuid(),
 			'alt_id': uuid(),
-			'name': faker.science.unit().name,
+			'name': faker.word.words(2),
 		};
 	}
 
