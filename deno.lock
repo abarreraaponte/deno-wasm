@@ -2,14 +2,17 @@
   "version": "4",
   "specifiers": {
     "jsr:@hono/hono@^4.6.10": "4.6.10",
+    "jsr:@std/assert@1": "1.0.8",
     "jsr:@std/assert@^1.0.8": "1.0.8",
+    "jsr:@std/bytes@^1.0.2": "1.0.2",
+    "jsr:@std/crypto@^1.0.3": "1.0.3",
     "jsr:@std/internal@^1.0.5": "1.0.5",
+    "jsr:@std/uuid@^1.0.4": "1.0.4",
     "npm:@faker-js/faker@^9.0.3": "9.2.0",
     "npm:drizzle-kit@0.24.2": "0.24.2_esbuild@0.19.12",
     "npm:drizzle-kit@~0.24.2": "0.24.2_esbuild@0.19.12",
     "npm:drizzle-orm@0.33": "0.33.0_postgres@3.4.5",
     "npm:postgres@^3.4.4": "3.4.5",
-    "npm:uuid@10": "10.0.0",
     "npm:zod@^3.23.8": "3.23.8"
   },
   "jsr": {
@@ -22,8 +25,21 @@
         "jsr:@std/internal"
       ]
     },
+    "@std/bytes@1.0.2": {
+      "integrity": "fbdee322bbd8c599a6af186a1603b3355e59a5fb1baa139f8f4c3c9a1b3e3d57"
+    },
+    "@std/crypto@1.0.3": {
+      "integrity": "a2a32f51ddef632d299e3879cd027c630dcd4d1d9a5285d6e6788072f4e51e7f"
+    },
     "@std/internal@1.0.5": {
       "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
+    },
+    "@std/uuid@1.0.4": {
+      "integrity": "f4233149cc8b4753cc3763fd83a7c4101699491f55c7be78dc7b30281946d7a0",
+      "dependencies": [
+        "jsr:@std/bytes",
+        "jsr:@std/crypto"
+      ]
     }
   },
   "npm": {
@@ -293,9 +309,6 @@
     "source-map@0.6.1": {
       "integrity": "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
     },
-    "uuid@10.0.0": {
-      "integrity": "sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ=="
-    },
     "zod@3.23.8": {
       "integrity": "sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g=="
     }
@@ -304,12 +317,19 @@
     "dependencies": [
       "jsr:@hono/hono@^4.6.10",
       "jsr:@std/assert@^1.0.8",
+      "jsr:@std/uuid@^1.0.4",
       "npm:@faker-js/faker@^9.0.3",
       "npm:drizzle-kit@~0.24.2",
       "npm:drizzle-orm@0.33",
       "npm:postgres@^3.4.4",
-      "npm:uuid@10",
       "npm:zod@^3.23.8"
-    ]
+    ],
+    "members": {
+      "packages/sdk": {
+        "dependencies": [
+          "jsr:@std/assert@1"
+        ]
+      }
+    }
   }
 }

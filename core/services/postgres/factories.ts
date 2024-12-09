@@ -4,7 +4,7 @@ import { NewAccount } from '../../actions/account_actions.ts';
 import { NewUnitType } from '../../actions/unit_type_actions.ts';
 import { NewEntityModel } from '../../actions/entity_model_actions.ts';
 import { NewTransactionModel } from '../../actions/transaction_model_actions.ts';
-import { v7 as uuid } from 'uuid';
+import { generate as uuid } from "@std/uuid/unstable-v7";
 import { balance_types, BalanceType } from '../../types/balance.ts';
 
 abstract class Factory {

@@ -4,7 +4,7 @@ import z from 'zod';
 import { eq, InferInsertModel, InferSelectModel, or } from 'drizzle-orm';
 import { valueIsAvailable } from '../services/postgres/validation.ts';
 import { balance_types, BalanceType } from '../types/balance.ts';
-import { validate as validateUuid } from 'uuid';
+import { validate as validateUuid } from "@std/uuid/unstable-v7";
 
 export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;

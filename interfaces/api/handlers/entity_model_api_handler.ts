@@ -1,6 +1,6 @@
 import { type Context, Hono } from '@hono/hono';
 import { create, validateCreation } from '../../../core/actions/entity_model_actions.ts';
-import { v7 as uuid } from 'uuid';
+import { generate as uuid } from "@std/uuid/unstable-v7";
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
