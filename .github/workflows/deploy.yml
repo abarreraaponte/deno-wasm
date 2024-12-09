@@ -36,6 +36,6 @@ jobs:
         with:
           project: "kitledger-dev"
           entrypoint: "server.ts"
-          root: "/"
+          root: ""
           
           
