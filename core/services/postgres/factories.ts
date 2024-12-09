@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { NewLedger } from '../../domain/actions/ledger_actions.ts';
-import { NewAccount } from '../../domain/actions/account_actions.ts';
-import { NewUnitType } from '../../domain/actions/unit_type_actions.ts';
-import { NewEntityModel } from '../../domain/actions/entity_model_actions.ts';
-import { NewTransactionModel } from '../../domain/actions/transaction_model_actions.ts';
+import { NewLedger } from '../../actions/ledger_actions.ts';
+import { NewAccount } from '../../actions/account_actions.ts';
+import { NewUnitType } from '../../actions/unit_type_actions.ts';
+import { NewEntityModel } from '../../actions/entity_model_actions.ts';
+import { NewTransactionModel } from '../../actions/transaction_model_actions.ts';
 import { v7 as uuid } from 'uuid';
 import { balance_types, BalanceType } from '../../types/balance.ts';
 

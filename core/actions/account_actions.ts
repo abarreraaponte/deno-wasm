@@ -1,9 +1,9 @@
-import { db } from '../../infrastructure/database/db.ts';
-import { accounts, ledgers } from '../../infrastructure/database/schema.ts';
+import { db } from '../services/postgres/db.ts';
+import { accounts, ledgers } from '../services/postgres/schema.ts';
 import z from 'zod';
 import { eq, InferInsertModel, InferSelectModel, or } from 'drizzle-orm';
-import { value_is_available } from '../../infrastructure/database/validation.ts';
-import { balance_types, BalanceType } from '../../types/balance.ts';
+import { valueIsAvailable } from '../services/postgres/validation.ts';
+import { balance_types, BalanceType } from '../types/balance.ts';
 import { validate as validateUuid } from 'uuid';
 
 export type Account = InferSelectModel<typeof accounts>;
@@ -25,7 +25,7 @@ export type UpdateAccount = Pick<
  * @returns Promise<boolean>
  */
 async function name_is_available(name: string) :Promise<boolean> {
-	return await value_is_available(accounts, 'name', name);
+	return await valueIsAvailable(accounts, 'name', name);
 }
 
 /**
@@ -33,8 +33,8 @@ async function name_is_available(name: string) :Promise<boolean> {
  * @param ref_id 
  * @returns :Promise<boolean>
  */
-async function ref_id_is_available(ref_id: string) :Promise<boolean> {
-	return await value_is_available(accounts, 'ref_id', ref_id);
+async function refIdIsAvailable(ref_id: string) :Promise<boolean> {
+	return await valueIsAvailable(accounts, 'ref_id', ref_id);
 }
 
 /**
@@ -43,7 +43,7 @@ async function ref_id_is_available(ref_id: string) :Promise<boolean> {
  * @returns :Promise<boolean>
  */
 async function alt_id_is_available(alt_id: string) :Promise<boolean> {
-	return await value_is_available(accounts, 'alt_id', alt_id);
+	return await valueIsAvailable(accounts, 'alt_id', alt_id);
 }
 
 export async function validate_creation(data: NewAccount) {
@@ -51,7 +51,7 @@ export async function validate_creation(data: NewAccount) {
 		id: z.string().uuid(),
 		ref_id: z.string()
 			.max(64, { message: 'Ref ID must be less than 64 characters' })
-			.refine(ref_id_is_available, {
+			.refine(refIdIsAvailable, {
 				message: 'Ref ID already exists',
 			})
 			.optional()

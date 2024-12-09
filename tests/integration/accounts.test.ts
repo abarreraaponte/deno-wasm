@@ -1,8 +1,8 @@
 import { assertEquals } from '@std/assert/equals';
-import { server } from '../../interfaces/http/http.ts';
-import { AccountFactory, LedgerFactory, UomTypeFactory } from '../../infrastructure/database/factories.ts';
-import { create } from '../../domain/actions/ledger_actions.ts';
-import { create as createUnitType } from '../../domain/actions/unit_type_actions.ts';
+import { server } from '../../interfaces/api/router.ts';
+import { AccountFactory, LedgerFactory, UomTypeFactory } from '../../core/services/postgres/factories.ts';
+import { create } from '../../core/actions/ledger_actions.ts';
+import { create as createUnitType } from '../../core/actions/unit_type_actions.ts';
 
 const sample_ledger_data = (new LedgerFactory()).make();
 const uom_type = await createUnitType(

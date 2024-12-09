@@ -1,8 +1,8 @@
-import { db } from '../../infrastructure/database/db.ts';
-import { entity_models } from '../../infrastructure/database/schema.ts';
+import { db } from '../services/postgres/db.ts';
+import { entity_models } from '../services/postgres/schema.ts';
 import z from 'zod';
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import { value_is_available } from '../../infrastructure/database/validation.ts';
+import { value_is_available } from '../services/postgres/validation.ts';
 
 export type EntityModel = InferSelectModel<typeof entity_models>;
 export type NewEntityModel = InferInsertModel<typeof entity_models>;

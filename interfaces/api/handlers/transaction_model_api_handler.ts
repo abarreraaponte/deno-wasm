@@ -1,5 +1,5 @@
 import {type Context, Hono} from '@hono/hono';
-import {create, validate_creation} from '../../domain/actions/transaction_model_actions.ts';
+import {create, validate_creation} from '../../../core/actions/transaction_model_actions.ts';
 import {v7 as uuid} from 'uuid';
 
 const router = new Hono();

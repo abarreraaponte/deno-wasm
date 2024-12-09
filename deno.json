@@ -19,13 +19,20 @@
 		"uuid": "npm:uuid@^10.0.0",
 		"zod": "npm:zod@^3.23.8"
 	},
+	"lint": {
+        "rules": {
+            "tags": ["recommended"]
+        }
+    },
 	"nodeModulesDir": "auto",
 	"tasks": {
+		"check": "deno check core/**/*.ts interfaces/**/*.ts tests/**/*.ts bin/**/*.ts",
 		"db:custom": "drizzle-kit generate --custom --config=infrastructure/database/drizzle.config.ts",
 		"db:generate": "drizzle-kit generate --config=infrastructure/database/drizzle.config.ts",
 		"db:migrate": "drizzle-kit migrate --config=infrastructure/database/drizzle.config.ts",
 		"format": "deno fmt",
-		"start": "deno run --allow-env --allow-sys --allow-net --allow-read --env-file=.env server.ts",
+		"lint": "deno lint",
+		"start": "deno run --allow-env --allow-sys --allow-net --allow-read --env-file=.env bin/server.ts",
 		"test": "deno test -A --env-file=.env"
 	},
 	"test": {

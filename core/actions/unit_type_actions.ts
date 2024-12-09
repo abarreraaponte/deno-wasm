@@ -1,8 +1,8 @@
-import { db } from '../../infrastructure/database/db.ts';
-import { unit_types } from '../../infrastructure/database/schema.ts';
+import { db } from '../services/postgres/db.ts';
+import { unit_types } from '../services/postgres/schema.ts';
 import z from 'zod';
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import { value_is_available } from '../../infrastructure/database/validation.ts';
+import { value_is_available } from '../services/postgres/validation.ts';
 
 export type UnitType = InferSelectModel<typeof unit_types>;
 export type NewUnitType = InferInsertModel<typeof unit_types>;
