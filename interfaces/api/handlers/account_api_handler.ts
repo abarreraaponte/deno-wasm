@@ -2,7 +2,7 @@ import { type Context, Hono } from '@hono/hono';
 import {
 	create,
 	NewAccount,
-	validate_creation,
+	validateCreation,
 } from '../../../core/actions/account_actions.ts';
 import { v7 as uuid } from 'uuid';
 
@@ -13,7 +13,7 @@ router.post('/', async (c: Context) => {
 	const body = await c.req.json();
 	body.id = uuid();
 
-	const validation_result = await validate_creation(body);
+	const validation_result = await validateCreation(body);
 
 	// Return 422 if Zod Error
 	if (!validation_result.success) {

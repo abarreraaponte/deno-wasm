@@ -2,7 +2,7 @@ import { db } from '../services/postgres/db.ts';
 import { unit_types, ledgers } from '../services/postgres/schema.ts';
 import z from 'zod';
 import { eq, or, InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import { value_is_available } from '../services/postgres/validation.ts';
+import { valueIsAvailable } from '../services/postgres/validation.ts';
 import { validate as validateUuid } from 'uuid';
 
 export type Ledger = InferSelectModel<typeof ledgers>;
@@ -17,8 +17,8 @@ export type UpdateLedger = Pick<
  * @param name
  * @returns Promise<boolean>
  */
-async function name_is_available(name: string) {
-	return await value_is_available(ledgers, 'name', name);
+async function nameIsAvailable(name: string) {
+	return await valueIsAvailable(ledgers, 'name', name);
 }
 
 /**
@@ -26,8 +26,8 @@ async function name_is_available(name: string) {
  * @param ref_id
  * @returns Promise<boolean>
  */
-async function red_id_is_available(ref_id: string) {
-	return await value_is_available(ledgers, 'ref_id', ref_id);
+async function refIdIsAvailable(ref_id: string) {
+	return await valueIsAvailable(ledgers, 'ref_id', ref_id);
 }
 
 /**
@@ -35,33 +35,33 @@ async function red_id_is_available(ref_id: string) {
  * @param alt_id
  * @returns Promise<boolean>
  */
-async function alt_id_is_available(alt_id: string) {
-	return await value_is_available(ledgers, 'alt_id', alt_id);
+async function altIdIsAvailable(alt_id: string) {
+	return await valueIsAvailable(ledgers, 'alt_id', alt_id);
 }
 
 /**
  * Validate the creation of a new ledger
  * @param data
- * @returns Promise<z.infer<typeof validation_schema>>
+ * @returns Promise<z.infer<typeof validationSchema>>
  */
-export async function validate_creation(data: NewLedger) {
-	const validation_schema = z.object({
+export async function validateCreation(data: NewLedger) {
+	const validationSchema = z.object({
 		id: z.string().uuid(),
 		ref_id: z.string()
 			.max(64, { message: 'Ref ID must be less than 64 characters' })
-			.refine(red_id_is_available, {
+			.refine(refIdIsAvailable, {
 				message: 'Ref ID already exists',
 			}),
 		alt_id: z.string()
 			.max(64, { message: 'Alt ID must be less than 64 characters' })
-			.refine(alt_id_is_available, {
+			.refine(altIdIsAvailable, {
 				message: 'Alt ID already exists',
 			})
 			.optional()
 			.nullable(),
 		name: z.string()
 			.max(255, { message: 'Name must be less than 255 characters' })
-			.refine(name_is_available, {
+			.refine(nameIsAvailable, {
 				message: 'Name already exists',
 			}),
 		description: z.string().optional().nullable(),
@@ -98,7 +98,7 @@ export async function validate_creation(data: NewLedger) {
 		active: z.boolean().optional().nullable(),
 	});
 
-	return await validation_schema.safeParseAsync(data);
+	return await validationSchema.safeParseAsync(data);
 }
 
 /**

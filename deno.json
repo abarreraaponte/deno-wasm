@@ -32,7 +32,7 @@
 		"db:migrate": "drizzle-kit migrate --config=infrastructure/database/drizzle.config.ts",
 		"format": "deno fmt",
 		"lint": "deno lint",
-		"start": "deno run --allow-env --allow-sys --allow-net --allow-read --env-file=.env bin/server.ts",
+		"start": "deno run --allow-env --allow-sys --allow-net --allow-read --env-file=.env interfaces/api/server.ts",
 		"test": "deno test -A --env-file=.env"
 	},
 	"test": {

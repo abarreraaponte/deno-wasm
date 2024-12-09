@@ -1,5 +1,5 @@
 import { type Context, Hono } from '@hono/hono';
-import { create, validate_creation } from '../../../core/actions/entity_model_actions.ts';
+import { create, validateCreation } from '../../../core/actions/entity_model_actions.ts';
 import { v7 as uuid } from 'uuid';
 
 const router = new Hono();
@@ -9,7 +9,7 @@ router.post('/', async (c: Context) => {
 	const body = await c.req.json();
 	body.id = uuid();
 
-	const validation_result = await validate_creation(body);
+	const validation_result = await validateCreation(body);
 
 	// Return 422 if Zod Error
 	if (!validation_result.success) {

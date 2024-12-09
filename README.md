@@ -58,6 +58,8 @@ let userCount = 0;
 const user_id = 1;
 let User_Count = 0;
 ```
+[!IMPORTANT]
+Exempt from this rule are constans or variables that refer directly to SQL tables, such as the ones found in the schema.ts file.
 
 ### Properties
 Use `snake_case`:

@@ -24,7 +24,7 @@ export type UpdateAccount = Pick<
  * @param name 
  * @returns Promise<boolean>
  */
-async function name_is_available(name: string) :Promise<boolean> {
+async function nameIsAvailable(name: string) :Promise<boolean> {
 	return await valueIsAvailable(accounts, 'name', name);
 }
 
@@ -42,12 +42,12 @@ async function refIdIsAvailable(ref_id: string) :Promise<boolean> {
  * @param alt_id 
  * @returns :Promise<boolean>
  */
-async function alt_id_is_available(alt_id: string) :Promise<boolean> {
+async function altIdIsAvailable(alt_id: string) :Promise<boolean> {
 	return await valueIsAvailable(accounts, 'alt_id', alt_id);
 }
 
-export async function validate_creation(data: NewAccount) {
-	const validation_schema = z.object({
+export async function validateCreation(data: NewAccount) {
+	const validationSchema = z.object({
 		id: z.string().uuid(),
 		ref_id: z.string()
 			.max(64, { message: 'Ref ID must be less than 64 characters' })
@@ -58,14 +58,14 @@ export async function validate_creation(data: NewAccount) {
 			.nullable(),
 		alt_id: z.string()
 			.max(64, { message: 'Alt ID must be less than 64 characters' })
-			.refine(alt_id_is_available, {
+			.refine(altIdIsAvailable, {
 				message: 'Alt ID already exists',
 			})
 			.optional()
 			.nullable(),
 		name: z.string()
 			.max(255, { message: 'Name must be less than 255 characters' })
-			.refine(name_is_available, {
+			.refine(nameIsAvailable, {
 				message: 'Name already exists',
 			}),
 		balance_type: z.enum(balance_types).optional().nullable(),
@@ -148,7 +148,7 @@ export async function validate_creation(data: NewAccount) {
 			}
 		});
 
-	return await validation_schema.safeParseAsync(data);
+	return await validationSchema.safeParseAsync(data);
 }
 
 /**
