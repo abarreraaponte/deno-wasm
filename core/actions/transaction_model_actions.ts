@@ -1,8 +1,8 @@
-import { db } from '../services/postgres/db.ts';
-import { transaction_models } from '../services/postgres/schema.ts';
+import { db } from '../services/database/db.ts';
+import { transaction_models } from '../services/database/schema.ts';
 import z from 'zod';
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import { valueIsAvailable } from '../services/postgres/validation.ts';
+import { valueIsAvailable } from '../services/database/validation.ts';
 
 export type TransactionModel = InferSelectModel<typeof transaction_models>;
 export type NewTransactionModel = InferInsertModel<typeof transaction_models>;

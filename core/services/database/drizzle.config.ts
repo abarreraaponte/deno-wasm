@@ -13,8 +13,8 @@ export default defineConfig({
 	dbCredentials: {
 		url: postgresUrl,
 	},
-	schema: './infrastructure/database/schema.ts',
-	out: './infrastructure/database/migrations',
+	schema: './core/services/database/schema.ts',
+	out: './core/services/database/migrations',
 	dialect: 'postgresql',
 	verbose: true,
 	strict: true,

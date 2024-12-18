@@ -1,6 +1,6 @@
 import { assertEquals } from '@std/assert/equals';
 import { server } from '../../interfaces/api/router.ts';
-import { AccountFactory, LedgerFactory, UomTypeFactory } from '../../core/services/postgres/factories.ts';
+import { AccountFactory, LedgerFactory, UomTypeFactory } from '../../core/services/database/factories.ts';
 import { create } from '../../core/actions/ledger_actions.ts';
 import { create as createUnitType } from '../../core/actions/unit_type_actions.ts';
 

@@ -1,8 +1,8 @@
-import { db } from '../services/postgres/db.ts';
-import { unit_types, ledgers } from '../services/postgres/schema.ts';
+import { db } from '../services/database/db.ts';
+import { unit_types, ledgers } from '../services/database/schema.ts';
 import z from 'zod';
 import { eq, or, InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import { valueIsAvailable } from '../services/postgres/validation.ts';
+import { valueIsAvailable } from '../services/database/validation.ts';
 import { validate as validateUuid } from "@std/uuid/unstable-v7";
 
 export type Ledger = InferSelectModel<typeof ledgers>;
