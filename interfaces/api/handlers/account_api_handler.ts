@@ -1,9 +1,9 @@
 import { type Context, Hono } from '@hono/hono';
 import {
 	create,
-	NewAccount,
 	validateCreation,
 } from '../../../core/actions/account_actions.ts';
+import { NewAccount } from '../../../core/types/index.ts';
 import { generate as uuid } from "@std/uuid/unstable-v7";
 
 const router = new Hono();

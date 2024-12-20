@@ -1,16 +1,12 @@
 import { db } from '../services/database/db.ts';
 import { unit_types, ledgers } from '../services/database/schema.ts';
 import z from 'zod';
-import { eq, or, InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
 import { valueIsAvailable } from '../services/database/validation.ts';
 import { validate as validateUuid } from "@std/uuid/unstable-v7";
+import { NewLedger } from '../types/index.ts';
 
-export type Ledger = InferSelectModel<typeof ledgers>;
-export type NewLedger = InferInsertModel<typeof ledgers>;
-export type UpdateLedger = Pick<
-	NewLedger,
-	'ref_id' | 'alt_id' | 'name' | 'description' | 'active'
->;
+
 
 /**
  * Check if the name is available

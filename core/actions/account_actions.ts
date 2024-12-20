@@ -1,23 +1,10 @@
 import { db } from '../services/database/db.ts';
 import { accounts, ledgers } from '../services/database/schema.ts';
 import z from 'zod';
-import { eq, InferInsertModel, InferSelectModel, or } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
 import { valueIsAvailable } from '../services/database/validation.ts';
-import { balance_types, BalanceType } from '../types/balance.ts';
 import { validate as validateUuid } from "@std/uuid/unstable-v7";
-
-export type Account = InferSelectModel<typeof accounts>;
-export type NewAccount = InferInsertModel<typeof accounts>;
-export type RefinedNewAccount =
-	& Omit<NewAccount, 'ledger_id' | 'balance_type'>
-	& {
-		ledger_id?: string;
-		balance_type?: BalanceType;
-	};
-export type UpdateAccount = Pick<
-	NewAccount,
-	'ref_id' | 'alt_id' | 'name' | 'balance_type' | 'meta' | 'active'
->;
+import { NewAccount, BalanceType } from '../types/index.ts';
 
 /**
  * Check if the name is available
@@ -68,7 +55,7 @@ export async function validateCreation(data: NewAccount) {
 			.refine(nameIsAvailable, {
 				message: 'Name already exists',
 			}),
-		balance_type: z.enum(balance_types).optional().nullable(),
+		balance_type: z.enum([BalanceType.DEBIT, BalanceType.CREDIT]).optional().nullable(),
 		ledger_id: z.string().optional().nullable(),
 		parent_id: z.string().uuid().optional().nullable(),
 		meta: z.any().optional().nullable(),

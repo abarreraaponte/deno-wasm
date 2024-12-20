@@ -1,11 +1,10 @@
 import { db } from '../services/database/db.ts';
 import { unit_types } from '../services/database/schema.ts';
 import z from 'zod';
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { NewUnitType } from '../types/index.ts';
 import { valueIsAvailable } from '../services/database/validation.ts';
 
-export type UnitType = InferSelectModel<typeof unit_types>;
-export type NewUnitType = InferInsertModel<typeof unit_types>;
+
 
 /**
  * Check if the name is available

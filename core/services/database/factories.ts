@@ -1,15 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { NewLedger } from '../../actions/ledger_actions.ts';
-import { NewAccount } from '../../actions/account_actions.ts';
-import { NewUnitType } from '../../actions/unit_type_actions.ts';
-import { NewEntityModel } from '../../actions/entity_model_actions.ts';
-import { NewTransactionModel } from '../../actions/transaction_model_actions.ts';
+import { NewLedger, NewAccount, NewUnitType, NewEntityModel, NewTransactionModel, BalanceType } from '../../types/index.ts';
 import { generate as uuid } from "@std/uuid/unstable-v7";
-import { balance_types, BalanceType } from '../../types/balance.ts';
 
 abstract class Factory {
-	abstract make(type?: string): any;
-	abstract makeMany(count: number, type?: string): any[];
+	abstract make(type?: string) :NewLedger|NewAccount|NewUnitType|NewEntityModel|NewTransactionModel;
+	abstract makeMany(count: number, type?: string): NewLedger[]|NewAccount[]|NewUnitType[]|NewEntityModel[]|NewTransactionModel[];
 }
 
 export class LedgerFactory extends Factory {
@@ -44,7 +39,7 @@ export class AccountFactory extends Factory {
 			'ref_id': uuid(),
 			'alt_id': uuid(),
 			'name': faker.company.name(),
-			'balance_type': balance_types[Math.floor(Math.random() * balance_types.length)] as BalanceType,
+			'balance_type': [BalanceType.DEBIT, BalanceType.CREDIT][Math.floor(Math.random() * 2)],
 			'ledger_id': uuid(),
 			'active': true,
 		};
@@ -55,7 +50,7 @@ export class AccountFactory extends Factory {
 	}
 }
 
-export class UomTypeFactory extends Factory {
+export class UnitTypeFactory extends Factory {
 	public make(type?: string) :NewUnitType {
 		type;
 

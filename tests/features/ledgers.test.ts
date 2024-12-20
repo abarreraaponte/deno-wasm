@@ -1,17 +1,18 @@
 import { assertEquals } from '@std/assert/equals';
 import { server } from '../../interfaces/api/router.ts';
-import { LedgerFactory, UomTypeFactory } from '../../core/services/database/factories.ts';
+import { LedgerFactory, UnitTypeFactory } from '../../core/services/database/factories.ts';
 import { create } from '../../core/actions/unit_type_actions.ts';
+import { NewLedger, Ledger } from '../../core/types/index.ts';
 
 const uom_type = await create(
-	(new UomTypeFactory()).make(),
+	(new UnitTypeFactory()).make(),
 );
 
 async function makeRequest(
-	data: any,
+	data: NewLedger|Ledger,
 	method: string,
 	endpoint: string,
-): Promise<any> {
+): Promise<Response> {
 	const req = new Request(
 		`http://localhost:${Deno.env.get('KL_SERVER_PORT')}${endpoint}`,
 		{
@@ -36,7 +37,7 @@ Deno.test({
 		test_data.unit_type_id = uom_type[0].id;
 
 		const res = await makeRequest(test_data, 'POST', '/api/ledgers');
-		const json: any = await res.json();
+		const json: Ledger = await res.json();
 
 		assertEquals(res.status, 200);
 		assertEquals(json.id.length, 36);

@@ -1,1 +1,0 @@
-const available_separators = [',', '.'] as const;
