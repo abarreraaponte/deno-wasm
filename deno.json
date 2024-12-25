@@ -31,9 +31,10 @@
 	"nodeModulesDir": "auto",
 	"tasks": {
 		"check": "deno check core/**/*.ts interfaces/**/*.ts tests/**/*.ts",
-		"db:custom": "drizzle-kit generate --custom --config=infrastructure/database/drizzle.config.ts",
-		"db:generate": "drizzle-kit generate --config=infrastructure/database/drizzle.config.ts",
-		"db:migrate": "drizzle-kit migrate --config=infrastructure/database/drizzle.config.ts",
+		"db:custom": "drizzle-kit generate --custom --config=core/services/database/drizzle.config.ts",
+		"db:generate": "drizzle-kit generate --config=core/services/database/drizzle.config.ts",
+		"db:migrate": "drizzle-kit migrate --config=core/services/database/drizzle.config.ts",
+		"dev": "deno run --allow-env --allow-sys --allow-net --allow-read --watch --env-file=.env interfaces/api/server.ts",
 		"format": "deno fmt",
 		"lint": "deno lint",
 		"start": "deno run --allow-env --allow-sys --allow-net --allow-read --env-file=.env interfaces/api/server.ts",

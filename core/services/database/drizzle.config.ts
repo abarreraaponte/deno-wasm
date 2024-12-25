@@ -17,4 +17,8 @@ export default defineConfig({
 	dialect: 'postgresql',
 	verbose: true,
 	strict: true,
+	migrations: {
+		table: 'migrations',
+		schema: 'public',
+	},
 });

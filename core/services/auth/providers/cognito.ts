@@ -5,6 +5,7 @@ import { encodeBase64 } from '@std/encoding';
 interface CognitoConfig {
 	clientId: string;
 	clientSecret: string;
+	userPoolDomain: string;
 	userPoolId: string;
 	region: string;
 }
@@ -15,12 +16,15 @@ class JWKCache {
 	private readonly TTL = 3600 * 1000;
 
 	async getKeys(jwksUri: string): Promise<jose.JWK[]> {
+
 		if (Date.now() - this.lastFetch > this.TTL) {
+			console.log('Fetching JWKs from', jwksUri);
 			const response = await fetch(jwksUri);
 			const jwks = await response.json();
 			this.keys = jwks.keys;
 			this.lastFetch = Date.now();
 		}
+
 		return this.keys;
 	}
 }
@@ -33,8 +37,7 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 	}
 
 	async generateToken(clientId: string, clientSecret: string): Promise<TokenResponse> {
-		const tokenEndpoint =
-			`https://cognito-idp.${this.config.region}.amazonaws.com/${this.config.userPoolId}/oauth2/token`;
+		const tokenEndpoint = `${this.config.userPoolDomain}/oauth2/token`;
 
 		const response = await fetch(tokenEndpoint, {
 			method: 'POST',
@@ -56,14 +59,12 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 
 	async validateToken(token: string): Promise<TokenClaims> {
 		try {
-			const jwksUri =
-				`https://cognito-idp.${this.config.region}.amazonaws.com/${this.config.userPoolId}/.well-known/jwks.json`;
+			const jwksUri = `https://cognito-idp.${this.config.region}.amazonaws.com/${this.config.userPoolId}/.well-known/jwks.json`;
 			const keys = await this.jwkCache.getKeys(jwksUri);
 			const JWKS = jose.createLocalJWKSet({ keys });
 
 			const { payload } = await jose.jwtVerify(token, JWKS, {
 				issuer: `https://cognito-idp.${this.config.region}.amazonaws.com/${this.config.userPoolId}`,
-				audience: this.config.clientId,
 			});
 
 			return {
@@ -74,6 +75,7 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 				iat: payload.iat as number,
 			};
 		} catch (_error) {
+			console.error('Token validation failed:', _error);
 			throw new UnauthorizedError('Invalid token');
 		}
 	}
