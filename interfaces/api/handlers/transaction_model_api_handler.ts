@@ -1,6 +1,6 @@
-import {type Context, Hono} from '@hono/hono';
-import {create, validateCreation} from '../../../core/actions/transaction_model_actions.ts';
-import { generate as uuid } from "@std/uuid/unstable-v7";
+import { type Context, Hono } from '@hono/hono';
+import { create, validateCreation } from '../../../core/actions/transaction_model_actions.ts';
+import { generate as uuid } from '@std/uuid/unstable-v7';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';
@@ -22,7 +22,7 @@ router.post('/', async (c: Context) => {
 	} catch (error) {
 		// IMPLEMENT_LOGGER
 		console.error(error);
-		return c.json({message: GENERIC_ERROR_MESSAGE}, 500);
+		return c.json({ message: GENERIC_ERROR_MESSAGE }, 500);
 	}
 });
 

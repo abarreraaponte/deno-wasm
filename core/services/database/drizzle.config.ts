@@ -6,8 +6,7 @@ const host = Deno.env.get('KL_PG_HOST') || 'localhost';
 const port = parseInt(Deno.env.get('KL_PG_PORT') || '5432');
 const database = Deno.env.get('KL_PG_NAME') || 'kitledger';
 
-export const postgresUrl =
-	`postgres://${user}:${password}@${host}:${port}/${database}`;
+export const postgresUrl = `postgres://${user}:${password}@${host}:${port}/${database}`;
 
 export default defineConfig({
 	dbCredentials: {

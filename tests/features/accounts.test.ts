@@ -3,7 +3,7 @@ import { server } from '../../interfaces/api/router.ts';
 import { AccountFactory, LedgerFactory, UnitTypeFactory } from '../../core/services/database/factories.ts';
 import { create } from '../../core/actions/ledger_actions.ts';
 import { create as createUnitType } from '../../core/actions/unit_type_actions.ts';
-import { NewAccount, Account } from '../../core/types/index.ts';
+import { Account, NewAccount } from '../../core/types/index.ts';
 
 const sample_ledger_data = (new LedgerFactory()).make();
 const uom_type = await createUnitType(
@@ -13,7 +13,7 @@ sample_ledger_data.unit_type_id = uom_type[0].id;
 const ledger = await create(sample_ledger_data);
 
 async function makeRequest(
-	data: NewAccount|Account,
+	data: NewAccount | Account,
 	method: string,
 	endpoint: string,
 ): Promise<Response> {

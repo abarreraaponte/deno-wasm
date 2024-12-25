@@ -4,11 +4,9 @@ import z from 'zod';
 import { NewUnitType } from '../types/index.ts';
 import { valueIsAvailable } from '../services/database/validation.ts';
 
-
-
 /**
  * Check if the name is available
- * @param name 
+ * @param name
  * @returns Promise<boolean>
  */
 async function nameIsAvailable(name: string) {
@@ -61,7 +59,7 @@ export async function validateCreation(data: NewUnitType) {
 
 /**
  * Create a new UOM type
- * @param data 
+ * @param data
  * @returns Promise<UnitType>
  */
 export async function create(data: NewUnitType) {

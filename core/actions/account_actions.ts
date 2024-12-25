@@ -3,33 +3,33 @@ import { accounts, ledgers } from '../services/database/schema.ts';
 import z from 'zod';
 import { eq, or } from 'drizzle-orm';
 import { valueIsAvailable } from '../services/database/validation.ts';
-import { validate as validateUuid } from "@std/uuid/unstable-v7";
-import { NewAccount, BalanceType } from '../types/index.ts';
+import { validate as validateUuid } from '@std/uuid/unstable-v7';
+import { BalanceType, NewAccount } from '../types/index.ts';
 
 /**
  * Check if the name is available
- * @param name 
+ * @param name
  * @returns Promise<boolean>
  */
-async function nameIsAvailable(name: string) :Promise<boolean> {
+async function nameIsAvailable(name: string): Promise<boolean> {
 	return await valueIsAvailable(accounts, 'name', name);
 }
 
 /**
  * Check if the ref_id is available
- * @param ref_id 
+ * @param ref_id
  * @returns :Promise<boolean>
  */
-async function refIdIsAvailable(ref_id: string) :Promise<boolean> {
+async function refIdIsAvailable(ref_id: string): Promise<boolean> {
 	return await valueIsAvailable(accounts, 'ref_id', ref_id);
 }
 
 /**
  * Check if the alt_id is available
- * @param alt_id 
+ * @param alt_id
  * @returns :Promise<boolean>
  */
-async function altIdIsAvailable(alt_id: string) :Promise<boolean> {
+async function altIdIsAvailable(alt_id: string): Promise<boolean> {
 	return await valueIsAvailable(accounts, 'alt_id', alt_id);
 }
 
@@ -95,8 +95,7 @@ export async function validateCreation(data: NewAccount) {
 				if (!data.balance_type) {
 					ctx.addIssue({
 						path: ['balance_type'],
-						message:
-							'balance_type is required when parent_id is not provided',
+						message: 'balance_type is required when parent_id is not provided',
 						code: z.ZodIssueCode.custom,
 					});
 				}
@@ -104,21 +103,18 @@ export async function validateCreation(data: NewAccount) {
 				if (!data.ledger_id) {
 					ctx.addIssue({
 						path: ['ledger_id'],
-						message:
-							'ledger_id is required when parent_id is not provided',
+						message: 'ledger_id is required when parent_id is not provided',
 						code: z.ZodIssueCode.custom,
 					});
 				} else {
 					const is_uuid = validateUuid(data.ledger_id);
 
-					const filters = is_uuid
-						? { where: eq(ledgers.id, data.ledger_id) }
-						: {
-							where: or(
-								eq(ledgers.ref_id, data.ledger_id),
-								eq(ledgers.alt_id, data.ledger_id),
-							),
-						};
+					const filters = is_uuid ? { where: eq(ledgers.id, data.ledger_id) } : {
+						where: or(
+							eq(ledgers.ref_id, data.ledger_id),
+							eq(ledgers.alt_id, data.ledger_id),
+						),
+					};
 
 					const ledger = await db.query.ledgers.findFirst(filters);
 

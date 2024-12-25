@@ -1,10 +1,7 @@
 import { type Context, Hono } from '@hono/hono';
-import {
-	create,
-	validateCreation,
-} from '../../../core/actions/account_actions.ts';
+import { create, validateCreation } from '../../../core/actions/account_actions.ts';
 import { NewAccount } from '../../../core/types/index.ts';
-import { generate as uuid } from "@std/uuid/unstable-v7";
+import { generate as uuid } from '@std/uuid/unstable-v7';
 
 const router = new Hono();
 const GENERIC_ERROR_MESSAGE = 'Internal server error';

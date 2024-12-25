@@ -1,9 +1,9 @@
 import { assertEquals } from '@std/assert/equals';
-import {server} from '../../interfaces/api/router.ts';
-import {UnitTypeFactory} from '../../core/services/database/factories.ts';
+import { server } from '../../interfaces/api/router.ts';
+import { UnitTypeFactory } from '../../core/services/database/factories.ts';
 import { NewUnitType, UnitType } from '../../core/types/index.ts';
 
-async function makeRequest(data: NewUnitType|UnitType, method: string, endpoint: string): Promise<Response> {
+async function makeRequest(data: NewUnitType | UnitType, method: string, endpoint: string): Promise<Response> {
 	const req = new Request(
 		`http://localhost:${Deno.env.get('KL_SERVER_PORT')}${endpoint}`,
 		{

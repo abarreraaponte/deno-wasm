@@ -1,15 +1,24 @@
 import { faker } from '@faker-js/faker';
-import { NewLedger, NewAccount, NewUnitType, NewEntityModel, NewTransactionModel, BalanceType } from '../../types/index.ts';
-import { generate as uuid } from "@std/uuid/unstable-v7";
+import {
+	BalanceType,
+	NewAccount,
+	NewEntityModel,
+	NewLedger,
+	NewTransactionModel,
+	NewUnitType,
+} from '../../types/index.ts';
+import { generate as uuid } from '@std/uuid/unstable-v7';
 
 abstract class Factory {
-	abstract make(type?: string) :NewLedger|NewAccount|NewUnitType|NewEntityModel|NewTransactionModel;
-	abstract makeMany(count: number, type?: string): NewLedger[]|NewAccount[]|NewUnitType[]|NewEntityModel[]|NewTransactionModel[];
+	abstract make(type?: string): NewLedger | NewAccount | NewUnitType | NewEntityModel | NewTransactionModel;
+	abstract makeMany(
+		count: number,
+		type?: string,
+	): NewLedger[] | NewAccount[] | NewUnitType[] | NewEntityModel[] | NewTransactionModel[];
 }
 
 export class LedgerFactory extends Factory {
-	public make(type?:string): NewLedger {
-
+	public make(type?: string): NewLedger {
 		// Choose to not do anything with the type argument
 		type;
 
@@ -30,7 +39,6 @@ export class LedgerFactory extends Factory {
 
 export class AccountFactory extends Factory {
 	public make(type?: string): NewAccount {
-
 		// Choose to not do anything with the type argument
 		type;
 
@@ -51,7 +59,7 @@ export class AccountFactory extends Factory {
 }
 
 export class UnitTypeFactory extends Factory {
-	public make(type?: string) :NewUnitType {
+	public make(type?: string): NewUnitType {
 		type;
 
 		return {
@@ -68,7 +76,7 @@ export class UnitTypeFactory extends Factory {
 }
 
 export class EntityModelFactory extends Factory {
-	public make(type?: string) :NewEntityModel {
+	public make(type?: string): NewEntityModel {
 		type;
 
 		return {
@@ -85,7 +93,7 @@ export class EntityModelFactory extends Factory {
 }
 
 export class TransactionModelFactory extends Factory {
-	public make(type?: string) :NewTransactionModel {
+	public make(type?: string): NewTransactionModel {
 		type;
 
 		return {

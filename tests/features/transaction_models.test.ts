@@ -3,7 +3,11 @@ import { server } from '../../interfaces/api/router.ts';
 import { TransactionModelFactory } from '../../core/services/database/factories.ts';
 import { NewTransactionModel, TransactionModel } from '../../core/types/index.ts';
 
-async function makeRequest(data: NewTransactionModel|TransactionModel, method: string, endpoint: string): Promise<Response> {
+async function makeRequest(
+	data: NewTransactionModel | TransactionModel,
+	method: string,
+	endpoint: string,
+): Promise<Response> {
 	const req = new Request(
 		`http://localhost:${Deno.env.get('KL_SERVER_PORT')}${endpoint}`,
 		{

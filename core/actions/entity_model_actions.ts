@@ -4,8 +4,6 @@ import z from 'zod';
 import { valueIsAvailable } from '../services/database/validation.ts';
 import { NewEntityModel } from '../types/index.ts';
 
-
-
 /**
  * Check if the name is available
  * @param name
@@ -66,7 +64,7 @@ export async function validateCreation(data: NewEntityModel) {
 
 /**
  * Create a new entity model
- * @param data 
+ * @param data
  */
 export async function create(data: NewEntityModel) {
 	return await db.insert(entity_models).values(data).returning();

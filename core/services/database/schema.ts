@@ -10,7 +10,7 @@ import {
 	pgTable,
 	text,
 	uuid,
-	varchar
+	varchar,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { BalanceType } from '../../types/index.ts';
@@ -224,9 +224,7 @@ export const transactions = pgTable('transactions', {
 	id: uuid('id').primaryKey(),
 	ref_id: varchar('ref_id', { length: 64 }).unique().notNull(),
 	alt_id: varchar('alt_id', { length: 64 }).unique(),
-	transaction_model_id: uuid('transaction_model_id').references(() =>
-		transaction_models.id
-	).notNull(),
+	transaction_model_id: uuid('transaction_model_id').references(() => transaction_models.id).notNull(),
 	meta: jsonb('meta').$type<MetaType>(),
 	lines: jsonb('lines').$type<TransactionLineType>(),
 }, (table) => {

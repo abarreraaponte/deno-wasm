@@ -2,14 +2,14 @@ import { assertEquals } from '@std/assert/equals';
 import { server } from '../../interfaces/api/router.ts';
 import { LedgerFactory, UnitTypeFactory } from '../../core/services/database/factories.ts';
 import { create } from '../../core/actions/unit_type_actions.ts';
-import { NewLedger, Ledger } from '../../core/types/index.ts';
+import { Ledger, NewLedger } from '../../core/types/index.ts';
 
 const uom_type = await create(
 	(new UnitTypeFactory()).make(),
 );
 
 async function makeRequest(
-	data: NewLedger|Ledger,
+	data: NewLedger | Ledger,
 	method: string,
 	endpoint: string,
 ): Promise<Response> {
