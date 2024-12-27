@@ -6,8 +6,6 @@ import { valueIsAvailable } from '../services/database/validation.ts';
 
 /**
  * Check if the name is available
- * @param name
- * @returns Promise<boolean>
  */
 async function nameIsAvailable(name: string): Promise<boolean> {
 	return await valueIsAvailable(transaction_models, 'name', name);
@@ -15,8 +13,6 @@ async function nameIsAvailable(name: string): Promise<boolean> {
 
 /**
  * Check if the ref_id is available
- * @param ref_id
- * @returns :Promise<boolean>
  */
 async function refIdIsAvailable(ref_id: string): Promise<boolean> {
 	return await valueIsAvailable(transaction_models, 'ref_id', ref_id);
@@ -24,8 +20,6 @@ async function refIdIsAvailable(ref_id: string): Promise<boolean> {
 
 /**
  * Check if the alt_id is available
- * @param alt_id
- * @returns :Promise<boolean>
  */
 async function altIdIsAvailable(alt_id: string): Promise<boolean> {
 	return await valueIsAvailable(transaction_models, 'alt_id', alt_id);
@@ -33,8 +27,6 @@ async function altIdIsAvailable(alt_id: string): Promise<boolean> {
 
 /**
  * Validate the creation of a new transaction model
- * @param data
- * @returns Promise<z.infer<typeof validationSchema>>
  */
 export async function validateCreation(data: NewTransactionModel) {
 	const validationSchema = z.object({
@@ -64,7 +56,6 @@ export async function validateCreation(data: NewTransactionModel) {
 
 /**
  * Create a new transaction model
- * @param data
  */
 export async function create(data: NewTransactionModel) {
 	return await db.insert(transaction_models).values(data).returning();

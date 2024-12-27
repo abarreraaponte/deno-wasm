@@ -8,8 +8,6 @@ import { NewLedger } from '../types/index.ts';
 
 /**
  * Check if the name is available
- * @param name
- * @returns Promise<boolean>
  */
 async function nameIsAvailable(name: string) {
 	return await valueIsAvailable(ledgers, 'name', name);
@@ -17,8 +15,6 @@ async function nameIsAvailable(name: string) {
 
 /**
  * Check if the ref_id is available
- * @param ref_id
- * @returns Promise<boolean>
  */
 async function refIdIsAvailable(ref_id: string) {
 	return await valueIsAvailable(ledgers, 'ref_id', ref_id);
@@ -26,8 +22,6 @@ async function refIdIsAvailable(ref_id: string) {
 
 /**
  * Check if the alt_id is available
- * @param alt_id
- * @returns Promise<boolean>
  */
 async function altIdIsAvailable(alt_id: string) {
 	return await valueIsAvailable(ledgers, 'alt_id', alt_id);
@@ -35,8 +29,6 @@ async function altIdIsAvailable(alt_id: string) {
 
 /**
  * Validate the creation of a new ledger
- * @param data
- * @returns Promise<z.infer<typeof validationSchema>>
  */
 export async function validateCreation(data: NewLedger) {
 	const validationSchema = z.object({
@@ -61,9 +53,9 @@ export async function validateCreation(data: NewLedger) {
 		description: z.string().optional().nullable(),
 		unit_type_id: z.string()
 			.transform(async (unit_type_id, ctx) => {
-				const is_uuid = validateUuid(unit_type_id);
+				const isUuid = validateUuid(unit_type_id);
 
-				const filters = is_uuid
+				const filters = isUuid
 					? {
 						where: eq(unit_types.id, unit_type_id),
 					}
@@ -97,8 +89,6 @@ export async function validateCreation(data: NewLedger) {
 
 /**
  * Create a new ledger
- * @param data
- * @returns Promise<InferSelectModel<typeof ledgers>>
  */
 export async function create(data: NewLedger) {
 	return await db.insert(ledgers).values(data).returning();

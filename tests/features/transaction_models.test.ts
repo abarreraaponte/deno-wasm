@@ -1,7 +1,7 @@
 import { assertEquals } from '@std/assert/equals';
-import { server } from '../../interfaces/api/router.ts';
-import { TransactionModelFactory } from '../../core/services/database/factories.ts';
-import { NewTransactionModel, TransactionModel } from '../../core/types/index.ts';
+import { server } from '../../src/router.ts';
+import { TransactionModelFactory } from '../../src/services/database/factories.ts';
+import { NewTransactionModel, TransactionModel } from '../../src/types/index.ts';
 
 async function makeRequest(
 	data: NewTransactionModel | TransactionModel,

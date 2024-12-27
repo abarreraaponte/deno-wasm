@@ -6,8 +6,6 @@ import { valueIsAvailable } from '../services/database/validation.ts';
 
 /**
  * Check if the name is available
- * @param name
- * @returns Promise<boolean>
  */
 async function nameIsAvailable(name: string) {
 	return await valueIsAvailable(unit_types, 'name', name);
@@ -15,8 +13,6 @@ async function nameIsAvailable(name: string) {
 
 /**
  * Check if the ref_id is available
- * @param ref_id
- * @returns Promise<boolean>
  */
 async function refIdIsAvailable(ref_id: string) {
 	return await valueIsAvailable(unit_types, 'ref_id', ref_id);
@@ -24,8 +20,6 @@ async function refIdIsAvailable(ref_id: string) {
 
 /**
  * Check if the alt_id is available
- * @param alt_id
- * @returns Promise<boolean>
  */
 async function altIdIsAvailable(alt_id: string) {
 	return await valueIsAvailable(unit_types, 'alt_id', alt_id);
@@ -59,8 +53,6 @@ export async function validateCreation(data: NewUnitType) {
 
 /**
  * Create a new UOM type
- * @param data
- * @returns Promise<UnitType>
  */
 export async function create(data: NewUnitType) {
 	return await db.insert(unit_types).values(data).returning();

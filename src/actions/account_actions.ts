@@ -8,8 +8,6 @@ import { BalanceType, NewAccount } from '../types/index.ts';
 
 /**
  * Check if the name is available
- * @param name
- * @returns Promise<boolean>
  */
 async function nameIsAvailable(name: string): Promise<boolean> {
 	return await valueIsAvailable(accounts, 'name', name);
@@ -17,8 +15,6 @@ async function nameIsAvailable(name: string): Promise<boolean> {
 
 /**
  * Check if the ref_id is available
- * @param ref_id
- * @returns :Promise<boolean>
  */
 async function refIdIsAvailable(ref_id: string): Promise<boolean> {
 	return await valueIsAvailable(accounts, 'ref_id', ref_id);
@@ -26,13 +22,14 @@ async function refIdIsAvailable(ref_id: string): Promise<boolean> {
 
 /**
  * Check if the alt_id is available
- * @param alt_id
- * @returns :Promise<boolean>
  */
 async function altIdIsAvailable(alt_id: string): Promise<boolean> {
 	return await valueIsAvailable(accounts, 'alt_id', alt_id);
 }
 
+/**
+ * Validates the data provided for account creation
+ */
 export async function validateCreation(data: NewAccount) {
 	const validationSchema = z.object({
 		id: z.string().uuid(),
@@ -63,9 +60,9 @@ export async function validateCreation(data: NewAccount) {
 	})
 		.superRefine(async (data, ctx) => {
 			if (data.parent_id) {
-				const is_uuid = validateUuid(data.parent_id);
+				const isUuid = validateUuid(data.parent_id);
 
-				const filters = is_uuid
+				const filters = isUuid
 					? {
 						where: eq(accounts.id, data.parent_id),
 					}
@@ -107,9 +104,9 @@ export async function validateCreation(data: NewAccount) {
 						code: z.ZodIssueCode.custom,
 					});
 				} else {
-					const is_uuid = validateUuid(data.ledger_id);
+					const isUuid = validateUuid(data.ledger_id);
 
-					const filters = is_uuid ? { where: eq(ledgers.id, data.ledger_id) } : {
+					const filters = isUuid ? { where: eq(ledgers.id, data.ledger_id) } : {
 						where: or(
 							eq(ledgers.ref_id, data.ledger_id),
 							eq(ledgers.alt_id, data.ledger_id),
@@ -136,8 +133,6 @@ export async function validateCreation(data: NewAccount) {
 
 /**
  * Create a new account
- * @param data
- * @returns Promise<InferSelectModel<typeof accounts>>
  */
 export async function create(data: NewAccount) {
 	return await db.insert(accounts).values(data).returning();

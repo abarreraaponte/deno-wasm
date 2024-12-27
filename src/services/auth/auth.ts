@@ -1,15 +1,23 @@
-import { Context, Next } from '@hono/hono';
 import { CognitoOAuth2Provider } from './providers/cognito.ts';
 
+/**
+ * Supported Oauth2 grant types
+ */
 export enum GRANT_TYPES {
 	CLIENT_CREDENTIALS = 'client_credentials',
 }
 
+/**
+ * Common OAuth2 provider interface
+ */
 export interface OAuth2Provider {
 	generateToken(clientId: string, clientSecret: string): Promise<TokenResponse>;
 	validateToken(token: string): Promise<TokenClaims>;
 }
 
+/**
+ * Token response from the OAuth2 provider
+ */
 export interface TokenResponse {
 	access_token: string;
 	token_type: 'Bearer';
@@ -17,6 +25,9 @@ export interface TokenResponse {
 	scope?: string[];
 }
 
+/**
+ * Token claims
+ */
 export interface TokenClaims {
 	sub: string;
 	client_id: string;
@@ -25,6 +36,9 @@ export interface TokenClaims {
 	iat: number;
 }
 
+/**
+ * Unauthorized error
+ */
 export class UnauthorizedError extends Error {
 	constructor(message = 'Unauthorized') {
 		super(message);
@@ -32,6 +46,9 @@ export class UnauthorizedError extends Error {
 	}
 }
 
+/**
+ * Get the OAuth2 provider
+ */
 export function getOauth2Provider() {
 	return new CognitoOAuth2Provider({
 		clientId: Deno.env.get('KL_AWS_COGNITO_CLIENT_ID') || '',
@@ -41,34 +58,3 @@ export function getOauth2Provider() {
 		region: Deno.env.get('KL_AWS_REGION') || '',
 	});
 }
-
-// Middleware
-export const authMiddleware = (provider: OAuth2Provider) => {
-	return async (c: Context, next: Next) => {
-		const authHeader = c.req.header('authorization');
-		if (!authHeader?.startsWith('Bearer ')) {
-			return c.json(
-				{ error: 'invalid_token', error_description: 'Missing or invalid authorization header' },
-				401,
-				{
-					'WWW-Authenticate': 'Bearer',
-				},
-			);
-		}
-
-		const token = authHeader.slice(7);
-		try {
-			const claims = await provider.validateToken(token);
-			c.set('auth', claims);
-			await next();
-		} catch (error) {
-			return c.json(
-				{ error: 'invalid_token', error_description: String(error) },
-				401,
-				{
-					'WWW-Authenticate': 'Bearer',
-				},
-			);
-		}
-	};
-};

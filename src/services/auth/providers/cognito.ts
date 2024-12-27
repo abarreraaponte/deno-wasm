@@ -2,6 +2,9 @@ import { GRANT_TYPES, OAuth2Provider, TokenClaims, TokenResponse, UnauthorizedEr
 import * as jose from 'jose';
 import { encodeBase64 } from '@std/encoding';
 
+/**
+ * Cognito configuration
+ */
 interface CognitoConfig {
 	clientId: string;
 	clientSecret: string;
@@ -10,6 +13,9 @@ interface CognitoConfig {
 	region: string;
 }
 
+/**
+ * JWK cache handler
+ */
 class JWKCache {
 	private keys: jose.JWK[] = [];
 	private lastFetch: number = 0;
@@ -29,6 +35,9 @@ class JWKCache {
 	}
 }
 
+/**
+ * Cognito OAuth2 provider
+ */
 export class CognitoOAuth2Provider implements OAuth2Provider {
 	private jwkCache: JWKCache;
 
@@ -36,6 +45,9 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 		this.jwkCache = new JWKCache();
 	}
 
+	/**
+	 * Generate a new token
+	 */
 	async generateToken(clientId: string, clientSecret: string): Promise<TokenResponse> {
 		const tokenEndpoint = `${this.config.userPoolDomain}/oauth2/token`;
 
@@ -57,6 +69,9 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 		return response.json();
 	}
 
+	/**
+	 * Validate a token
+	 */
 	async validateToken(token: string): Promise<TokenClaims> {
 		try {
 			const jwksUri = `https://cognito-idp.${this.config.region}.amazonaws.com/${this.config.userPoolId}/.well-known/jwks.json`;

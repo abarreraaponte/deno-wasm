@@ -5,7 +5,8 @@ import AccountRouter from './handlers/account_api_handler.ts';
 import EntityModelRouter from './handlers/entity_model_api_handler.ts';
 import TransactionModelRouter from './handlers/transaction_model_api_handler.ts';
 import Oauth2Router from './handlers/oauth2_handler.ts';
-import { authMiddleware, getOauth2Provider } from '../../core/services/auth/auth.ts';
+import { getOauth2Provider } from './services/auth/auth.ts';
+import authMiddleware from './middleware/auth_middleware.ts';
 
 const app = new Hono();
 const oauth2Provider = getOauth2Provider();

@@ -1,7 +1,7 @@
 // routes/auth.ts
 import { Hono } from '@hono/hono';
 import { decodeBase64 } from '@std/encoding/base64';
-import { getOauth2Provider, GRANT_TYPES, UnauthorizedError } from '../../../core/services/auth/auth.ts';
+import { getOauth2Provider, GRANT_TYPES, UnauthorizedError } from '../services/auth/auth.ts';
 
 // Helper to parse Basic auth header
 const parseBasicAuth = (authHeader: string | undefined): { clientId: string; clientSecret: string } => {
