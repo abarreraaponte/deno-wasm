@@ -2,6 +2,9 @@ import { assertEquals } from '@std/assert/equals';
 import { server } from '../../src/router.ts';
 import { UnitTypeFactory } from '../../src/services/database/factories.ts';
 import { NewUnitType, UnitType } from '../../src/types/index.ts';
+import { getAccessTokenForTest } from '../../src/utils/test_utils.ts';
+
+const access_token = await getAccessTokenForTest();
 
 async function makeRequest(data: NewUnitType | UnitType, method: string, endpoint: string): Promise<Response> {
 	const req = new Request(
@@ -10,6 +13,7 @@ async function makeRequest(data: NewUnitType | UnitType, method: string, endpoin
 			method: method,
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${access_token}`,
 			},
 			body: JSON.stringify(data),
 		},

@@ -53,7 +53,7 @@ export function getOauth2Provider() {
 	return new CognitoOAuth2Provider({
 		clientId: Deno.env.get('KL_AWS_COGNITO_CLIENT_ID') || '',
 		clientSecret: Deno.env.get('KL_AWS_COGNITO_CLIENT_SECRET') || '',
-		userPoolDomain: Deno.env.get('KL_AWS_COGNITO_USER_POOL_DOMAIN') || '',
+		userPoolDomain: Deno.env.get('KL_AWS_COGNITO_USER_POOL_URL') || '',
 		userPoolId: Deno.env.get('KL_AWS_COGNITO_USER_POOL_ID') || '',
 		region: Deno.env.get('KL_AWS_REGION') || '',
 	});

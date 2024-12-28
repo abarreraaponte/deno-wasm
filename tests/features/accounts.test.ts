@@ -4,6 +4,9 @@ import { AccountFactory, LedgerFactory, UnitTypeFactory } from '../../src/servic
 import { create } from '../../src/actions/ledger_actions.ts';
 import { create as createUnitType } from '../../src/actions/unit_type_actions.ts';
 import { Account, NewAccount } from '../../src/types/index.ts';
+import { getAccessTokenForTest } from '../../src/utils/test_utils.ts';
+
+const access_token = await getAccessTokenForTest();
 
 const sample_ledger_data = (new LedgerFactory()).make();
 const uom_type = await createUnitType(
@@ -23,6 +26,7 @@ async function makeRequest(
 			method: method,
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${access_token}`,
 			},
 			body: JSON.stringify(data),
 		},

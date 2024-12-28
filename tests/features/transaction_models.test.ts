@@ -2,6 +2,9 @@ import { assertEquals } from '@std/assert/equals';
 import { server } from '../../src/router.ts';
 import { TransactionModelFactory } from '../../src/services/database/factories.ts';
 import { NewTransactionModel, TransactionModel } from '../../src/types/index.ts';
+import { getAccessTokenForTest } from '../../src/utils/test_utils.ts';
+
+const access_token = await getAccessTokenForTest();
 
 async function makeRequest(
 	data: NewTransactionModel | TransactionModel,
@@ -14,6 +17,7 @@ async function makeRequest(
 			method: method,
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${access_token}`,
 			},
 			body: JSON.stringify(data),
 		},
