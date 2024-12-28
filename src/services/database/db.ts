@@ -1,13 +1,16 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import * as schema from './schema.ts';
-import postgres from 'postgres';
+import { drizzle } from "drizzle-orm/postgres-js";
+import * as schema from "./schema.js";
+import postgres from "postgres";
+import { config } from "dotenv";
 
-const user = Deno.env.get('KL_PG_USER') || '';
-const password = Deno.env.get('KL_PG_PASSWORD') || '';
-const host = Deno.env.get('KL_PG_HOST') || 'localhost';
-const port = parseInt(Deno.env.get('KL_PG_PORT') || '5432');
-const database = Deno.env.get('KL_PG_NAME') || 'kitledger';
-const max_connections = parseInt(Deno.env.get('KL_PG_MAX_CONNECTIONS') || '10');
+config();
+
+const user = process.env.KL_PG_USER || "";
+const password = process.env.KL_PG_PASSWORD || "";
+const host = process.env.KL_PG_HOST || "localhost";
+const port = parseInt(process.env.KL_PG_PORT || "5432");
+const database = process.env.KL_PG_NAME || "kitledger";
+const max_connections = parseInt(process.env.KL_PG_MAX_CONNECTIONS || "10");
 
 export const postgresUrl = `postgres://${user}:${password}@${host}:${port}/${database}`;
 

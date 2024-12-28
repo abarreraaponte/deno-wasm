@@ -1,11 +1,11 @@
-import { type Context, Hono } from '@hono/hono';
-import { create, validateCreation } from '../actions/unit_type_actions.ts';
-import { generate as uuid } from '@std/uuid/unstable-v7';
+import { type Context, Hono } from "hono";
+import { create, validateCreation } from "../actions/unit_type_actions.js";
+import { v7 as uuid } from "uuid";
 
 const router = new Hono();
-const GENERIC_ERROR_MESSAGE = 'Internal server error';
+const GENERIC_ERROR_MESSAGE = "Internal server error";
 
-router.post('/', async (c: Context) => {
+router.post("/", async (c: Context) => {
 	const body = await c.req.json();
 	body.id = uuid();
 

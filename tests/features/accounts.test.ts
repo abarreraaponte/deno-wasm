@@ -1,85 +1,67 @@
-import { assertEquals } from '@std/assert/equals';
-import { server } from '../../src/router.ts';
-import { AccountFactory, LedgerFactory, UnitTypeFactory } from '../../src/services/database/factories.ts';
-import { create } from '../../src/actions/ledger_actions.ts';
-import { create as createUnitType } from '../../src/actions/unit_type_actions.ts';
-import { Account, NewAccount } from '../../src/types/index.ts';
-import { getAccessTokenForTest } from '../../src/utils/test_utils.ts';
+import { describe, it, expect, beforeAll } from "vitest";
+import { server } from "../../src/router.js";
+import { AccountFactory, LedgerFactory, UnitTypeFactory } from "../../src/services/database/factories.js";
+import { create } from "../../src/actions/ledger_actions.js";
+import { create as createUnitType } from "../../src/actions/unit_type_actions.js";
+import { Account, NewAccount } from "../../src/types/index.js";
+import { getAccessTokenForTest } from "../../src/utils/test_utils.js";
 
-const access_token = await getAccessTokenForTest();
+let access_token: string;
+let ledger: any; // Adjust type as needed
+const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
 
-const sample_ledger_data = (new LedgerFactory()).make();
-const uom_type = await createUnitType(
-	(new UnitTypeFactory()).make(),
-);
-sample_ledger_data.unit_type_id = uom_type[0].id;
-const ledger = await create(sample_ledger_data);
-
-async function makeRequest(
-	data: NewAccount | Account,
-	method: string,
-	endpoint: string,
-): Promise<Response> {
-	const req = new Request(
-		`http://localhost:${Deno.env.get('KL_SERVER_PORT')}${endpoint}`,
-		{
-			method: method,
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${access_token}`,
-			},
-			body: JSON.stringify(data),
+async function makeRequest(data: NewAccount | Account, method: string, endpoint: string): Promise<Response> {
+	const req = new Request(`http://localhost:${process.env.KL_SERVER_PORT}${endpoint}`, {
+		method: method,
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${access_token}`,
 		},
-	);
+		body: JSON.stringify(data),
+	});
 
 	return await server.fetch(req);
 }
 
-const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
+beforeAll(async () => {
+	access_token = await getAccessTokenForTest();
 
-Deno.test({
-	name: 'Create a valid account',
-	async fn() {
-		const test_data = (new AccountFactory()).make();
+	const sample_ledger_data = new LedgerFactory().make();
+	const uom_type = await createUnitType(new UnitTypeFactory().make());
+	sample_ledger_data.unit_type_id = uom_type[0].id;
+	ledger = await create(sample_ledger_data);
+});
+
+describe("Account API", () => {
+	it("should create a valid account", async () => {
+		const test_data = new AccountFactory().make();
 		test_data.ref_id = SUCCESS_REF_ID;
 		test_data.ledger_id = ledger[0].id;
 
-		const res = await makeRequest(test_data, 'POST', '/api/accounts');
-		const json: Account = await res.json();
+		const res = await makeRequest(test_data, "POST", "/api/accounts");
+		const json: Account = (await res.json()) as Account;
 
-		assertEquals(res.status, 200);
-		assertEquals(json.id.length, 36);
-	},
-	sanitizeOps: false,
-	sanitizeResources: false,
-});
+		expect(res.status).toBe(200);
+		expect(json.id).toHaveLength(36);
+	});
 
-Deno.test({
-	name: 'Invalid name fails validation',
-	async fn() {
-		const test_data = (new AccountFactory()).make();
-		test_data.name = 'A'.repeat(256);
+	it("should fail validation with invalid name", async () => {
+		const test_data = new AccountFactory().make();
+		test_data.name = "A".repeat(256);
 		test_data.ledger_id = ledger[0].id;
 
-		const res = await makeRequest(test_data, 'POST', '/api/accounts');
+		const res = await makeRequest(test_data, "POST", "/api/accounts");
 
-		assertEquals(res.status, 422);
-	},
-	sanitizeOps: false,
-	sanitizeResources: false,
-});
+		expect(res.status).toBe(422);
+	});
 
-Deno.test({
-	name: 'Repeated Ref ID fails validation',
-	async fn() {
-		const test_data = (new AccountFactory()).make();
+	it("should fail validation with repeated Ref ID", async () => {
+		const test_data = new AccountFactory().make();
 		test_data.ref_id = SUCCESS_REF_ID;
 		test_data.ledger_id = ledger[0].id;
 
-		const res = await makeRequest(test_data, 'POST', '/api/accounts');
+		const res = await makeRequest(test_data, "POST", "/api/accounts");
 
-		assertEquals(res.status, 422);
-	},
-	sanitizeOps: false,
-	sanitizeResources: false,
+		expect(res.status).toBe(422);
+	});
 });

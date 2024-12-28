@@ -1,30 +1,30 @@
-import { db } from '../services/database/db.ts';
-import { ledgers, unit_types } from '../services/database/schema.ts';
-import z from 'zod';
-import { eq, or } from 'drizzle-orm';
-import { valueIsAvailable } from '../services/database/validation.ts';
-import { validate as validateUuid } from '@std/uuid/unstable-v7';
-import { NewLedger } from '../types/index.ts';
+import { db } from "../services/database/db.js";
+import { ledgers, unit_types } from "../services/database/schema.js";
+import z from "zod";
+import { eq, or } from "drizzle-orm";
+import { valueIsAvailable } from "../services/database/validation.js";
+import { validate as validateUuid } from "uuid";
+import { NewLedger } from "../types/index.js";
 
 /**
  * Check if the name is available
  */
 async function nameIsAvailable(name: string) {
-	return await valueIsAvailable(ledgers, 'name', name);
+	return await valueIsAvailable(ledgers, "name", name);
 }
 
 /**
  * Check if the ref_id is available
  */
 async function refIdIsAvailable(ref_id: string) {
-	return await valueIsAvailable(ledgers, 'ref_id', ref_id);
+	return await valueIsAvailable(ledgers, "ref_id", ref_id);
 }
 
 /**
  * Check if the alt_id is available
  */
 async function altIdIsAvailable(alt_id: string) {
-	return await valueIsAvailable(ledgers, 'alt_id', alt_id);
+	return await valueIsAvailable(ledgers, "alt_id", alt_id);
 }
 
 /**
@@ -33,42 +33,35 @@ async function altIdIsAvailable(alt_id: string) {
 export async function validateCreation(data: NewLedger) {
 	const validationSchema = z.object({
 		id: z.string().uuid(),
-		ref_id: z.string()
-			.max(64, { message: 'Ref ID must be less than 64 characters' })
-			.refine(refIdIsAvailable, {
-				message: 'Ref ID already exists',
-			}),
-		alt_id: z.string()
-			.max(64, { message: 'Alt ID must be less than 64 characters' })
+		ref_id: z.string().max(64, { message: "Ref ID must be less than 64 characters" }).refine(refIdIsAvailable, {
+			message: "Ref ID already exists",
+		}),
+		alt_id: z
+			.string()
+			.max(64, { message: "Alt ID must be less than 64 characters" })
 			.refine(altIdIsAvailable, {
-				message: 'Alt ID already exists',
+				message: "Alt ID already exists",
 			})
 			.optional()
 			.nullable(),
-		name: z.string()
-			.max(255, { message: 'Name must be less than 255 characters' })
-			.refine(nameIsAvailable, {
-				message: 'Name already exists',
-			}),
+		name: z.string().max(255, { message: "Name must be less than 255 characters" }).refine(nameIsAvailable, {
+			message: "Name already exists",
+		}),
 		description: z.string().optional().nullable(),
-		unit_type_id: z.string()
+		unit_type_id: z
+			.string()
 			.transform(async (unit_type_id, ctx) => {
 				const isUuid = validateUuid(unit_type_id);
 
 				const filters = isUuid
 					? {
-						where: eq(unit_types.id, unit_type_id),
-					}
+							where: eq(unit_types.id, unit_type_id),
+						}
 					: {
-						where: or(
-							eq(unit_types.ref_id, unit_type_id),
-							eq(unit_types.alt_id, unit_type_id),
-						),
-					};
+							where: or(eq(unit_types.ref_id, unit_type_id), eq(unit_types.alt_id, unit_type_id)),
+						};
 
-				const existing_uom_type = await db.query.unit_types.findFirst(
-					filters,
-				);
+				const existing_uom_type = await db.query.unit_types.findFirst(filters);
 
 				if (!existing_uom_type) {
 					ctx.addIssue({
@@ -80,7 +73,8 @@ export async function validateCreation(data: NewLedger) {
 				}
 
 				return existing_uom_type.id;
-			}).optional(),
+			})
+			.optional(),
 		active: z.boolean().optional().nullable(),
 	});
 

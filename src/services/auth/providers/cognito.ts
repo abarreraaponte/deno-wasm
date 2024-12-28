@@ -1,6 +1,5 @@
-import { GRANT_TYPES, OAuth2Provider, TokenClaims, TokenResponse, UnauthorizedError } from '../auth.ts';
-import * as jose from 'jose';
-import { encodeBase64 } from '@std/encoding';
+import { GRANT_TYPES, OAuth2Provider, TokenClaims, TokenResponse, UnauthorizedError } from "../auth.js";
+import * as jose from "jose";
 
 /**
  * Cognito configuration
@@ -22,11 +21,10 @@ class JWKCache {
 	private readonly TTL = 3600 * 1000;
 
 	async getKeys(jwksUri: string): Promise<jose.JWK[]> {
-
 		if (Date.now() - this.lastFetch > this.TTL) {
-			console.log('Fetching JWKs from', jwksUri);
+			console.log("Fetching JWKs from", jwksUri);
 			const response = await fetch(jwksUri);
-			const jwks = await response.json();
+			const jwks = (await response.json()) as { keys: jose.JWK[] };
 			this.keys = jwks.keys;
 			this.lastFetch = Date.now();
 		}
@@ -52,10 +50,10 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 		const tokenEndpoint = `${this.config.userPoolDomain}/oauth2/token`;
 
 		const response = await fetch(tokenEndpoint, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				Authorization: `Basic ${encodeBase64(`${clientId}:${clientSecret}`)}`,
+				"Content-Type": "application/x-www-form-urlencoded",
+				Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
 			},
 			body: new URLSearchParams({
 				grant_type: GRANT_TYPES.CLIENT_CREDENTIALS,
@@ -66,7 +64,7 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 			throw new UnauthorizedError(`Token generation failed: ${response.statusText}`);
 		}
 
-		return response.json();
+		return response.json() as Promise<TokenResponse>;
 	}
 
 	/**
@@ -85,13 +83,13 @@ export class CognitoOAuth2Provider implements OAuth2Provider {
 			return {
 				sub: payload.sub as string,
 				client_id: payload.client_id as string,
-				scope: payload.scope ? (payload.scope as string).split(' ') : undefined,
+				scope: payload.scope ? (payload.scope as string).split(" ") : undefined,
 				exp: payload.exp as number,
 				iat: payload.iat as number,
 			};
 		} catch (_error) {
-			console.error('Token validation failed:', _error);
-			throw new UnauthorizedError('Invalid token');
+			console.error("Token validation failed:", _error);
+			throw new UnauthorizedError("Invalid token");
 		}
 	}
 }

@@ -1,10 +1,13 @@
-import { CognitoOAuth2Provider } from './providers/cognito.ts';
+import { CognitoOAuth2Provider } from "./providers/cognito.js";
+import { config } from "dotenv";
+
+config();
 
 /**
  * Supported Oauth2 grant types
  */
 export enum GRANT_TYPES {
-	CLIENT_CREDENTIALS = 'client_credentials',
+	CLIENT_CREDENTIALS = "client_credentials",
 }
 
 /**
@@ -20,7 +23,7 @@ export interface OAuth2Provider {
  */
 export interface TokenResponse {
 	access_token: string;
-	token_type: 'Bearer';
+	token_type: "Bearer";
 	expires_in: number;
 	scope?: string[];
 }
@@ -40,9 +43,9 @@ export interface TokenClaims {
  * Unauthorized error
  */
 export class UnauthorizedError extends Error {
-	constructor(message = 'Unauthorized') {
+	constructor(message = "Unauthorized") {
 		super(message);
-		this.name = 'UnauthorizedError';
+		this.name = "UnauthorizedError";
 	}
 }
 
@@ -51,10 +54,10 @@ export class UnauthorizedError extends Error {
  */
 export function getOauth2Provider() {
 	return new CognitoOAuth2Provider({
-		clientId: Deno.env.get('KL_AWS_COGNITO_CLIENT_ID') || '',
-		clientSecret: Deno.env.get('KL_AWS_COGNITO_CLIENT_SECRET') || '',
-		userPoolDomain: Deno.env.get('KL_AWS_COGNITO_USER_POOL_URL') || '',
-		userPoolId: Deno.env.get('KL_AWS_COGNITO_USER_POOL_ID') || '',
-		region: Deno.env.get('KL_AWS_REGION') || '',
+		clientId: process.env.KL_AWS_COGNITO_CLIENT_ID || "",
+		clientSecret: process.env.KL_AWS_COGNITO_CLIENT_SECRET || "",
+		userPoolDomain: process.env.KL_AWS_COGNITO_USER_POOL_URL || "",
+		userPoolId: process.env.KL_AWS_COGNITO_USER_POOL_ID || "",
+		region: process.env.KL_AWS_REGION || "",
 	});
 }

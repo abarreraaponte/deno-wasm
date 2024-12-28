@@ -131,26 +131,18 @@
 				"accounts_ledger_id_ledgers_id_fk": {
 					"name": "accounts_ledger_id_ledgers_id_fk",
 					"tableFrom": "accounts",
-					"columnsFrom": [
-						"ledger_id"
-					],
+					"columnsFrom": ["ledger_id"],
 					"tableTo": "ledgers",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"accounts_parent_id_accounts_id_fk": {
 					"name": "accounts_parent_id_accounts_id_fk",
 					"tableFrom": "accounts",
-					"columnsFrom": [
-						"parent_id"
-					],
+					"columnsFrom": ["parent_id"],
 					"tableTo": "accounts",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -159,23 +151,17 @@
 			"uniqueConstraints": {
 				"accounts_ref_id_unique": {
 					"name": "accounts_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"accounts_alt_id_unique": {
 					"name": "accounts_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				},
 				"accounts_name_unique": {
 					"name": "accounts_name_unique",
-					"columns": [
-						"name"
-					],
+					"columns": ["name"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -214,26 +200,18 @@
 				"conversion_rates_from_uom_id_units_id_fk": {
 					"name": "conversion_rates_from_uom_id_units_id_fk",
 					"tableFrom": "conversion_rates",
-					"columnsFrom": [
-						"from_uom_id"
-					],
+					"columnsFrom": ["from_uom_id"],
 					"tableTo": "units",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"conversion_rates_to_uom_id_units_id_fk": {
 					"name": "conversion_rates_to_uom_id_units_id_fk",
 					"tableFrom": "conversion_rates",
-					"columnsFrom": [
-						"to_uom_id"
-					],
+					"columnsFrom": ["to_uom_id"],
 					"tableTo": "units",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -321,39 +299,27 @@
 				"dimensions_entry_id_entries_id_fk": {
 					"name": "dimensions_entry_id_entries_id_fk",
 					"tableFrom": "dimensions",
-					"columnsFrom": [
-						"entry_id"
-					],
+					"columnsFrom": ["entry_id"],
 					"tableTo": "entries",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"dimensions_entity_model_id_entity_models_id_fk": {
 					"name": "dimensions_entity_model_id_entity_models_id_fk",
 					"tableFrom": "dimensions",
-					"columnsFrom": [
-						"entity_model_id"
-					],
+					"columnsFrom": ["entity_model_id"],
 					"tableTo": "entity_models",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"dimensions_entity_id_entities_id_fk": {
 					"name": "dimensions_entity_id_entities_id_fk",
 					"tableFrom": "dimensions",
-					"columnsFrom": [
-						"entity_id"
-					],
+					"columnsFrom": ["entity_id"],
 					"tableTo": "entities",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -459,26 +425,18 @@
 				"entities_entity_model_id_entity_models_id_fk": {
 					"name": "entities_entity_model_id_entity_models_id_fk",
 					"tableFrom": "entities",
-					"columnsFrom": [
-						"entity_model_id"
-					],
+					"columnsFrom": ["entity_model_id"],
 					"tableTo": "entity_models",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"entities_parent_id_entities_id_fk": {
 					"name": "entities_parent_id_entities_id_fk",
 					"tableFrom": "entities",
-					"columnsFrom": [
-						"parent_id"
-					],
+					"columnsFrom": ["parent_id"],
 					"tableTo": "entities",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -487,16 +445,12 @@
 			"uniqueConstraints": {
 				"entities_ref_id_unique": {
 					"name": "entities_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"entities_alt_id_unique": {
 					"name": "entities_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -589,23 +543,17 @@
 			"uniqueConstraints": {
 				"entity_models_ref_id_unique": {
 					"name": "entity_models_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"entity_models_alt_id_unique": {
 					"name": "entity_models_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				},
 				"entity_models_name_unique": {
 					"name": "entity_models_name_unique",
-					"columns": [
-						"name"
-					],
+					"columns": ["name"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -706,65 +654,45 @@
 				"entries_ledger_id_ledgers_id_fk": {
 					"name": "entries_ledger_id_ledgers_id_fk",
 					"tableFrom": "entries",
-					"columnsFrom": [
-						"ledger_id"
-					],
+					"columnsFrom": ["ledger_id"],
 					"tableTo": "ledgers",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"entries_debit_account_id_accounts_id_fk": {
 					"name": "entries_debit_account_id_accounts_id_fk",
 					"tableFrom": "entries",
-					"columnsFrom": [
-						"debit_account_id"
-					],
+					"columnsFrom": ["debit_account_id"],
 					"tableTo": "accounts",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"entries_credit_account_id_accounts_id_fk": {
 					"name": "entries_credit_account_id_accounts_id_fk",
 					"tableFrom": "entries",
-					"columnsFrom": [
-						"credit_account_id"
-					],
+					"columnsFrom": ["credit_account_id"],
 					"tableTo": "accounts",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"entries_uom_id_units_id_fk": {
 					"name": "entries_uom_id_units_id_fk",
 					"tableFrom": "entries",
-					"columnsFrom": [
-						"uom_id"
-					],
+					"columnsFrom": ["uom_id"],
 					"tableTo": "units",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				},
 				"entries_transaction_id_transactions_id_fk": {
 					"name": "entries_transaction_id_transactions_id_fk",
 					"tableFrom": "entries",
-					"columnsFrom": [
-						"transaction_id"
-					],
+					"columnsFrom": ["transaction_id"],
 					"tableTo": "transactions",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -773,16 +701,12 @@
 			"uniqueConstraints": {
 				"entries_ref_id_unique": {
 					"name": "entries_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"entries_alt_id_unique": {
 					"name": "entries_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -886,13 +810,9 @@
 				"ledgers_unit_type_id_unit_types_id_fk": {
 					"name": "ledgers_unit_type_id_unit_types_id_fk",
 					"tableFrom": "ledgers",
-					"columnsFrom": [
-						"unit_type_id"
-					],
+					"columnsFrom": ["unit_type_id"],
 					"tableTo": "unit_types",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -901,23 +821,17 @@
 			"uniqueConstraints": {
 				"ledgers_ref_id_unique": {
 					"name": "ledgers_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"ledgers_alt_id_unique": {
 					"name": "ledgers_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				},
 				"ledgers_name_unique": {
 					"name": "ledgers_name_unique",
-					"columns": [
-						"name"
-					],
+					"columns": ["name"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -1010,23 +924,17 @@
 			"uniqueConstraints": {
 				"transaction_models_ref_id_unique": {
 					"name": "transaction_models_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"transaction_models_alt_id_unique": {
 					"name": "transaction_models_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				},
 				"transaction_models_name_unique": {
 					"name": "transaction_models_name_unique",
-					"columns": [
-						"name"
-					],
+					"columns": ["name"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -1108,13 +1016,9 @@
 				"transactions_transaction_model_id_transaction_models_id_fk": {
 					"name": "transactions_transaction_model_id_transaction_models_id_fk",
 					"tableFrom": "transactions",
-					"columnsFrom": [
-						"transaction_model_id"
-					],
+					"columnsFrom": ["transaction_model_id"],
 					"tableTo": "transaction_models",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -1123,16 +1027,12 @@
 			"uniqueConstraints": {
 				"transactions_ref_id_unique": {
 					"name": "transactions_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"transactions_alt_id_unique": {
 					"name": "transactions_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -1218,23 +1118,17 @@
 			"uniqueConstraints": {
 				"unit_types_ref_id_unique": {
 					"name": "unit_types_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"unit_types_alt_id_unique": {
 					"name": "unit_types_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				},
 				"unit_types_name_unique": {
 					"name": "unit_types_name_unique",
-					"columns": [
-						"name"
-					],
+					"columns": ["name"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -1372,13 +1266,9 @@
 				"units_unit_type_id_unit_types_id_fk": {
 					"name": "units_unit_type_id_unit_types_id_fk",
 					"tableFrom": "units",
-					"columnsFrom": [
-						"unit_type_id"
-					],
+					"columnsFrom": ["unit_type_id"],
 					"tableTo": "unit_types",
-					"columnsTo": [
-						"id"
-					],
+					"columnsTo": ["id"],
 					"onUpdate": "no action",
 					"onDelete": "no action"
 				}
@@ -1387,30 +1277,22 @@
 			"uniqueConstraints": {
 				"units_ref_id_unique": {
 					"name": "units_ref_id_unique",
-					"columns": [
-						"ref_id"
-					],
+					"columns": ["ref_id"],
 					"nullsNotDistinct": false
 				},
 				"units_alt_id_unique": {
 					"name": "units_alt_id_unique",
-					"columns": [
-						"alt_id"
-					],
+					"columns": ["alt_id"],
 					"nullsNotDistinct": false
 				},
 				"units_name_unique": {
 					"name": "units_name_unique",
-					"columns": [
-						"name"
-					],
+					"columns": ["name"],
 					"nullsNotDistinct": false
 				},
 				"units_symbol_unique": {
 					"name": "units_symbol_unique",
-					"columns": [
-						"symbol"
-					],
+					"columns": ["symbol"],
 					"nullsNotDistinct": false
 				}
 			}
@@ -1420,10 +1302,7 @@
 		"public.balance_type": {
 			"name": "balance_type",
 			"schema": "public",
-			"values": [
-				"debit",
-				"credit"
-			]
+			"values": ["debit", "credit"]
 		}
 	},
 	"schemas": {},

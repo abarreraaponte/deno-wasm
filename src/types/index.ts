@@ -1,28 +1,23 @@
-import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import { accounts, entity_models, ledgers, transaction_models, unit_types } from '../services/database/schema.ts';
+import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { accounts, entity_models, ledgers, transaction_models, unit_types } from "../services/database/schema.js";
 
 /**
  * Account types
  */
 export type Account = InferSelectModel<typeof accounts>;
 export type NewAccount = InferInsertModel<typeof accounts>;
-export type RefinedNewAccount =
-	& Omit<NewAccount, 'ledger_id' | 'balance_type'>
-	& {
-		ledger_id?: string;
-		balance_type?: BalanceType;
-	};
-export type UpdateAccount = Pick<
-	NewAccount,
-	'ref_id' | 'alt_id' | 'name' | 'balance_type' | 'meta' | 'active'
->;
+export type RefinedNewAccount = Omit<NewAccount, "ledger_id" | "balance_type"> & {
+	ledger_id?: string;
+	balance_type?: BalanceType;
+};
+export type UpdateAccount = Pick<NewAccount, "ref_id" | "alt_id" | "name" | "balance_type" | "meta" | "active">;
 
 /**
  * Balance Types
  */
 export enum BalanceType {
-	DEBIT = 'debit',
-	CREDIT = 'credit',
+	DEBIT = "debit",
+	CREDIT = "credit",
 }
 
 /**
@@ -42,10 +37,7 @@ export type NewTransactionModel = InferInsertModel<typeof transaction_models>;
  */
 export type Ledger = InferSelectModel<typeof ledgers>;
 export type NewLedger = InferInsertModel<typeof ledgers>;
-export type UpdateLedger = Pick<
-	NewLedger,
-	'ref_id' | 'alt_id' | 'name' | 'description' | 'active'
->;
+export type UpdateLedger = Pick<NewLedger, "ref_id" | "alt_id" | "name" | "description" | "active">;
 
 /**
  * Unit Type types

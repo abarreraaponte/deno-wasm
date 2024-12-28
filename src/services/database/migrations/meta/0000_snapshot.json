@@ -132,12 +132,8 @@
 					"name": "accounts_ledger_id_ledgers_id_fk",
 					"tableFrom": "accounts",
 					"tableTo": "ledgers",
-					"columnsFrom": [
-						"ledger_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["ledger_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -145,12 +141,8 @@
 					"name": "accounts_parent_id_accounts_id_fk",
 					"tableFrom": "accounts",
 					"tableTo": "accounts",
-					"columnsFrom": [
-						"parent_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["parent_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -160,23 +152,17 @@
 				"accounts_ref_id_unique": {
 					"name": "accounts_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"accounts_alt_id_unique": {
 					"name": "accounts_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				},
 				"accounts_name_unique": {
 					"name": "accounts_name_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"name"
-					]
+					"columns": ["name"]
 				}
 			}
 		},
@@ -215,12 +201,8 @@
 					"name": "conversion_rates_from_uom_id_units_id_fk",
 					"tableFrom": "conversion_rates",
 					"tableTo": "units",
-					"columnsFrom": [
-						"from_uom_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["from_uom_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -228,12 +210,8 @@
 					"name": "conversion_rates_to_uom_id_units_id_fk",
 					"tableFrom": "conversion_rates",
 					"tableTo": "units",
-					"columnsFrom": [
-						"to_uom_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["to_uom_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -322,12 +300,8 @@
 					"name": "dimensions_entry_id_entries_id_fk",
 					"tableFrom": "dimensions",
 					"tableTo": "entries",
-					"columnsFrom": [
-						"entry_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["entry_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -335,12 +309,8 @@
 					"name": "dimensions_entity_model_id_entity_models_id_fk",
 					"tableFrom": "dimensions",
 					"tableTo": "entity_models",
-					"columnsFrom": [
-						"entity_model_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["entity_model_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -348,12 +318,8 @@
 					"name": "dimensions_entity_id_entities_id_fk",
 					"tableFrom": "dimensions",
 					"tableTo": "entities",
-					"columnsFrom": [
-						"entity_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["entity_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -460,12 +426,8 @@
 					"name": "entities_entity_model_id_entity_models_id_fk",
 					"tableFrom": "entities",
 					"tableTo": "entity_models",
-					"columnsFrom": [
-						"entity_model_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["entity_model_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -473,12 +435,8 @@
 					"name": "entities_parent_id_entities_id_fk",
 					"tableFrom": "entities",
 					"tableTo": "entities",
-					"columnsFrom": [
-						"parent_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["parent_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -488,16 +446,12 @@
 				"entities_ref_id_unique": {
 					"name": "entities_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"entities_alt_id_unique": {
 					"name": "entities_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				}
 			}
 		},
@@ -590,23 +544,17 @@
 				"entity_models_ref_id_unique": {
 					"name": "entity_models_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"entity_models_alt_id_unique": {
 					"name": "entity_models_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				},
 				"entity_models_name_unique": {
 					"name": "entity_models_name_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"name"
-					]
+					"columns": ["name"]
 				}
 			}
 		},
@@ -707,12 +655,8 @@
 					"name": "entries_ledger_id_ledgers_id_fk",
 					"tableFrom": "entries",
 					"tableTo": "ledgers",
-					"columnsFrom": [
-						"ledger_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["ledger_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -720,12 +664,8 @@
 					"name": "entries_debit_account_id_accounts_id_fk",
 					"tableFrom": "entries",
 					"tableTo": "accounts",
-					"columnsFrom": [
-						"debit_account_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["debit_account_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -733,12 +673,8 @@
 					"name": "entries_credit_account_id_accounts_id_fk",
 					"tableFrom": "entries",
 					"tableTo": "accounts",
-					"columnsFrom": [
-						"credit_account_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["credit_account_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -746,12 +682,8 @@
 					"name": "entries_uom_id_units_id_fk",
 					"tableFrom": "entries",
 					"tableTo": "units",
-					"columnsFrom": [
-						"uom_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["uom_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
@@ -759,12 +691,8 @@
 					"name": "entries_transaction_id_transactions_id_fk",
 					"tableFrom": "entries",
 					"tableTo": "transactions",
-					"columnsFrom": [
-						"transaction_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["transaction_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -774,16 +702,12 @@
 				"entries_ref_id_unique": {
 					"name": "entries_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"entries_alt_id_unique": {
 					"name": "entries_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				}
 			}
 		},
@@ -887,12 +811,8 @@
 					"name": "ledgers_unit_type_id_unit_types_id_fk",
 					"tableFrom": "ledgers",
 					"tableTo": "unit_types",
-					"columnsFrom": [
-						"unit_type_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["unit_type_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -902,23 +822,17 @@
 				"ledgers_ref_id_unique": {
 					"name": "ledgers_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"ledgers_alt_id_unique": {
 					"name": "ledgers_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				},
 				"ledgers_name_unique": {
 					"name": "ledgers_name_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"name"
-					]
+					"columns": ["name"]
 				}
 			}
 		},
@@ -1011,23 +925,17 @@
 				"transaction_models_ref_id_unique": {
 					"name": "transaction_models_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"transaction_models_alt_id_unique": {
 					"name": "transaction_models_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				},
 				"transaction_models_name_unique": {
 					"name": "transaction_models_name_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"name"
-					]
+					"columns": ["name"]
 				}
 			}
 		},
@@ -1109,12 +1017,8 @@
 					"name": "transactions_transaction_model_id_transaction_models_id_fk",
 					"tableFrom": "transactions",
 					"tableTo": "transaction_models",
-					"columnsFrom": [
-						"transaction_model_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["transaction_model_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -1124,16 +1028,12 @@
 				"transactions_ref_id_unique": {
 					"name": "transactions_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"transactions_alt_id_unique": {
 					"name": "transactions_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				}
 			}
 		},
@@ -1219,23 +1119,17 @@
 				"unit_types_ref_id_unique": {
 					"name": "unit_types_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"unit_types_alt_id_unique": {
 					"name": "unit_types_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				},
 				"unit_types_name_unique": {
 					"name": "unit_types_name_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"name"
-					]
+					"columns": ["name"]
 				}
 			}
 		},
@@ -1373,12 +1267,8 @@
 					"name": "units_unit_type_id_unit_types_id_fk",
 					"tableFrom": "units",
 					"tableTo": "unit_types",
-					"columnsFrom": [
-						"unit_type_id"
-					],
-					"columnsTo": [
-						"id"
-					],
+					"columnsFrom": ["unit_type_id"],
+					"columnsTo": ["id"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}
@@ -1388,30 +1278,22 @@
 				"units_ref_id_unique": {
 					"name": "units_ref_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"ref_id"
-					]
+					"columns": ["ref_id"]
 				},
 				"units_alt_id_unique": {
 					"name": "units_alt_id_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"alt_id"
-					]
+					"columns": ["alt_id"]
 				},
 				"units_name_unique": {
 					"name": "units_name_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"name"
-					]
+					"columns": ["name"]
 				},
 				"units_symbol_unique": {
 					"name": "units_symbol_unique",
 					"nullsNotDistinct": false,
-					"columns": [
-						"symbol"
-					]
+					"columns": ["symbol"]
 				}
 			}
 		}
@@ -1420,10 +1302,7 @@
 		"public.balance_type": {
 			"name": "balance_type",
 			"schema": "public",
-			"values": [
-				"debit",
-				"credit"
-			]
+			"values": ["debit", "credit"]
 		}
 	},
 	"schemas": {},
