@@ -28,3 +28,12 @@ export type AwsConfig = {
 export type AuthConfig = {
 	currentOauth2Provider: "COGNITO";
 };
+
+export type RedisConfig = {
+	host: string;
+	port: number;
+	user: string;
+	password: string;
+	db: number;
+	url: string;
+};
