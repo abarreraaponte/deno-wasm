@@ -1,7 +1,7 @@
 import { CognitoOAuth2Provider } from "./providers/cognito.js";
-import { config } from "dotenv";
+import { getAwsConfig, getAuthConfig } from "../config/config.js";
 
-config();
+const { cognito, region } = getAwsConfig();
 
 /**
  * Supported Oauth2 grant types
@@ -53,11 +53,18 @@ export class UnauthorizedError extends Error {
  * Get the OAuth2 provider
  */
 export function getOauth2Provider() {
-	return new CognitoOAuth2Provider({
-		clientId: process.env.KL_AWS_COGNITO_CLIENT_ID || "",
-		clientSecret: process.env.KL_AWS_COGNITO_CLIENT_SECRET || "",
-		userPoolDomain: process.env.KL_AWS_COGNITO_USER_POOL_URL || "",
-		userPoolId: process.env.KL_AWS_COGNITO_USER_POOL_ID || "",
-		region: process.env.KL_AWS_REGION || "",
-	});
+	const { currentOauth2Provider } = getAuthConfig();
+
+	switch (currentOauth2Provider) {
+		case "COGNITO":
+			return new CognitoOAuth2Provider({
+				clientId: cognito.clientId,
+				clientSecret: cognito.clientSecret,
+				userPoolDomain: cognito.userPoolUrl,
+				userPoolId: cognito.userPoolId,
+				region: region,
+			});
+		default:
+			throw new Error("Unsupported OAuth2 provider");
+	}
 }

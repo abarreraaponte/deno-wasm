@@ -6,11 +6,12 @@ export type PostgresConfig = {
 	database: string;
 	max_connections: number;
 	url: string;
-}
+	ssl_mode: string;
+};
 
 export type HttpServerConfig = {
 	port: number;
-}
+};
 
 export type AwsConfig = {
 	accessKeyId: string;
@@ -21,5 +22,9 @@ export type AwsConfig = {
 		userPoolUrl: string;
 		clientId: string;
 		clientSecret: string;
-	}
-}
+	};
+};
+
+export type AuthConfig = {
+	currentOauth2Provider: "COGNITO";
+};

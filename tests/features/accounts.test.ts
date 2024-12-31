@@ -5,13 +5,16 @@ import { create } from "../../src/actions/ledger_actions.js";
 import { create as createUnitType } from "../../src/actions/unit_type_actions.js";
 import { Account, NewAccount } from "../../src/types/index.js";
 import { getAccessTokenForTest } from "../../src/utils/test_utils.js";
+import { getHttpServerConfig } from "@/services/config/config.js";
+
+const { port } = getHttpServerConfig();
 
 let access_token: string;
 let ledger: any; // Adjust type as needed
 const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
 
 async function makeRequest(data: NewAccount | Account, method: string, endpoint: string): Promise<Response> {
-	const req = new Request(`http://localhost:${process.env.KL_SERVER_PORT}${endpoint}`, {
+	const req = new Request(`http://localhost:${port}${endpoint}`, {
 		method: method,
 		headers: {
 			"Content-Type": "application/json",

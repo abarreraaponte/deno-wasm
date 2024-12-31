@@ -1,19 +1,11 @@
 import { defineConfig } from "drizzle-kit";
-import { config } from "dotenv";
+import { getPostgresConfig } from "../config/config.js";
 
-config();
-
-const user = process.env.KL_PG_USER || "";
-const password = process.env.KL_PG_PASSWORD || "";
-const host = process.env.KL_PG_HOST || "localhost";
-const port = parseInt(process.env.KL_PG_PORT || "5432");
-const database = process.env.KL_PG_NAME || "kitledger";
-
-export const postgresUrl = `postgres://${user}:${password}@${host}:${port}/${database}`;
+const { url } = getPostgresConfig();
 
 export default defineConfig({
 	dbCredentials: {
-		url: postgresUrl,
+		url: url,
 	},
 	schema: "./src/services/database/schema.ts",
 	out: "./src/services/database/migrations",
