@@ -7,9 +7,9 @@
 	"description": "Framework for building fast and reliable transactional systems",
 	"scripts": {
 		"build": "tsc",
-		"db:custom": "drizzle-kit generate --custom --config=dist/services/database/drizzle.config.js",
-		"db:generate": "drizzle-kit generate --config=dist/services/database/drizzle.config.js",
-		"db:migrate": "drizzle-kit migrate --config=dist/services/database/drizzle.config.js",
+		"db:custom": "drizzle-kit generate --custom --config=dist/core/services/database/drizzle.config.js",
+		"db:generate": "drizzle-kit generate --config=dist/core/services/database/drizzle.config.js",
+		"db:migrate": "drizzle-kit migrate --config=dist/core/services/database/drizzle.config.js",
 		"dev": "tsx watch src/index.ts",
 		"format": "biome format --write",
 		"start": "node ./build/server.cjs",
@@ -19,7 +19,8 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"workspaces": [
-		"packages/*"
+		"packages/*",
+		"apps/*"
 	],
 	"keywords": [
 		"database",
@@ -57,6 +58,6 @@
 		"vitest": "^2.1.8"
 	},
 	"engines": {
-		"node": ">=20.0.0"
+		"node": ">=22.0.0"
 	}
 }

@@ -11,7 +11,7 @@
 		"paths": {
 			"@/*": ["./src/*"]
 		},
-		"outDir": "./dist",
+		"outDir": "./dist/core",
 		"types": ["node"],
 		"jsx": "react-jsx",
 		"jsxImportSource": "hono/jsx"
