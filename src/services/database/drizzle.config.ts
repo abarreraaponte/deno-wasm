@@ -8,7 +8,7 @@ export default defineConfig({
 		url: url,
 	},
 	schema: "./src/services/database/schema.ts",
-	out: "./src/services/database/migrations",
+	out: "./.drizzle",
 	dialect: "postgresql",
 	verbose: true,
 	strict: true,
