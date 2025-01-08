@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { server } from "../../src/router.js";
-import { TransactionModelFactory } from "../../src/services/database/factories.js";
-import { NewTransactionModel, TransactionModel } from "../../src/types/index.js";
+import { TransactionModelFactory } from "../../src/services/storage/factories.js";
+import { TransactionModel } from "../../src/services/storage/types.js";
 import { getAccessTokenForTest } from "../../src/utils/test_utils.js";
-import { getHttpServerConfig } from "@/services/config/config.js";
+import { getHttpServerConfig } from "../../src/services/config/config.js";
 
 const { port } = getHttpServerConfig();
 
@@ -11,7 +11,7 @@ let access_token: string;
 const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
 
 async function makeRequest(
-	data: NewTransactionModel | TransactionModel,
+	data: TransactionModel.New | TransactionModel.Model,
 	method: string,
 	endpoint: string,
 ): Promise<Response> {
@@ -37,7 +37,7 @@ describe("Transaction Model API", () => {
 		test_data.ref_id = SUCCESS_REF_ID;
 
 		const res = await makeRequest(test_data, "POST", "/api/transaction-models");
-		const json: TransactionModel = (await res.json()) as TransactionModel;
+		const json: TransactionModel.Model = (await res.json()) as TransactionModel.Model;
 
 		expect(res.status).toBe(200);
 		expect(json.id).toHaveLength(36);

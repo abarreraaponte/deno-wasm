@@ -1,16 +1,16 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { server } from "../../src/router.js";
-import { UnitTypeFactory } from "../../src/services/database/factories.js";
-import { NewUnitType, UnitType } from "../../src/types/index.js";
+import { UnitTypeFactory } from "../../src/services/storage/factories.js";
+import { UnitType } from "../../src/services/storage/types.js";
 import { getAccessTokenForTest } from "../../src/utils/test_utils.js";
-import { getHttpServerConfig } from "@/services/config/config.js";
+import { getHttpServerConfig } from "../../src/services/config/config.js";
 
 const { port } = getHttpServerConfig();
 
 let access_token: string;
 const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
 
-async function makeRequest(data: NewUnitType | UnitType, method: string, endpoint: string): Promise<Response> {
+async function makeRequest(data: UnitType.New | UnitType.Model, method: string, endpoint: string): Promise<Response> {
 	const req = new Request(`http://localhost:${port}${endpoint}`, {
 		method: method,
 		headers: {
@@ -33,7 +33,7 @@ describe("Unit Type API", () => {
 		test_data.ref_id = SUCCESS_REF_ID;
 
 		const res = await makeRequest(test_data, "POST", "/api/unit-types");
-		const json: UnitType = (await res.json()) as UnitType;
+		const json: UnitType.Model = (await res.json()) as UnitType.Model;
 
 		expect(res.status).toBe(200);
 		expect(json.id).toHaveLength(36);

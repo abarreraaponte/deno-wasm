@@ -1,13 +1,4 @@
-export type PostgresConfig = {
-	user: string;
-	password: string;
-	host: string;
-	port: number;
-	database: string;
-	max_connections: number;
-	url: string;
-	ssl_mode: string;
-};
+import type { BaseClientConfiguration } from "@valkey/valkey-glide";
 
 export type HttpServerConfig = {
 	port: number;
@@ -29,11 +20,4 @@ export type AuthConfig = {
 	currentOauth2Provider: "COGNITO";
 };
 
-export type RedisConfig = {
-	host: string;
-	port: number;
-	user: string;
-	password: string;
-	db: number;
-	url: string;
-};
+export type ValkeyConfig = BaseClientConfiguration;

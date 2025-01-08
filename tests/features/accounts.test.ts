@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { server } from "../../src/router.js";
-import { AccountFactory, LedgerFactory, UnitTypeFactory } from "../../src/services/database/factories.js";
+import { AccountFactory, LedgerFactory, UnitTypeFactory } from "../../src/services/storage/factories.js";
 import { create } from "../../src/actions/ledger_actions.js";
 import { create as createUnitType } from "../../src/actions/unit_type_actions.js";
-import { Account, NewAccount } from "../../src/types/index.js";
+import { Account } from "../../src/services/storage/types.js";
 import { getAccessTokenForTest } from "../../src/utils/test_utils.js";
-import { getHttpServerConfig } from "@/services/config/config.js";
+import { getHttpServerConfig } from "../../src/services/config/config.js";
 
 const { port } = getHttpServerConfig();
 
@@ -13,7 +13,7 @@ let access_token: string;
 let ledger: any; // Adjust type as needed
 const SUCCESS_REF_ID = `T${Math.floor(Math.random() * 99)}`;
 
-async function makeRequest(data: NewAccount | Account, method: string, endpoint: string): Promise<Response> {
+async function makeRequest(data: Account.New | Account.Model, method: string, endpoint: string): Promise<Response> {
 	const req = new Request(`http://localhost:${port}${endpoint}`, {
 		method: method,
 		headers: {
@@ -42,7 +42,7 @@ describe("Account API", () => {
 		test_data.ledger_id = ledger[0].id;
 
 		const res = await makeRequest(test_data, "POST", "/api/accounts");
-		const json: Account = (await res.json()) as Account;
+		const json: Account.Model = (await res.json()) as Account.Model;
 
 		expect(res.status).toBe(200);
 		expect(json.id).toHaveLength(36);

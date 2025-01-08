@@ -1,36 +1,33 @@
-import { db } from "../services/database/db.js";
-import { ledgers, unit_types } from "../services/database/schema.js";
 import z from "zod";
-import { eq, or } from "drizzle-orm";
-import { valueIsAvailable } from "../services/database/validation.js";
-import { validate as validateUuid } from "uuid";
-import { NewLedger } from "../types/index.js";
+import { valueIsAvailable } from "../services/storage/validation.js";
+import { Ledger } from "../services/storage/types.js";
+import { valkey } from "@/services/storage/primary/valkey.js";
 
 /**
  * Check if the name is available
  */
 async function nameIsAvailable(name: string) {
-	return await valueIsAvailable(ledgers, "name", name);
+	return await valueIsAvailable("name", name);
 }
 
 /**
  * Check if the ref_id is available
  */
 async function refIdIsAvailable(ref_id: string) {
-	return await valueIsAvailable(ledgers, "ref_id", ref_id);
+	return await valueIsAvailable("ref_id", ref_id);
 }
 
 /**
  * Check if the alt_id is available
  */
 async function altIdIsAvailable(alt_id: string) {
-	return await valueIsAvailable(ledgers, "alt_id", alt_id);
+	return await valueIsAvailable("alt_id", alt_id);
 }
 
 /**
  * Validate the creation of a new ledger
  */
-export async function validateCreation(data: NewLedger) {
+export async function validateCreation(data: Ledger.New) {
 	const validationSchema = z.object({
 		id: z.string().uuid(),
 		ref_id: z.string().max(64, { message: "Ref ID must be less than 64 characters" }).refine(refIdIsAvailable, {
@@ -48,33 +45,21 @@ export async function validateCreation(data: NewLedger) {
 			message: "Name already exists",
 		}),
 		description: z.string().optional().nullable(),
-		unit_type_id: z
-			.string()
-			.transform(async (unit_type_id, ctx) => {
-				const isUuid = validateUuid(unit_type_id);
+		unit_type_id: z.string().transform(async (unit_type_id, ctx) => {
+			// TODO: implement unit type validation
+			const existing_unit_type = { id: unit_type_id };
 
-				const filters = isUuid
-					? {
-							where: eq(unit_types.id, unit_type_id),
-						}
-					: {
-							where: or(eq(unit_types.ref_id, unit_type_id), eq(unit_types.alt_id, unit_type_id)),
-						};
+			if (!existing_unit_type) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `Invalid UOM type ID ${unit_type_id}`,
+				});
 
-				const existing_uom_type = await db.query.unit_types.findFirst(filters);
+				return z.NEVER;
+			}
 
-				if (!existing_uom_type) {
-					ctx.addIssue({
-						code: z.ZodIssueCode.custom,
-						message: `Invalid UOM type ID ${unit_type_id}`,
-					});
-
-					return z.NEVER;
-				}
-
-				return existing_uom_type.id;
-			})
-			.optional(),
+			return existing_unit_type.id;
+		}),
 		active: z.boolean().optional().nullable(),
 	});
 
@@ -84,6 +69,16 @@ export async function validateCreation(data: NewLedger) {
 /**
  * Create a new ledger
  */
-export async function create(data: NewLedger) {
-	return await db.insert(ledgers).values(data).returning();
+export async function create(data: Ledger.New): Promise<Ledger.Model> {
+	// TODO: implement key generation logic
+	const key = `LEDGER#${data.id}`;
+	await valkey.set(key, JSON.stringify(data));
+
+	const value = await valkey.get(key);
+
+	if (!value) {
+		throw new Error("Failed to create ledger");
+	}
+
+	return JSON.parse(value.toString()) as Ledger.Model;
 }

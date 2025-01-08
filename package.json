@@ -7,10 +7,7 @@
 	"description": "Framework for building fast and reliable transactional systems",
 	"scripts": {
 		"build": "tsc",
-		"db:custom": "drizzle-kit generate --custom --config=dist/core/services/database/drizzle.config.js",
-		"db:generate": "drizzle-kit generate --config=dist/core/services/database/drizzle.config.js",
-		"db:migrate": "drizzle-kit migrate --config=dist/core/services/database/drizzle.config.js",
-		"dev": "tsx watch src/index.ts",
+		"dev": "tsx watch src/main.ts",
 		"format": "biome format --write",
 		"start": "node ./build/server.cjs",
 		"test": "vitest --run",
@@ -18,30 +15,16 @@
 		"test:ui": "vitest --ui",
 		"typecheck": "tsc --noEmit"
 	},
-	"workspaces": [
-		"packages/*",
-		"apps/*"
-	],
-	"keywords": [
-		"database",
-		"saas",
-		"platform",
-		"erp",
-		"dynamic",
-		"forms",
-		"apps"
-	],
+	"workspaces": ["packages/*", "apps/*"],
+	"keywords": ["database", "saas", "platform", "erp", "dynamic", "forms", "apps"],
 	"author": "Alejandro Barrera Aponte",
 	"license": "Apache-2.0",
 	"dependencies": {
 		"@hono/node-server": "^1.13.7",
+		"@valkey/valkey-glide": "^1.2.1",
 		"dotenv": "^16.4.5",
-		"drizzle-kit": "^0.30.1",
-		"drizzle-orm": "^0.38.3",
 		"hono": "^4.6.10",
 		"jose": "^5.9.6",
-		"postgres": "^3.4.4",
-		"redis": "^4.7.0",
 		"uuid": "^10.0.0",
 		"zod": "^3.23.8"
 	},

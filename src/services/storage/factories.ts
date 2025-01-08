@@ -1,24 +1,17 @@
 import { faker } from "@faker-js/faker";
-import {
-	BalanceType,
-	NewAccount,
-	NewEntityModel,
-	NewLedger,
-	NewTransactionModel,
-	NewUnitType,
-} from "../../types/index.js";
+import { BalanceType, Account, EntityModel, Ledger, TransactionModel, UnitType } from "./types.js";
 import { v7 as uuid } from "uuid";
 
 abstract class Factory {
-	abstract make(type?: string): NewLedger | NewAccount | NewUnitType | NewEntityModel | NewTransactionModel;
+	abstract make(type?: string): Ledger.New | Account.New | UnitType.New | EntityModel.New | TransactionModel.New;
 	abstract makeMany(
 		count: number,
 		type?: string,
-	): NewLedger[] | NewAccount[] | NewUnitType[] | NewEntityModel[] | NewTransactionModel[];
+	): Ledger.New[] | Account.New[] | UnitType.New[] | EntityModel.New[] | TransactionModel.New[];
 }
 
 export class LedgerFactory extends Factory {
-	public make(type?: string): NewLedger {
+	public make(type?: string): Ledger.Model {
 		// Choose to not do anything with the type argument
 		type;
 
@@ -28,6 +21,7 @@ export class LedgerFactory extends Factory {
 			alt_id: uuid(),
 			name: faker.company.name(),
 			description: faker.company.catchPhrase(),
+			unit_type_id: uuid(),
 			active: true,
 		};
 	}
@@ -38,7 +32,7 @@ export class LedgerFactory extends Factory {
 }
 
 export class AccountFactory extends Factory {
-	public make(type?: string): NewAccount {
+	public make(type?: string): Account.Model {
 		// Choose to not do anything with the type argument
 		type;
 
@@ -59,7 +53,7 @@ export class AccountFactory extends Factory {
 }
 
 export class UnitTypeFactory extends Factory {
-	public make(type?: string): NewUnitType {
+	public make(type?: string): UnitType.Model {
 		type;
 
 		return {
@@ -76,7 +70,7 @@ export class UnitTypeFactory extends Factory {
 }
 
 export class EntityModelFactory extends Factory {
-	public make(type?: string): NewEntityModel {
+	public make(type?: string): EntityModel.Model {
 		type;
 
 		return {
@@ -84,6 +78,7 @@ export class EntityModelFactory extends Factory {
 			ref_id: uuid(),
 			alt_id: uuid(),
 			name: faker.company.name(),
+			active: true,
 		};
 	}
 
@@ -93,7 +88,7 @@ export class EntityModelFactory extends Factory {
 }
 
 export class TransactionModelFactory extends Factory {
-	public make(type?: string): NewTransactionModel {
+	public make(type?: string): TransactionModel.Model {
 		type;
 
 		return {
@@ -101,6 +96,7 @@ export class TransactionModelFactory extends Factory {
 			ref_id: uuid(),
 			alt_id: uuid(),
 			name: faker.company.name(),
+			active: true,
 		};
 	}
 

@@ -1,36 +1,33 @@
-import { db } from "../services/database/db.js";
-import { accounts, ledgers } from "../services/database/schema.js";
+import { valkey } from "@/services/storage/primary/valkey.js";
 import z from "zod";
-import { eq, or } from "drizzle-orm";
-import { valueIsAvailable } from "../services/database/validation.js";
-import { validate as validateUuid } from "uuid";
-import { BalanceType, NewAccount } from "../types/index.js";
+import { valueIsAvailable } from "../services/storage/validation.js";
+import { BalanceType, Account } from "../services/storage/types.js";
 
 /**
  * Check if the name is available
  */
 async function nameIsAvailable(name: string): Promise<boolean> {
-	return await valueIsAvailable(accounts, "name", name);
+	return await valueIsAvailable("name", name);
 }
 
 /**
  * Check if the ref_id is available
  */
 async function refIdIsAvailable(ref_id: string): Promise<boolean> {
-	return await valueIsAvailable(accounts, "ref_id", ref_id);
+	return await valueIsAvailable("ref_id", ref_id);
 }
 
 /**
  * Check if the alt_id is available
  */
 async function altIdIsAvailable(alt_id: string): Promise<boolean> {
-	return await valueIsAvailable(accounts, "alt_id", alt_id);
+	return await valueIsAvailable("alt_id", alt_id);
 }
 
 /**
  * Validates the data provided for account creation
  */
-export async function validateCreation(data: NewAccount) {
+export async function validateCreation(data: Account.New) {
 	const validationSchema = z
 		.object({
 			id: z.string().uuid(),
@@ -61,18 +58,9 @@ export async function validateCreation(data: NewAccount) {
 		})
 		.superRefine(async (data, ctx) => {
 			if (data.parent_id) {
-				const isUuid = validateUuid(data.parent_id);
-
-				const filters = isUuid
-					? {
-							where: eq(accounts.id, data.parent_id),
-						}
-					: {
-							where: or(eq(accounts.ref_id, data.parent_id), eq(accounts.alt_id, data.parent_id)),
-						};
-
 				// Verify that parent_id exists
-				const parent = await db.query.accounts.findFirst(filters);
+				// TODO: Implement parent retrieval.
+				const parent = { id: "parent_id", balance_type: BalanceType.DEBIT, ledger_id: "ledger_id", active: true };
 				if (!parent) {
 					ctx.addIssue({
 						path: ["parent_id"],
@@ -102,16 +90,8 @@ export async function validateCreation(data: NewAccount) {
 						code: z.ZodIssueCode.custom,
 					});
 				} else {
-					const isUuid = validateUuid(data.ledger_id);
-
-					const filters = isUuid
-						? { where: eq(ledgers.id, data.ledger_id) }
-						: {
-								where: or(eq(ledgers.ref_id, data.ledger_id), eq(ledgers.alt_id, data.ledger_id)),
-							};
-
-					const ledger = await db.query.ledgers.findFirst(filters);
-
+					// TODO: Implement ledger retrieval.
+					const ledger = { id: "ledger_id" };
 					if (!ledger) {
 						ctx.addIssue({
 							path: ["ledger_id"],
@@ -131,6 +111,16 @@ export async function validateCreation(data: NewAccount) {
 /**
  * Create a new account
  */
-export async function create(data: NewAccount) {
-	return await db.insert(accounts).values(data).returning();
+export async function create(data: Account.Model): Promise<Account.Model> {
+	// TODO: Define key logic
+	const key: string = `ACCOUNT#${data.id}`;
+	await valkey.set(key, JSON.stringify(data));
+
+	const value = await valkey.get(key);
+
+	if (!value) {
+		throw new Error("Failed to create account");
+	}
+
+	return JSON.parse(value.toString()) as Account.Model;
 }

@@ -17,7 +17,7 @@ router.post("/", async (c: Context) => {
 
 	try {
 		const result = await create(validation_result.data);
-		return c.json(result[0]);
+		return c.json(result);
 	} catch (error) {
 		// IMPLEMENT_LOGGER
 		console.error(error);

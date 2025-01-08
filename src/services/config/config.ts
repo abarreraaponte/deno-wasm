@@ -1,4 +1,4 @@
-import type { AuthConfig, AwsConfig, HttpServerConfig, PostgresConfig, RedisConfig } from "./types.js";
+import type { AuthConfig, AwsConfig, HttpServerConfig, ValkeyConfig } from "./types.js";
 import { config } from "dotenv";
 
 config();
@@ -30,37 +30,29 @@ export function getHttpServerConfig(): HttpServerConfig {
 	};
 }
 
-export function getPostgresConfig(): PostgresConfig {
-	const ssl_mode = process.env.KL_PG_SSL_MODE || "disable";
-	const url = `postgres://${process.env.KL_PG_USER}:${process.env.KL_PG_PASSWORD}@${process.env.KL_PG_HOST}:${process.env.KL_PG_PORT}/${process.env.KL_PG_NAME}`;
+export function getValkeyConfig(): ValkeyConfig {
+	const primary_host = process.env.KL_VALKEY_PRIMARY_HOST || "localhost";
+	const primary_port = process.env.KL_VALKEY_PRIMARY_PORT || "6379";
+	const replica_hosts_string = process.env.KL_VALKEY_REPLICA_HOSTS || "";
+	const replica_ports_string = process.env.KL_VALKEY_REPLICA_PORTS || "";
+
+	const replica_hosts = replica_hosts_string.length > 0 ? replica_hosts_string.split(",") : [];
+	const replica_ports =
+		replica_ports_string.length > 0 ? replica_ports_string.split(",").map((port) => parseInt(port)) : [];
+
+	// Return an array of addresses with the type host:string, port: numner where the first one is the primary and the others are replicas, if they exist. For every replica if the port is not provided, it will default to the primary port.
+	const addresses = [
+		{
+			host: primary_host,
+			port: Number(primary_port),
+		},
+		...replica_hosts.map((host, index) => ({
+			host: host,
+			port: Number(replica_ports[index] || primary_port),
+		})),
+	];
 
 	return {
-		user: process.env.KL_PG_USER || "",
-		password: process.env.KL_PG_PASSWORD || "",
-		host: process.env.KL_PG_HOST || "",
-		port: parseInt(process.env.KL_PG_PORT || "5432"),
-		database: process.env.KL_PG_NAME || "",
-		ssl_mode: ssl_mode,
-		max_connections: parseInt(process.env.KL_PG_MAX_CONNECTIONS || "10"),
-		url: url,
-	};
-}
-
-export function getRedisConfig(): RedisConfig {
-
-	const user = process.env.KL_REDIS_USER || "";
-	const password = process.env.KL_REDIS_PASSWORD || "";
-	const db = parseInt(process.env.KL_REDIS_DB || "0");
-
-	// Build URL but with optional user and passsword.
-	const url = `redis://${user ? user + ":" + password + "@" : ""}${process.env.KL_REDIS_HOST}:${process.env.KL_REDIS_PORT}/${db}`;
-
-	return {
-		host: process.env.KL_REDIS_HOST || "",
-		port: parseInt(process.env.KL_REDIS_PORT || "6379"),
-		user: user,
-		password: password,
-		db: db,
-		url: url,
+		addresses: addresses,
 	};
 }

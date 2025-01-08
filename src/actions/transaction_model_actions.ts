@@ -1,34 +1,33 @@
-import { db } from "../services/database/db.js";
-import { transaction_models } from "../services/database/schema.js";
 import z from "zod";
-import { NewTransactionModel } from "../types/index.js";
-import { valueIsAvailable } from "../services/database/validation.js";
+import { TransactionModel } from "../services/storage/types.js";
+import { valueIsAvailable } from "../services/storage/validation.js";
+import { valkey } from "@/services/storage/primary/valkey.js";
 
 /**
  * Check if the name is available
  */
 async function nameIsAvailable(name: string): Promise<boolean> {
-	return await valueIsAvailable(transaction_models, "name", name);
+	return await valueIsAvailable("name", name);
 }
 
 /**
  * Check if the ref_id is available
  */
 async function refIdIsAvailable(ref_id: string): Promise<boolean> {
-	return await valueIsAvailable(transaction_models, "ref_id", ref_id);
+	return await valueIsAvailable("ref_id", ref_id);
 }
 
 /**
  * Check if the alt_id is available
  */
 async function altIdIsAvailable(alt_id: string): Promise<boolean> {
-	return await valueIsAvailable(transaction_models, "alt_id", alt_id);
+	return await valueIsAvailable("alt_id", alt_id);
 }
 
 /**
  * Validate the creation of a new transaction model
  */
-export async function validateCreation(data: NewTransactionModel) {
+export async function validateCreation(data: TransactionModel.New) {
 	const validationSchema = z.object({
 		id: z.string().uuid(),
 		ref_id: z.string().max(64, { message: "Ref ID must be less than 64 characters" }).refine(refIdIsAvailable, {
@@ -54,6 +53,15 @@ export async function validateCreation(data: NewTransactionModel) {
 /**
  * Create a new transaction model
  */
-export async function create(data: NewTransactionModel) {
-	return await db.insert(transaction_models).values(data).returning();
+export async function create(data: TransactionModel.New): Promise<TransactionModel.Model> {
+	// TODO: Define key creation logic
+	const key = `TRANSACTION_MODEL#${data.id}`;
+	await valkey.set(key, JSON.stringify(data));
+	const value = await valkey.get(key);
+
+	if (!value) {
+		throw new Error("Failed to create transaction model");
+	}
+
+	return JSON.parse(value.toString()) as TransactionModel.Model;
 }

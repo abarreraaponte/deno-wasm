@@ -1,6 +1,6 @@
 import { type Context, Hono } from "hono";
 import { create, validateCreation } from "../actions/account_actions.js";
-import { NewAccount } from "../types/index.js";
+import { Account } from "../services/storage/types.js";
 import { v7 as uuid } from "uuid";
 
 const router = new Hono();
@@ -18,8 +18,8 @@ router.post("/", async (c: Context) => {
 	}
 
 	try {
-		const result = await create(validation_result.data as NewAccount);
-		return c.json(result[0]);
+		const result = await create(validation_result.data as Account.Model);
+		return c.json(result);
 	} catch (error) {
 		// IMPLEMENT_LOGGER
 		console.error(error);
