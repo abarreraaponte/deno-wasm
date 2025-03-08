@@ -8,6 +8,7 @@
     "jsr:@std/crypto@^1.0.3": "1.0.3",
     "jsr:@std/encoding@^1.0.6": "1.0.6",
     "jsr:@std/internal@^1.0.5": "1.0.5",
+    "jsr:@std/path@^1.0.8": "1.0.8",
     "jsr:@std/uuid@^1.0.4": "1.0.4",
     "npm:@aws-sdk/client-cognito-identity-provider@^3.716.0": "3.716.0_@aws-sdk+client-sts@3.716.0__@aws-sdk+client-sso-oidc@3.716.0___@aws-sdk+client-sts@3.716.0___@aws-sdk+client-sts@3.716.0_@aws-sdk+client-sso-oidc@3.716.0__@aws-sdk+client-sts@3.716.0___@aws-sdk+client-sso-oidc@3.716.0____@aws-sdk+client-sts@3.716.0____@aws-sdk+client-sts@3.716.0__@aws-sdk+client-sts@3.716.0___@aws-sdk+client-sso-oidc@3.716.0____@aws-sdk+client-sts@3.716.0_____@aws-sdk+client-sso-oidc@3.716.0___@aws-sdk+client-sso-oidc@3.716.0",
     "npm:@aws-sdk/client-s3@^3.717.0": "3.717.0_@aws-sdk+client-sts@3.716.0__@aws-sdk+client-sso-oidc@3.716.0___@aws-sdk+client-sts@3.716.0___@aws-sdk+client-sts@3.716.0_@aws-sdk+client-sso-oidc@3.716.0__@aws-sdk+client-sts@3.716.0___@aws-sdk+client-sso-oidc@3.716.0____@aws-sdk+client-sts@3.716.0____@aws-sdk+client-sts@3.716.0__@aws-sdk+client-sts@3.716.0___@aws-sdk+client-sso-oidc@3.716.0____@aws-sdk+client-sts@3.716.0_____@aws-sdk+client-sso-oidc@3.716.0___@aws-sdk+client-sso-oidc@3.716.0",
@@ -40,6 +41,9 @@
     },
     "@std/internal@1.0.5": {
       "integrity": "54a546004f769c1ac9e025abd15a76b6671ddc9687e2313b67376125650dc7ba"
+    },
+    "@std/path@1.0.8": {
+      "integrity": "548fa456bb6a04d3c1a1e7477986b6cffbce95102d0bb447c67c4ee70e0364be"
     },
     "@std/uuid@1.0.4": {
       "integrity": "f4233149cc8b4753cc3763fd83a7c4101699491f55c7be78dc7b30281946d7a0",
@@ -2326,6 +2330,7 @@
       "jsr:@hono/hono@^4.6.10",
       "jsr:@std/assert@^1.0.8",
       "jsr:@std/encoding@^1.0.6",
+      "jsr:@std/path@^1.0.8",
       "jsr:@std/uuid@^1.0.4",
       "npm:@aws-sdk/client-cognito-identity-provider@^3.716.0",
       "npm:@aws-sdk/client-s3@^3.717.0",
