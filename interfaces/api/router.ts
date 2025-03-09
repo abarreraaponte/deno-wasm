@@ -16,7 +16,7 @@ app.get('/health', (c: Context) => {
 
 app.route('/oauth2', Oauth2Router);
 
-app.use('/api/*', authMiddleware(oauth2Provider));
+//app.use('/api/*', authMiddleware(oauth2Provider));
 
 app.route('/api/accounts', AccountRouter);
 app.route('/api/unit-types', UnitTypeRouter);
