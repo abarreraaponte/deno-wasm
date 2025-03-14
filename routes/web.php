@@ -1,23 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Cache;
-use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-	$cached = Cache::get('test_cached_value');
+    $cached = Cache::get('test_cached_value');
+
     return view('welcome', ['cached' => $cached]);
 });
 
 Route::middleware(['auth'])->get('/restricted', function () {
-	dd('You are in the restricted area');
+    dd('You are in the restricted area', 'You are logged in if you can see this.');
 });
 
-Route::get('/auth/cognito/redirect', function () {
-	return Socialite::driver('cognito')->redirect();
-});
-
-Route::get('/auth/cognito/callback', function () {
-	$user = Socialite::driver('cognito')->user();
-	return $user;
-});
+/**
+ * Cognito authentication routes.
+ */
+Route::get('/auth/cognito/redirect', [Auth\CognitoController::class, 'redirect']);
+Route::get('/auth/cognito/callback', [Auth\CognitoController::class, 'callback']);

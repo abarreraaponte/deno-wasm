@@ -35,12 +35,12 @@ return [
         ],
     ],
 
-	'cognito' => [
-		'host' => env('COGNITO_HOST'),
-		'client_id' => env('COGNITO_CLIENT_ID'),
-		'client_secret' => env('COGNITO_CLIENT_SECRET'),
-		'redirect' => env('COGNITO_CALLBACK_URL'),
-		'scope' => explode(",", env('COGNITO_LOGIN_SCOPE')),
-		'logout_uri' => env('COGNITO_SIGN_OUT_URL')
-	],
+    'cognito' => [
+        'host' => env('COGNITO_HOST'),
+        'client_id' => env('COGNITO_CLIENT_ID'),
+        'client_secret' => env('COGNITO_CLIENT_SECRET'),
+        'redirect' => env('COGNITO_CALLBACK_URL'),
+        'scope' => explode(',', env('COGNITO_LOGIN_SCOPE')),
+        'logout_uri' => env('COGNITO_SIGN_OUT_URL'),
+    ],
 ];

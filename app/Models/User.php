@@ -3,14 +3,27 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Ramsey\Uuid\Exception\UnsupportedOperationException;
+use Ramsey\Uuid\Uuid;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasUuids, Notifiable;
+
+    /**
+     * Get a new unique identifier.
+     *
+     * @throws UnsupportedOperationException
+     */
+    public function newUniqueId(): string
+    {
+        return Uuid::uuid7()->toString();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +31,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
-        'password',
+        'email_verified_at',
+        // 'password',
     ];
 
     /**
@@ -29,7 +44,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
+        // 'password',
         'remember_token',
     ];
 
@@ -42,7 +57,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            // 'password' => 'hashed',
         ];
     }
 }
