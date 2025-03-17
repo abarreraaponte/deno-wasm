@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('organizations', function (Blueprint $table) {
+        Schema::create('branches', function (Blueprint $table) {
             $table->uuid('id')->primary();
+			$table->foreignUuid('organization_id');
+			$table->foreignUuid('parent_id')->nullable();
 			$table->string('name');
-			$table->string('slug')->unique()->index();
             $table->timestamps();
+
+			$table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+			$table->foreign('parent_id')->references('id')->on('branches')->onDelete('cascade');
         });
     }
 
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('organizations');
+        Schema::dropIfExists('branches');
     }
 };
