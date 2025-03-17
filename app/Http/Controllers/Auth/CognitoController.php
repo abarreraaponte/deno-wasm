@@ -29,6 +29,8 @@ class CognitoController extends Controller
         try {
             $cognito_user = Socialite::driver('cognito')->user();
 
+			Log::debug('Cognito user: '.json_encode($cognito_user));
+
             $user = User::updateOrCreate(
                 ['email' => $cognito_user->email],
                 [
