@@ -16,7 +16,8 @@ return new class extends Migration
 			$table->foreignUuid('organization_id');
 			$table->foreignUuid('parent_id')->nullable();
 			$table->string('name');
-            $table->timestamps();
+            $table->dateTime('created_at')->nullable();
+			$table->dateTime('updated_at')->nullable();
 
 			$table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
 			$table->foreign('parent_id')->references('id')->on('branches')->onDelete('cascade');
