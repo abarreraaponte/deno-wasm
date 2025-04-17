@@ -20,8 +20,11 @@ return new class extends Migration
 			$table->dateTime('updated_at')->nullable();
 
 			$table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
-			$table->foreign('parent_id')->references('id')->on('branches')->onDelete('cascade');
         });
+
+		Schema::table('branches', function (Blueprint $table) {
+			$table->foreign('parent_id')->references('id')->on('branches')->onDelete('cascade');
+		});
     }
 
     /**
