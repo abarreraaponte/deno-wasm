@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('authentication_providers', function (Blueprint $table) {
             $table->uuid('id')->primary();
-			$table->uuid('user_id')->index();
-			$table->string('provider');
-			$table->string('provider_user_id')->unique();
-			$table->dateTime('last_used_at')->nullable();
+            $table->uuid('user_id')->index();
+            $table->string('provider');
+            $table->string('provider_user_id')->unique();
+            $table->dateTime('last_used_at')->nullable();
             $table->dateTime('created_at')->nullable();
-			$table->dateTime('updated_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
 
-			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

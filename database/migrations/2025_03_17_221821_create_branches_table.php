@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->uuid('id')->primary();
-			$table->foreignUuid('organization_id');
-			$table->foreignUuid('parent_id')->nullable();
-			$table->string('name');
+            $table->foreignUuid('organization_id');
+            $table->foreignUuid('parent_id')->nullable();
+            $table->string('name');
             $table->dateTime('created_at')->nullable();
-			$table->dateTime('updated_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
 
-			$table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
         });
 
-		Schema::table('branches', function (Blueprint $table) {
-			$table->foreign('parent_id')->references('id')->on('branches')->onDelete('cascade');
-		});
+        Schema::table('branches', function (Blueprint $table) {
+            $table->foreign('parent_id')->references('id')->on('branches')->onDelete('cascade');
+        });
     }
 
     /**

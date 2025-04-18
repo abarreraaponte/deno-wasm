@@ -4,5 +4,5 @@ namespace App\Enums;
 
 enum AuthProviders: string
 {
-	case COGNITO = 'cognito';
+    case AUTH0 = 'auth0';
 }

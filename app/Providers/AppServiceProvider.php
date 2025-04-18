@@ -21,10 +21,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         /**
-         * Register the Cognito Socialite Provider
+         * Register the Auth0 Socialite Provider
          */
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
-            $event->extendSocialite('cognito', \SocialiteProviders\Cognito\Provider::class);
+            $event->extendSocialite('auth0', \SocialiteProviders\Auth0\Provider::class);
         });
     }
 }

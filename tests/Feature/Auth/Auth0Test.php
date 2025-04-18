@@ -3,7 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use App\Enums\AuthProviders;
-use App\Http\Controllers\Auth\CognitoController;
+use App\Http\Controllers\Auth\Auth0Controller;
 use App\Models\AuthenticationProvider;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +14,7 @@ use Laravel\Socialite\Two\User as SocialiteUser;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
-class CognitoTest extends TestCase
+class Auth0Test extends TestCase
 {
     use RefreshDatabase;
 
@@ -23,20 +23,20 @@ class CognitoTest extends TestCase
         // Mock the Socialite facade
         Socialite::shouldReceive('driver')
             ->once()
-            ->with('cognito')
+            ->with('auth0')
             ->andReturnSelf();
 
         Socialite::shouldReceive('redirect')
             ->once()
-            ->andReturn(new RedirectResponse('https://cognito-domain.com/login'));
+            ->andReturn(new RedirectResponse('https://auth0-domain.com/login'));
 
         // Call the controller method
-        $controller = new CognitoController;
+        $controller = new Auth0Controller;
         $response = $controller->redirect();
 
         // Assert it's a redirect response
         expect($response)->toBeInstanceOf(RedirectResponse::class);
-        expect($response->getTargetUrl())->toBe('https://cognito-domain.com/login');
+        expect($response->getTargetUrl())->toBe('https://auth0-domain.com/login');
     }
 
     public function test_callback_handles_successful_authentication()
@@ -66,7 +66,7 @@ class CognitoTest extends TestCase
         // Mock the Socialite facade
         Socialite::shouldReceive('driver')
             ->once()
-            ->with('cognito')
+            ->with('auth0')
             ->andReturnSelf();
 
         Socialite::shouldReceive('user')
@@ -74,7 +74,7 @@ class CognitoTest extends TestCase
             ->andReturn($socialiteUser);
 
         // Call the controller method
-        $controller = new CognitoController;
+        $controller = new Auth0Controller;
         $response = $controller->callback();
 
         // Assert the response is a redirect
@@ -89,7 +89,7 @@ class CognitoTest extends TestCase
         expect($user->email_verified_at)->not->toBeNull();
 
         // Assert the auth provider was created
-        $authProvider = AuthenticationProvider::where('provider', AuthProviders::COGNITO)
+        $authProvider = AuthenticationProvider::where('provider', AuthProviders::AUTH0)
             ->where('provider_user_id', $userId)
             ->first();
         expect($authProvider)->not->toBeNull();
@@ -105,7 +105,7 @@ class CognitoTest extends TestCase
         // Mock Socialite to throw an exception
         Socialite::shouldReceive('driver')
             ->once()
-            ->with('cognito')
+            ->with('auth0')
             ->andReturnSelf();
 
         Socialite::shouldReceive('user')
@@ -113,11 +113,11 @@ class CognitoTest extends TestCase
             ->andThrow(new \Exception('Invalid token'));
 
         // Call the controller method and expect exception
-        $controller = new CognitoController;
+        $controller = new Auth0Controller;
 
         // Your controller is using abort(401, ...) which throws HttpException
         expect(fn () => $controller->callback())
-            ->toThrow(HttpException::class, 'An error occurred while authenticating with Cognito.');
+            ->toThrow(HttpException::class, 'An error occurred while authenticating with Auth0');
 
         // Assert no user is logged in
         expect(Auth::check())->toBeFalse();
@@ -142,18 +142,18 @@ class CognitoTest extends TestCase
         $socialiteUser->email = $email;
         $socialiteUser->shouldReceive('getName')->andReturn($firstName);
         $socialiteUser->name = $firstName;  // Set name as fallback
-        
+
         $socialiteUser->user = [
             'given_name' => $firstName,
             'family_name' => $lastName,
             'email_verified' => 'true',
         ];
 
-        Socialite::shouldReceive('driver')->with('cognito')->andReturnSelf();
+        Socialite::shouldReceive('driver')->with('auth0')->andReturnSelf();
         Socialite::shouldReceive('user')->andReturn($socialiteUser);
 
         // Call controller
-        $controller = new CognitoController;
+        $controller = new Auth0Controller;
         $controller->callback();
 
         // Assert new user created
@@ -161,9 +161,9 @@ class CognitoTest extends TestCase
         expect($user)->not->toBeNull();
         expect($user->first_name)->toBe($firstName);
         expect($user->last_name)->toBe($lastName);
-        
+
         // Assert auth provider was created
-        $authProvider = AuthenticationProvider::where('provider', AuthProviders::COGNITO)
+        $authProvider = AuthenticationProvider::where('provider', AuthProviders::AUTH0)
             ->where('provider_user_id', $userId)
             ->first();
         expect($authProvider)->not->toBeNull();
@@ -193,34 +193,34 @@ class CognitoTest extends TestCase
         $socialiteUser->email = $email;
         $socialiteUser->shouldReceive('getName')->andReturn($newFirstName);
         $socialiteUser->name = $newFirstName;  // Set name as fallback
-        
+
         $socialiteUser->user = [
             'given_name' => $newFirstName,
             'family_name' => $newLastName,
             'email_verified' => 'true',
         ];
 
-        Socialite::shouldReceive('driver')->with('cognito')->andReturnSelf();
+        Socialite::shouldReceive('driver')->with('auth0')->andReturnSelf();
         Socialite::shouldReceive('user')->andReturn($socialiteUser);
 
         // Call controller
-        $controller = new CognitoController;
+        $controller = new Auth0Controller;
         $controller->callback();
 
         // Assert user was updated
         $existingUser->refresh();
         expect($existingUser->first_name)->toBe($newFirstName);
         expect($existingUser->last_name)->toBe($newLastName);
-        
+
         // Assert auth provider was created
-        $authProvider = AuthenticationProvider::where('provider', AuthProviders::COGNITO)
+        $authProvider = AuthenticationProvider::where('provider', AuthProviders::AUTH0)
             ->where('provider_user_id', $userId)
             ->first();
         expect($authProvider)->not->toBeNull();
         expect($authProvider->user_id)->toBe($existingUser->id);
     }
 
-    public function test_callback_handles_missing_user_fields_in_cognito_response()
+    public function test_callback_handles_missing_user_fields_in_auth0_response()
     {
         // Create fake data with unique email
         $email = 'test_missing_fields_'.uniqid().'@example.com';
@@ -241,14 +241,14 @@ class CognitoTest extends TestCase
             // Missing given_name and family_name
         ];
 
-        Socialite::shouldReceive('driver')->with('cognito')->andReturnSelf();
+        Socialite::shouldReceive('driver')->with('auth0')->andReturnSelf();
         Socialite::shouldReceive('user')->andReturn($socialiteUser);
 
         // Call controller and expect exception
-        $controller = new CognitoController;
+        $controller = new Auth0Controller;
 
         // This should throw an exception because given_name and family_name are missing
         expect(fn () => $controller->callback())
-            ->toThrow(HttpException::class, 'An error occurred while authenticating with Cognito.');
+            ->toThrow(HttpException::class, 'An error occurred while authenticating with Auth0');
     }
 }

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Uuid;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -62,8 +62,8 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-	public function authenticationProviders(): HasMany
-	{
-		return $this->hasMany(AuthenticationProvider::class);
-	}
+    public function authenticationProviders(): HasMany
+    {
+        return $this->hasMany(AuthenticationProvider::class);
+    }
 }

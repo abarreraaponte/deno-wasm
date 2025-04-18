@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c6b5640c40d8a396a37123b80e40e2bc",
+    "content-hash": "49117f87b177c4b97efca611dab57f03",
     "packages": [
         {
             "name": "brick/math",
@@ -3723,6 +3723,56 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "socialiteproviders/auth0",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialiteProviders/Auth0.git",
+                "reference": "2f280a2f90d050b391e938b6ccaaa5bbec5ac699"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialiteProviders/Auth0/zipball/2f280a2f90d050b391e938b6ccaaa5bbec5ac699",
+                "reference": "2f280a2f90d050b391e938b6ccaaa5bbec5ac699",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.0",
+                "socialiteproviders/manager": "^4.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\Auth0\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chase Coney",
+                    "email": "chase.coney@gmail.com"
+                }
+            ],
+            "description": "Auth0 OAuth2 Provider for Laravel Socialite",
+            "keywords": [
+                "auth0",
+                "laravel",
+                "oauth",
+                "provider",
+                "socialite"
+            ],
+            "support": {
+                "docs": "https://socialiteproviders.com/auth0",
+                "issues": "https://github.com/socialiteproviders/providers/issues",
+                "source": "https://github.com/socialiteproviders/providers"
+            },
+            "time": "2024-05-20T23:48:59+00:00"
         },
         {
             "name": "socialiteproviders/cognito",
