@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Web;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -16,9 +17,17 @@ Route::get('/login', [Auth\AuthController::class, 'login'])->name('login');
 /**
  * Restricted area.
  */
-Route::middleware(['auth'])->get('/restricted', function () {
-    return Inertia::render('Restricted');
-})->name('restricted');
+Route::middleware(['auth'])->group(function () {
+	Route::get('/home', Web\HomeController::class)->name('home');
+	Route::post('/organizations', [Web\OrganizationController::class, 'store'])->name('organizations.store');
+});
+
+/**
+ * Organization Area
+ */
+Route::prefix('/web/{organization_id}')->middleware(['auth' /*,'organization'*/])->group(function () {
+	Route::get('/', Web\DashboardController::class)->name('dashboard');
+});
 
 /**
  * Auth0 authentication routes.

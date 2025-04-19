@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('organizations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('slug')->unique()->index();
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
         });

@@ -79,7 +79,7 @@ class Auth0Test extends TestCase
 
         // Assert the response is a redirect
         expect($response)->toBeInstanceOf(RedirectResponse::class);
-        expect($response->getTargetUrl())->toBe(url('/restricted'));
+        expect($response->getTargetUrl())->toBe(url('/home'));
 
         // Assert the user was created in the database
         $user = User::where('email', $email)->first();

@@ -27,7 +27,7 @@
         </script>
 
         <!-- Scripts -->
-        @vite(['resources/js/app.ts', 'resources/css/app.css', "resources/js/Pages/{$page['component']}.vue"])
+        @vite(['resources/js/app.ts', 'resources/css/app.css', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
     <body>

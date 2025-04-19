@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -66,4 +67,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(AuthenticationProvider::class);
     }
+
+	public function organizations(): BelongsToMany
+	{
+		return $this->belongsToMany(Organization::class, 'organization_users')
+			->using(OrganizationUser::class)
+			->withTimestamps();
+	}
 }

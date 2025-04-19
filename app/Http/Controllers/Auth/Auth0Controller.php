@@ -95,7 +95,7 @@ class Auth0Controller extends Controller
             // Log in the user
             Auth::login($user, true);
 
-            return redirect()->intended('/restricted');
+            return redirect()->intended('/home');
 
         } catch (\Exception $e) {
             // Rollback transaction if there was an error
