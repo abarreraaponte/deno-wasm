@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Web;
+use Inertia\EncryptHistoryMiddleware;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -25,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
 /**
  * Organization Area
  */
-Route::prefix('/web/{organization_id}')->middleware(['auth' /*,'organization'*/])->group(function () {
+Route::prefix('/web/{organization_id}')->middleware(['auth', EncryptHistoryMiddleware::class /*,'organization'*/])->group(function () {
 	Route::get('/', Web\DashboardController::class)->name('dashboard');
 });
 

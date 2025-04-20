@@ -35,9 +35,28 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+		$locale = app()->getLocale();
+		$type = config('app.env');
+		$region = config('app.region');
+		$version = config('app.version');
+
         return [
             ...parent::share($request),
-            //
+			'name' => config('app.name'),
+			'user' => $request->user() ?? null,
+			'organization' => $request->session()->get('organization') ?? null,
+			'environment' => [
+				'locale' => $locale ?? null,
+				'region' => $region ?? null,
+				'type' => $type ?? null,
+				'version' => $version ?? null,
+			],
+            'flash' => [
+				'success' => $request->session()->get('success') ?? null,
+				'error' => $request->session()->get('error') ?? null,
+				'warning' => $request->session()->get('warning') ?? null,
+				'info' => $request->session()->get('info') ?? null,
+			],
         ];
     }
 }

@@ -29,6 +29,9 @@
         <!-- Scripts -->
         @vite(['resources/js/app.ts', 'resources/css/app.css', "resources/js/pages/{$page['component']}.vue"])
         @inertiaHead
+		<script>
+			window.translations = JSON.parse('{!! json_encode(__('*')) !!}');
+		</script>
     </head>
     <body>
         @inertia
