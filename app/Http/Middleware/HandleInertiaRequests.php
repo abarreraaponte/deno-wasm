@@ -44,7 +44,6 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
 			'name' => config('app.name'),
 			'user' => $request->user() ?? null,
-			'organization' => $request->session()->get('organization') ?? null,
 			'environment' => [
 				'locale' => $locale ?? null,
 				'region' => $region ?? null,

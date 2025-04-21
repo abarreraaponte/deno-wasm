@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class OrgMiddleware
 {
@@ -20,10 +20,13 @@ class OrgMiddleware
         $user = $request->user();
         $organization = $user->organizations()->where('organization_id', $request->segment(2))->first();
 
-        if (! $organization) {
+        if (!$organization) {
             return abort(404);
         }
 
+		Inertia::share([
+			'organization' => $organization,
+		]);
 		$request->session()->put('organization', $organization);
 		return $next($request);
     }
