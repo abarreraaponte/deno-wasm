@@ -9,18 +9,6 @@ const breadcrumbs: PageBreadcrumb[] = [
 		name: t__('Dashboard'),
 		href: '/dashboard',
 	},
-	{
-		name: t__('Home'),
-		href: '/',
-	},
-	{
-		name: t__('Settings'),
-		href: '/settings',
-	},
-	{
-		name: t__('Profile'),
-		href: '/profile',
-	},
 ];
 
 defineProps<{

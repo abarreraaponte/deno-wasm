@@ -48,7 +48,7 @@ const middleBreadcrumbs = computed(() => {
 				</li>
 			</ul>
 		</nav>
-		<ul tabindex="0" class="dropdown-content p-0 z-1 menu shadow bg-base-200 w-52">
+		<ul tabindex="0" class="dropdown-content p-0 menu shadow bg-base-200 w-52">
 			<li v-for="(middleCrumb, middleIndex) in middleBreadcrumbs" :key="middleIndex">
 				<Link :href="middleCrumb.href" class="">
 					{{ middleCrumb.name }}

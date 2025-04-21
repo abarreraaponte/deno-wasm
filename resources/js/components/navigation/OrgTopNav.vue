@@ -2,6 +2,7 @@
 import { User, Organization, Environment, PageBreadcrumb } from '@/types';
 import { Menu } from 'lucide-vue-next';
 import OrgBreadcrumbs from './OrgBreadcrumbs.vue';
+import OrgSmartbox from './OrgSmartbox.vue';
 
 defineProps<{
 	user: User,
@@ -15,9 +16,9 @@ defineProps<{
 <template>
 	<header class="flex justify-between fixed top-0 p-2 font-mono w-full z-10">
 		<nav class="flex justify-start gap-4 items-center w-1/3">
-			<button class="btn btn-soft btn-primary btn-circle btn-sm" type="button">
+			<label class="drawer-button btn btn-soft btn-primary btn-circle btn-sm" for="smartbox-drawer">
 				<Menu class="w-4 h-4"></Menu>
-			</button>
+			</label>
 			<div class="flex flex-col gap-0">
 				<span class="text-md font-bold">
 					{{ page_title }}
@@ -37,4 +38,5 @@ defineProps<{
 			<slot name="page_icon"></slot>
 		</nav>
 	</header>
+	<OrgSmartbox></OrgSmartbox>
 </template>
