@@ -10,7 +10,7 @@
 	</div>
 
 	<nav class="tooltip tooltip-top flex gap-2 py-1 px-2 hover:bg-base-200" data-tip="Org name and environment">
-		<i class="h-4 w-4" data-lucide="store"></i><p>{{ session()->get('organization')->name }} {{ config('app.env') ?? '' }}</p>
+		<i class="h-4 w-4" data-lucide="store"></i><p>{{ session()->get('organization')->name }} {{ config('app.env') ? '(' . config('app.env') . ')' : '' }}</p>
 	</nav>
 
 	<nav class="tooltip tooltip-top flex gap-2 py-1 px-2 hover:bg-base-200" data-tip="Version, region and language">

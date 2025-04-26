@@ -2,9 +2,10 @@
 
 @section('general_content')
 @include('navigation.org_topbar')
-<main>
+<main class="pt-16">
 @yield('org_content')	
 </main>
 @include('navigation.org_bottombar')
-@stack('scripts')
 @endsection
+
+@stack('scripts')

@@ -35,6 +35,5 @@
     </head>
     <body>
 		@yield('general_content')
-		@yield('scripts')
     </body>
 </html>
