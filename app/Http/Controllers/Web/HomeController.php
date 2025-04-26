@@ -18,7 +18,7 @@ class HomeController extends Controller
 
 		$organizations = $user->organizations;
 
-        return Inertia::render('Home', [
+        return view('pages.home', [
 			'organizations' => $organizations,
 		]);
     }
