@@ -13,3 +13,6 @@ dist
 
 # Added by cargo
 /target
+
+# Env
+.env
