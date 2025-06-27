@@ -1,0 +1,36 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "test": "vitest",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build",
+    "lint": "oxlint . --fix -D correctness --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "pinia": "^3.0.3",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^22.15.32",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.7.0",
+    "jiti": "^2.4.2",
+    "jsdom": "^26.1.0",
+    "npm-run-all2": "^8.0.4",
+    "oxlint": "~1.1.0",
+    "typescript": "~5.8.0",
+    "vite": "npm:rolldown-vite@latest",
+    "vite-plugin-vue-devtools": "^7.7.7",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^2.2.10"
+  }
+}

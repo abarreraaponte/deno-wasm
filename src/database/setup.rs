@@ -1,5 +1,5 @@
 // src/core/database/setup.rs
-use crate::core::config::DatabaseConfig;
+use crate::config::DatabaseConfig;
 use anyhow::Result;
 use sqlx::{PgPool, Pool, Postgres};
 
@@ -9,7 +9,7 @@ pub async fn init(config: &DatabaseConfig) -> Result<Pool<Postgres>> {
     tracing::info!("Connected to database.");
 
     tracing::info!("Running migrations...");
-    sqlx::migrate!("./src/core/database/migrations")
+    sqlx::migrate!("./src/database/migrations")
         .run(&pool)
         .await
         .map_err(|e| anyhow::anyhow!("Failed to run migrations: {}", e))?;
