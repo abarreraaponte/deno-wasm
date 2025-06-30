@@ -6,6 +6,12 @@ import "./App.css";
 function App() {
 	const [count, setCount] = useState(0);
 
+	async function callTestJson() {
+		const response = await fetch('/api/test-json');
+		const data : {count:number, status: string} = await response.json();
+		setCount(data.count);
+	}
+
 	return (
 		<>
 			<div>
@@ -16,9 +22,9 @@ function App() {
 					<img src={reactLogo} className="logo react" alt="React logo" />
 				</a>
 			</div>
-			<h1>Vite + React</h1>
+			<h1>Vite + React - Updated</h1>
 			<div className="card">
-				<button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
+				<button onClick={() => callTestJson()}>count is {count}</button>
 				<p>
 					Edit <code>src/App.tsx</code> and save to test HMR
 				</p>

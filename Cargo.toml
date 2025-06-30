@@ -8,6 +8,8 @@ anyhow = "1.0.98"
 axum = "0.8.4"
 axum-server = "0.7.2"
 dotenvy = "0.15.7"
+mime_guess = "2.0.5"
+rust-embed = "8.7.2"
 rust_decimal = "1.37.2"
 rust_decimal_macros = "1.37.1"
 serde = {version = "1.0.219", features = ["derive"]}
