@@ -1,5 +1,10 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+	"overrides": [
+		{
+			"includes": ["**/*.ts", "**/*.vue"]
+		}
+	],
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
