@@ -4,9 +4,10 @@ use std::net::SocketAddr;
 use tower_http::trace::TraceLayer;
 use tracing_subscriber;
 
-mod models;
 mod config;
 mod database;
+mod enums;
+mod models;
 mod router;
 
 #[tokio::main]
