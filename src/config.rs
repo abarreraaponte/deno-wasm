@@ -11,6 +11,7 @@ pub struct ServerConfig {
 #[derive(Debug, Deserialize, Clone)]
 pub struct DatabaseConfig {
     pub url: String,
+	pub pool_max_size: u32,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -31,7 +32,15 @@ impl AppConfig {
 
         let database_url =
             env::var("KL_DATABASE_URL").map_err(|e| anyhow!("KL_DATABASE_URL not set: {}", e))?;
-        let database_config = DatabaseConfig { url: database_url };
+		let database_pool_max_size: u32 = env::var("KL_DATABASE_POOL_MAX_SIZE")
+			.ok()
+			.and_then(|s| s.parse().ok())
+			.unwrap_or_else(|| {
+				println!("⚠️ Warning: KL_DATABASE_POOL_MAX_SIZE not set or invalid. Defaulting to 10.");
+				10
+			});
+
+        let database_config = DatabaseConfig { url: database_url, pool_max_size: database_pool_max_size };
 
 
         Ok(AppConfig {

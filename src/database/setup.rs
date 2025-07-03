@@ -1,11 +1,15 @@
 // src/core/database/setup.rs
 use crate::config::DatabaseConfig;
 use anyhow::Result;
-use sqlx::{PgPool, Pool, Postgres};
+use sqlx::{Pool, Postgres};
+use sqlx::postgres::PgPoolOptions;
 
 pub async fn init(config: &DatabaseConfig) -> Result<Pool<Postgres>> {
     tracing::info!("Connecting to database at {}", config.url);
-    let pool = PgPool::connect(&config.url).await?;
+    let pool = PgPoolOptions::new()
+		.max_connections(config.pool_max_size)
+		.connect(&config.url)
+		.await?;
     tracing::info!("Connected to database.");
 
     tracing::info!("Running migrations...");
