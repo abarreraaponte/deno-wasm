@@ -1,4 +1,3 @@
-// src/core/database/setup.rs
 use crate::config::DatabaseConfig;
 use anyhow::Result;
 use sqlx::{Pool, Postgres};

@@ -19,8 +19,9 @@ async fn main() -> Result<()> {
 
     let app = Router::new()
         .route("/", get(|| async { Redirect::permanent("/web/") }))
+        .route("/web", get(|| async { Redirect::permanent("/web/") }))
         .nest("/api", router::api_routes())
-        .nest("/web", router::web_routes())
+        .nest("/web/", router::web_routes())
         .layer(TraceLayer::new_for_http())
         .layer(Extension(db))
         .layer(Extension(config.clone()));

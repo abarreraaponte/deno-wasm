@@ -1,6 +1,6 @@
 use axum::{
     body::Body,
-    extract::Path,
+	extract::Path,
     http::{header, StatusCode},
     response::{IntoResponse, Response},
     routing::get,
@@ -13,32 +13,20 @@ use serde_json::{json, Value};
 #[folder = "dist/web/"]
 struct Assets;
 
-// This function now defines all routes under /web
 pub fn web_routes() -> Router {
     Router::new()
-        // Route for the root of /web/
-        .route("/", get(static_path_handler_for_root))
-        // Route for all other paths under /web/ using the correct wildcard syntax
-        .route("/{*path}", get(static_path_handler))
+        .route("/", get(serve_index))
+        .route("/{*path}", get(serve_static_asset))
 }
 
-// A small wrapper for the root route to provide an empty path
-async fn static_path_handler_for_root() -> impl IntoResponse {
-    static_path_handler(Path("".to_string())).await
+async fn serve_index() -> impl IntoResponse {
+    serve_static_asset(Path("index.html".to_string())).await
 }
 
-async fn static_path_handler(Path(path): Path<String>) -> impl IntoResponse {
-    let path = path.trim_start_matches('/');
-
-    let effective_path = if path.is_empty() {
-        "index.html"
-    } else {
-        path
-    };
-
-    match Assets::get(effective_path) {
+async fn serve_static_asset(Path(path): Path<String>) -> impl IntoResponse {
+    match Assets::get(&path) {
         Some(content) => {
-            let mime = mime_guess::from_path(effective_path).first_or_octet_stream();
+            let mime = mime_guess::from_path(&path).first_or_octet_stream();
             Response::builder()
                 .header(header::CONTENT_TYPE, mime.as_ref())
                 .body(Body::from(content.data))
@@ -53,7 +41,7 @@ async fn static_path_handler(Path(path): Path<String>) -> impl IntoResponse {
             } else {
                 Response::builder()
                     .status(StatusCode::NOT_FOUND)
-                    .body(Body::from("404: index.html not found"))
+                    .body(Body::from("404 Not Found"))
                     .unwrap()
             }
         }

@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use dotenvy::dotenv;
 use serde::Deserialize;
-use std::env; // You'll also need std::env::VarError if you want to handle specific error types
+use std::env;
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct ServerConfig {
