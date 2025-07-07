@@ -15,7 +15,7 @@ async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
 
     let config = config::AppConfig::load()?;
-    let db = database::setup::init(&config.database).await?;
+    let db = database::db::init(&config.database).await?;
 
     let app = Router::new()
         .route("/", get(|| async { Redirect::permanent("/web/") }))
