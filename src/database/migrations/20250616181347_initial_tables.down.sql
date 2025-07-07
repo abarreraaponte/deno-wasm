@@ -14,5 +14,6 @@ DROP TABLE IF EXISTS "unit_types" CASCADE;
 DROP TABLE IF EXISTS "transaction_models" CASCADE;
 DROP TABLE IF EXISTS "entity_models" CASCADE;
 DROP TABLE IF EXISTS "events" CASCADE;
+DROP TABLE IF EXISTS "users" CASCADE;
 
 DROP TYPE IF EXISTS "public"."balance_type";

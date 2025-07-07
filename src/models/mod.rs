@@ -1,3 +1,4 @@
+pub mod auth;
 pub mod entities;
 pub mod events;
 pub mod ledgers;

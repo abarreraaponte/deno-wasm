@@ -12,7 +12,6 @@ pub struct Event {
     pub created_at: Option<DateTime<Utc>>,
 }
 
-
 #[derive(Debug, Clone, Serialize, Deserialize, sqlx::FromRow)]
 pub struct Entry {
     pub id: Uuid,

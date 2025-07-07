@@ -2,9 +2,19 @@
 -- This script will be run once to apply the schema.
 
 -- =================================================================
--- 1. Custom Types
+-- 1. Custom Types and Authentication
 -- =================================================================
 CREATE TYPE "public"."balance_type" AS ENUM('debit', 'credit');
+
+CREATE TABLE "users" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"first_name" varchar(64) NOT NULL UNIQUE,
+	"last_name" varchar(64) NOT NULL UNIQUE,
+	"email" varchar(255) NOT NULL UNIQUE,
+	"password_hash" varchar(255) NOT NULL,
+	"created_at" timestamptz DEFAULT now(),
+	"updated_at" timestamptz DEFAULT now()
+);
 
 -- =================================================================
 -- 2. Core Model & Unit Tables
