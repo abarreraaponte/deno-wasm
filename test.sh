@@ -5,7 +5,7 @@
 echo "=== KitLedger Build Test ==="
 
 # Clean previous builds
-rm -rf bin/ web/dist/
+rm -rf bin/ web/public/
 
 # Install dependencies
 echo "📦 Installing dependencies..."

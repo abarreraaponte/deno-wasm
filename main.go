@@ -16,7 +16,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-//go:embed web/dist/*
+//go:embed web/public/*
 var webAssets embed.FS
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 	logrus.SetLevel(logrus.InfoLevel)
 
 	// Set up embedded FS for router
-	webFS, err := fs.Sub(webAssets, "web/dist")
+	webFS, err := fs.Sub(webAssets, "web/public")
 	if err != nil {
 		logrus.Fatalf("Failed to create web filesystem: %v", err)
 	}
@@ -46,6 +46,7 @@ func main() {
 
 	// Create Echo instance
 	e := echo.New()
+	e.HideBanner = true
 
 	// Middleware
 	e.Use(middleware.Logger())
