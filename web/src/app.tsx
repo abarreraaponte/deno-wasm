@@ -13,7 +13,7 @@ function App() {
     <>
       <div>
         { count }
-        <button type="button" onClick={() => callTestJson()}>Call Test JSON</button>
+        <button type="button" onClick={() => callTestJson()}>Test Button</button>
       </div>
     </>
   )

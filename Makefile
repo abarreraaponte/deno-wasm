@@ -14,7 +14,7 @@ deps:
 
 # Build the web frontend
 web:
-	deno install && deno task bundle
+	deno task bundle
 
 # Build the Go binary for local development
 build: web

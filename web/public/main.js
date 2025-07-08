@@ -15430,7 +15430,7 @@ function App() {
         /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
           type: "button",
           onClick: () => callTestJson(),
-          children: "Call Test JSON"
+          children: "Test Button"
         })
       ]
     })
