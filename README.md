@@ -1,24 +1,61 @@
-# Kitledger: Project Blueprint
+# KitLedger
 
-This document outlines the vision, architecture, and proposed file structure for the **Kitledger** project, a programmable ledger framework.
+A financial ledger application built with Go and VueJS.
 
-## 1. Project Vision
+## Prerequisites
 
-**Kitledger** is a high-performance, developer-first framework for building reliable, transaction-based business applications. Its core mission is to abstract away the complexities of double-entry accounting, providing developers with a robust, auditable, and easy-to-use API.
+- Go 1.22 or later
+- Node.js 18+ and npm
+- PostgreSQL database
 
-The platform will enable developers to rapidly build custom applications like inventory management systems, complex billing engines, and asset trackers on top of a secure and scalable ledgering foundation.
+## Quick Start
 
-A key feature will be the ability to **securely execute user-submitted code** via a sandboxed WebAssembly (WASM) runtime, allowing for powerful, custom business logic.
+1. Install dependencies and build:
+```bash
+./test.sh
+```
 
-## 2. Core Philosophy & Architecture
+2. Set up your database connection:
+```bash
+export KL_DATABASE_URL="postgres://username:password@localhost/kitledger?sslmode=disable"
+```
 
-The project will be built using a **hyper-integrated, single-binary deployment model**. The entire application—backend API, frontend dashboard, and all static assets—will be compiled into a single, self-contained executable.
+3. Run the application:
+```bash
+./bin/kitledger
+```
 
-This approach offers several key advantages:
+The application will be available at http://localhost:8000
 
-* **Simplified Deployment:** The entire application is a single file, making deployments atomic and trivial.
-* **No CORS/Auth Complexity:** By serving the frontend and backend from the same origin, Cross-Origin Resource Sharing (CORS) issues are eliminated. Authentication can be handled with secure, server-side `httpOnly` cookies instead of client-side JWT management.
-* **Transactional Consistency:** It is impossible to deploy a version of the backend that is out of sync with its frontend assets, as they are part of the same binary.
-* **Performance:** Critical pages and email templates can be rendered server-side for maximum speed and SEO compatibility.
+## Configuration
 
-The backend infrastructure will be defined as code and designed to be "all-in" on **AWS** for scalability and reliability, with a "self-hosted" model that allows users to deploy the entire stack into their own AWS accounts via an IaC template.
+Environment variables:
+- `KL_DATABASE_URL` - PostgreSQL connection string (required)
+- `KL_SERVER_PORT` - Server port (default: 8000)
+- `KL_DATABASE_POOL_MAX_SIZE` - Database connection pool size (default: 10)
+
+## Development
+
+Build and run:
+```bash
+make run
+```
+
+Clean build artifacts:
+```bash
+make clean
+```
+
+Run tests:
+```bash
+make test
+```
+
+## Project Structure
+
+- `main.go` - Application entry point
+- `internal/config/` - Configuration management
+- `internal/database/` - Database connection and migrations
+- `internal/models/` - Data models
+- `internal/router/` - HTTP routes and handlers
+- `web/` - VueJS frontend
