@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"kitledger/internal/auth"
 	"kitledger/internal/config"
 	"kitledger/internal/database"
 	"kitledger/internal/router"
@@ -32,6 +33,16 @@ func main() {
 	}
 	defer db.Close()
 
+	// Initialize Valkey cache
+	cache, err := database.InitCache(cfg.Valkey)
+	if err != nil {
+		logrus.Fatalf("Failed to initialize Valkey cache: %v", err)
+	}
+	defer cache.Close()
+
+	// Initialize auth service
+	authService := auth.NewService(db, cache, cfg.Auth)
+
 	// Create Echo instance
 	e := echo.New()
 	e.HideBanner = true
@@ -39,10 +50,17 @@ func main() {
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(middleware.CORS())
+
+	// CORS middleware with dynamic origins
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     cfg.Auth.AllowedOrigins,
+		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions},
+		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+		AllowCredentials: true,
+	}))
 
 	// Setup routes
-	router.SetupAPIRoutes(e.Group("/api"), db)
+	router.SetupAPIRoutes(e.Group("/api"), db, authService)
 
 	// Start server
 	addr := fmt.Sprintf(":%d", cfg.Server.Port)
