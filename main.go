@@ -1,9 +1,7 @@
 package main
 
 import (
-	"embed"
 	"fmt"
-	"io/fs"
 	"net/http"
 	"os"
 
@@ -16,20 +14,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-//go:embed web/public/*
-var webAssets embed.FS
-
 func main() {
 	// Initialize logger
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 	logrus.SetLevel(logrus.InfoLevel)
-
-	// Set up embedded FS for router
-	webFS, err := fs.Sub(webAssets, "web/public")
-	if err != nil {
-		logrus.Fatalf("Failed to create web filesystem: %v", err)
-	}
-	router.EmbeddedFS = webFS
 
 	// Load configuration
 	cfg, err := config.Load()
@@ -53,17 +41,8 @@ func main() {
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS())
 
-	// Routes
-	e.GET("/", func(c echo.Context) error {
-		return c.Redirect(http.StatusMovedPermanently, "/web/")
-	})
-	e.GET("/web", func(c echo.Context) error {
-		return c.Redirect(http.StatusMovedPermanently, "/web/")
-	})
-
 	// Setup routes
 	router.SetupAPIRoutes(e.Group("/api"), db)
-	router.SetupWebRoutes(e.Group("/web"), db)
 
 	// Start server
 	addr := fmt.Sprintf(":%d", cfg.Server.Port)

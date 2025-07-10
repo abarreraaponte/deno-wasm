@@ -12,12 +12,8 @@ deps:
 	go mod tidy
 	go mod download
 
-# Build the web frontend
-web:
-	deno task bundle
-
 # Build the Go binary for local development
-build: web
+build:
 	go build -o $(BUILD_DIR)/$(BINARY_NAME) .
 
 # Run the application (builds first)

@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"deno.enable": true
+		"deno.enable": true,
+		"makefile.configureOnOpen": true
 	}
 }
