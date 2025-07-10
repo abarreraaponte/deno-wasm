@@ -31,4 +31,4 @@ logs
 npm-debug.log*
 
 # Build
-bin
+/bin
