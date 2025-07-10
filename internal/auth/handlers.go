@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 	"time"
@@ -206,10 +207,40 @@ func (h *Handlers) ListAPITokens(c echo.Context) error {
 		WHERE user_id = $1 AND revoked_at IS NULL
 		ORDER BY created_at DESC`
 
-	var tokens []models.APITokenInfo
-	err := h.service.db.SelectContext(c.Request().Context(), &tokens, query, user.ID)
+	rows, err := h.service.db.QueryContext(c.Request().Context(), query, user.ID)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to fetch API tokens")
+	}
+	defer rows.Close()
+
+	var tokens []models.APITokenInfo
+	for rows.Next() {
+		var token models.APITokenInfo
+		var scopesJSON []byte
+
+		err := rows.Scan(
+			&token.ID,
+			&token.TokenName,
+			&scopesJSON,
+			&token.LastUsedAt,
+			&token.ExpiresAt,
+			&token.CreatedAt,
+		)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, "Failed to scan API token")
+		}
+
+		// Convert scopes JSON to RawMessage
+		if scopesJSON != nil {
+			rawMsg := json.RawMessage(scopesJSON)
+			token.Scopes = &rawMsg
+		}
+
+		tokens = append(tokens, token)
+	}
+
+	if err = rows.Err(); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, "Error reading API tokens")
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
