@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "dev": "deno run --watch main.ts"
+  },
+  "imports": {
+	"env": "./wasm_env.ts",
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}
