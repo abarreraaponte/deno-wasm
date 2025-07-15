@@ -1,32 +1,40 @@
 import fs from "node:fs/promises";
 import { DefaultRubyVM } from "@ruby/wasm-wasi/dist/node";
 
-async function runRubyWasmFSTest() {
-  const rubyWasmPath = "./node_modules/@ruby/3.4-wasm-wasi/dist/ruby.wasm";
+import { fetch_json } from "./wasm_env.ts";
+
+async function runRubyWasmFSTestWithHTTP() {
+  const rubyWasmPath = "./node_modules/@ruby/3.4-wasm-wasi/dist/ruby+stdlib.wasm";
   const rubyScriptPath = "./ruby.rb";
 
   try {
-    // Load the Ruby Wasm binary
     const binary = await fs.readFile(rubyWasmPath);
     const module = await WebAssembly.compile(binary);
 
-    // Load the Ruby script content
-    const rubyScriptContent = await fs.readFile(rubyScriptPath, 'utf8');
+    // CRUCIAL CHANGE: Directly expose fetch_json to Node.js's globalThis.
+    // The Ruby Wasm VM's JS environment will then see this via `JS.global`.
+    (globalThis as any).fetch_json_from_host = fetch_json;
 
-    // Instantiate the Ruby VM
-    // The DefaultRubyVM handles providing the WASI imports internally.
     const { vm } = await DefaultRubyVM(module);
 
-    console.log("Running Ruby Wasm filesystem access test...");
+    console.log("Running Ruby Wasm filesystem and HTTP access test...");
 
-    // Execute the Ruby script
-    vm.eval(rubyScriptContent);
+	const rubyScriptContent = await fs.readFile(rubyScriptPath, 'utf8');
 
-    console.log("\nRuby Wasm filesystem access test finished.");
+    vm.evalAsync(rubyScriptContent);
+
+    console.log("\nRuby Wasm filesystem and HTTP access test finished.");
+
+	vm.evalAsync(rubyScriptContent);
 
   } catch (error) {
     console.error("An error occurred during Ruby Wasm execution:", error);
+  } finally {
+    // Clean up the global reference to avoid polluting Node.js global
+    if ((globalThis as any).fetch_json_from_host) {
+      delete (globalThis as any).fetch_json_from_host;
+    }
   }
 }
 
-runRubyWasmFSTest();
+runRubyWasmFSTestWithHTTP();
