@@ -1,0 +1,28 @@
+{
+  "name": "deno-wasm",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/abarreraaponte/deno-wasm#readme",
+  "bugs": {
+    "url": "https://github.com/abarreraaponte/deno-wasm/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abarreraaponte/deno-wasm.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"go:compile": "tinygo build -o go.wasm -target wasm -no-debug ./wasm.go",
+    "go:test": "tsx go_test.ts",
+	"wat:compile": "wat2wasm wat.wat -o wat.wasm",
+	"wat:test": "tsx wat_test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.14",
+    "tsx": "^4.20.3"
+  }
+}
