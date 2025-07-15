@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import { DefaultRubyVM } from "@ruby/wasm-wasi/dist/node";
 
-import { fetch_json } from "./wasm_env.ts";
+import { fetch_json, now, log_result, print_time_ms } from "./wasm_env.ts";
 
 async function runRubyWasmFSTestWithHTTP() {
   const rubyWasmPath = "./node_modules/@ruby/3.4-wasm-wasi/dist/ruby+stdlib.wasm";
@@ -13,7 +13,10 @@ async function runRubyWasmFSTestWithHTTP() {
 
     // CRUCIAL CHANGE: Directly expose fetch_json to Node.js's globalThis.
     // The Ruby Wasm VM's JS environment will then see this via `JS.global`.
-    (globalThis as any).fetch_json_from_host = fetch_json;
+    (globalThis as any).fetch_json = fetch_json;
+	(globalThis as any).now = now;
+	(globalThis as any).log_result = log_result;
+	(globalThis as any).print_time_ms = print_time_ms;
 
     const { vm } = await DefaultRubyVM(module);
 
@@ -31,8 +34,8 @@ async function runRubyWasmFSTestWithHTTP() {
     console.error("An error occurred during Ruby Wasm execution:", error);
   } finally {
     // Clean up the global reference to avoid polluting Node.js global
-    if ((globalThis as any).fetch_json_from_host) {
-      delete (globalThis as any).fetch_json_from_host;
+    if ((globalThis as any).fetch_json) {
+      delete (globalThis as any).fetch_json;
     }
   }
 }
