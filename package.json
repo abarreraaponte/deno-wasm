@@ -15,14 +15,17 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-	"rust:compile": "cd wasm && cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/wasm.wasm ../rust.wasm",
-	"rust:test": "tsx rust_test.ts",
-	"wat:compile": "wat2wasm wat.wat -o wat.wasm",
-	"wat:test": "tsx wat_test.ts"
+	"ruby:test": "tsx ruby_test.ts",
+    "rust:compile": "cd wasm && cargo build --target wasm32-unknown-unknown --release && cp target/wasm32-unknown-unknown/release/wasm.wasm ../rust.wasm",
+    "rust:test": "tsx rust_test.ts",
+    "wat:compile": "wat2wasm wat.wat -o wat.wasm",
+    "wat:test": "tsx wat_test.ts"
   },
   "devDependencies": {
     "@types/node": "^24.0.14",
     "tsx": "^4.20.3"
+  },
+  "dependencies": {
+    "@ruby/3.4-wasm-wasi": "^2.7.1"
   }
 }
