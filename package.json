@@ -16,8 +16,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"go:compile": "tinygo build -o go.wasm -target wasm -no-debug ./wasm.go",
-    "go:test": "tsx go_test.ts",
 	"wat:compile": "wat2wasm wat.wat -o wat.wasm",
 	"wat:test": "tsx wat_test.ts"
   },
